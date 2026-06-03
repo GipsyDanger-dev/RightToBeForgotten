@@ -17,6 +17,8 @@ build/
 # ZKP artifacts
 circuits/build/
 circuits/proofs/
+circuits/*.exe
+circuits/*.ptau
 
 # Hardhat
 artifacts/
