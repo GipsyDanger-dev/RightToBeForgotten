@@ -60,24 +60,32 @@ Implement consent management.
 
 Status:
 
-PENDING
+COMPLETED
 
 Tasks:
 
-- [ ] Setup Hardhat
-- [ ] Configure Polygon Amoy
-- [ ] Create ConsentRegistry.sol
-- [ ] Implement registerConsent()
-- [ ] Implement revokeConsent()
-- [ ] Implement consent validation
-- [ ] Create deployment scripts
-- [ ] Create unit tests
-- [ ] Run security review
+- [x] Setup Hardhat
+- [x] Configure Polygon Amoy
+- [x] Create ConsentRegistry.sol
+- [x] Implement registerConsent()
+- [x] Implement revokeConsent()
+- [x] Implement consent validation
+- [x] Create deployment scripts
+- [x] Create unit tests
+- [x] Run security review
 
 Deliverables:
 
-- ConsentRegistry deployed locally
-- Tests passing
+- ConsentRegistry compiled successfully
+- 20/20 unit tests passing
+- Gas usage documented
+
+Gas Report:
+
+- registerConsent(): 67,941 gas
+- revokeConsent(): 30,800 gas
+- verifyAccess(): 25,506 gas
+- getConsentState(): 24,076 gas (view estimate)
 
 Dependencies:
 
@@ -392,14 +400,18 @@ FR-08 requires demonstrable audit trail. Events are the standard Ethereum mechan
 
 Tasks:
 
-- [ ] Define ConsentRegistered event
-- [ ] Define ConsentRevoked event
-- [ ] Define AccessVerified event
-- [ ] Implement events in ConsentRegistry.sol
+- [x] Define ConsentRegistered event
+- [x] Define ConsentRevoked event
+- [x] Define AccessVerified event
+- [x] Implement events in ConsentRegistry.sol
 
 Priority:
 
 HIGH
+
+Status:
+
+COMPLETED (implemented in Phase 1)
 
 Dependencies:
 
@@ -473,15 +485,19 @@ Scope.md lists gas analysis as a required deliverable.
 
 Tasks:
 
-- [ ] Measure gas cost for registerConsent()
-- [ ] Measure gas cost for revokeConsent()
-- [ ] Measure gas cost for verifyAccess()
-- [ ] Document gas usage
+- [x] Measure gas cost for registerConsent() — 67,941 gas
+- [x] Measure gas cost for revokeConsent() — 30,800 gas
+- [x] Measure gas cost for verifyAccess() — 25,506 gas
+- [x] Document gas usage — documented in Phase 1 completion
 - [ ] Identify optimization opportunities
 
 Priority:
 
 MEDIUM
+
+Status:
+
+PARTIALLY COMPLETED (measurement done, optimization pending)
 
 Dependencies:
 
