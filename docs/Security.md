@@ -144,9 +144,9 @@ The system aims to provide:
 
 Service providers should not learn:
 
-* User secret
-* Private identity values
-* Internal commitment values
+- User secret
+- Private identity values
+- Internal commitment values
 
 ---
 
@@ -154,8 +154,8 @@ Service providers should not learn:
 
 Verification should reveal only:
 
-* Proof validity
-* Consent validity
+- Proof validity
+- Consent validity
 
 Nothing else.
 
@@ -165,8 +165,8 @@ Nothing else.
 
 Third parties should not be able to determine:
 
-* Which user owns a consent
-* Which consent belongs to a specific identity
+- Which user owns a consent
+- Which consent belongs to a specific identity
 
 ---
 
@@ -186,9 +186,9 @@ Assume approved cryptographic primitives remain secure.
 
 Examples:
 
-* Poseidon
-* Groth16
-* BN254
+- Poseidon
+- Groth16
+- BN254
 
 If vulnerabilities are discovered, migration planning is required.
 
@@ -200,8 +200,8 @@ Assume user device is not actively compromised.
 
 If the user's device is compromised:
 
-* Privacy guarantees may fail.
-* Secret protection may fail.
+- Privacy guarantees may fail.
+- Secret protection may fail.
 
 ---
 
@@ -217,9 +217,9 @@ Attempt to access user data after revocation.
 
 Mitigation:
 
-* On-chain consent validation
-* Revocation finality
-* Proof verification
+- On-chain consent validation
+- Revocation finality
+- Proof verification
 
 Expected Result:
 
@@ -237,9 +237,9 @@ Link blockchain activity to user identity.
 
 Mitigation:
 
-* Zero-Knowledge Proofs
-* Hidden identity commitments
-* Minimal public information
+- Zero-Knowledge Proofs
+- Hidden identity commitments
+- Minimal public information
 
 Expected Result:
 
@@ -257,9 +257,9 @@ Forge access permissions.
 
 Mitigation:
 
-* Cryptographic proof verification
-* Consent validation
-* Smart contract verification
+- Cryptographic proof verification
+- Consent validation
+- Smart contract verification
 
 Expected Result:
 
@@ -277,8 +277,8 @@ Reuse old proof submissions.
 
 Mitigation:
 
-* Nullifier design
-* Proof freshness mechanisms
+- Nullifier design
+- Proof freshness mechanisms
 
 Expected Result:
 
@@ -296,9 +296,9 @@ Manipulate consent status.
 
 Mitigation:
 
-* Access control
-* Immutable revocation logic
-* Explicit state validation
+- Access control
+- Immutable revocation logic
+- Explicit state validation
 
 Expected Result:
 
@@ -430,9 +430,9 @@ The system permanently destroys the ability to prove authorization.
 
 Result:
 
-* Identity becomes unusable.
-* Authorization becomes invalid.
-* Future verification fails.
+- Identity becomes unusable.
+- Authorization becomes invalid.
+- Future verification fails.
 
 ---
 
@@ -442,10 +442,10 @@ Before implementation of any feature:
 
 ## Review Required
 
-* Threat analysis
-* Attack surface analysis
-* Privacy impact analysis
-* Cryptographic assumptions review
+- Threat analysis
+- Attack surface analysis
+- Privacy impact analysis
+- Cryptographic assumptions review
 
 ---
 
@@ -477,12 +477,12 @@ If a vulnerability is discovered:
 
 The following changes require explicit user approval:
 
-* Circuit redesign
-* Cryptographic primitive replacement
-* Smart contract redesign
-* Identity model changes
-* Consent model changes
-* Revocation model changes
+- Circuit redesign
+- Cryptographic primitive replacement
+- Smart contract redesign
+- Identity model changes
+- Consent model changes
+- Revocation model changes
 
 Implementation must not proceed until approval is granted.
 
@@ -492,9 +492,9 @@ Implementation must not proceed until approval is granted.
 
 A component is considered secure only when:
 
-* Threats are documented.
-* Assumptions are documented.
-* Mitigations are documented.
-* Privacy guarantees are preserved.
-* Security review is completed.
-* User approval requirements are respected.
+- Threats are documented.
+- Assumptions are documented.
+- Mitigations are documented.
+- Privacy guarantees are preserved.
+- Security review is completed.
+- User approval requirements are respected.

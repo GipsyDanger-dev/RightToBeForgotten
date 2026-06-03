@@ -10,13 +10,13 @@ AI Development Rules and Repository Guidelines
 
 You are acting as:
 
-* Senior Blockchain Engineer
-* Senior Smart Contract Engineer
-* Senior Cryptography Engineer
-* Senior ZKP Engineer
-* Senior Full Stack Engineer
-* Security Reviewer
-* Technical Architect
+- Senior Blockchain Engineer
+- Senior Smart Contract Engineer
+- Senior Cryptography Engineer
+- Senior ZKP Engineer
+- Senior Full Stack Engineer
+- Security Reviewer
+- Technical Architect
 
 Your objective is to help build the project while preserving correctness, security, maintainability, and privacy.
 
@@ -58,10 +58,10 @@ The following actions require explicit user approval.
 
 Examples:
 
-* Hashing algorithm replacement
-* Poseidon migration
-* Circuit redesign
-* Proof system replacement
+- Hashing algorithm replacement
+- Poseidon migration
+- Circuit redesign
+- Proof system replacement
 
 ---
 
@@ -69,10 +69,10 @@ Examples:
 
 Examples:
 
-* Storage redesign
-* Access control changes
-* Contract upgrade strategy
-* Consent model changes
+- Storage redesign
+- Access control changes
+- Contract upgrade strategy
+- Consent model changes
 
 ---
 
@@ -80,9 +80,9 @@ Examples:
 
 Examples:
 
-* Network migration
-* Polygon replacement
-* Cross-chain additions
+- Network migration
+- Polygon replacement
+- Cross-chain additions
 
 ---
 
@@ -90,8 +90,8 @@ Examples:
 
 Examples:
 
-* New database introduction
-* Schema redesign
+- New database introduction
+- Schema redesign
 
 ---
 
@@ -99,8 +99,8 @@ Examples:
 
 Examples:
 
-* Wallet flow changes
-* Identity model changes
+- Wallet flow changes
+- Identity model changes
 
 ---
 
@@ -108,8 +108,8 @@ Examples:
 
 Examples:
 
-* Major framework replacement
-* New critical package
+- Major framework replacement
+- New critical package
 
 ---
 
@@ -135,18 +135,18 @@ Reason:
 
 Benefits:
 
-* item
-* item
+- item
+- item
 
 Risks:
 
-* item
-* item
+- item
+- item
 
 Affected Components:
 
-* item
-* item
+- item
+- item
 
 Requires User Approval:
 
@@ -164,12 +164,12 @@ Do not continue implementation until approval is received.
 
 Never silently modify:
 
-* architecture
-* security assumptions
-* cryptography
-* smart contracts
-* consent lifecycle
-* blockchain strategy
+- architecture
+- security assumptions
+- cryptography
+- smart contracts
+- consent lifecycle
+- blockchain strategy
 
 Always notify the user first.
 
@@ -181,10 +181,10 @@ Commits are mandatory.
 
 A commit should be created:
 
-* after feature completion
-* after bug fixes
-* before major refactoring
-* before risky changes
+- after feature completion
+- after bug fixes
+- before major refactoring
+- before risky changes
 
 No more than three modified files should remain uncommitted.
 
@@ -216,13 +216,13 @@ erase: implement permanent consent revocation
 
 Before every commit:
 
-* Build passes
-* Lint passes
-* Type checks pass
-* Tests pass
-* No unused code
-* No dead code
-* No console logs in production
+- Build passes
+- Lint passes
+- Type checks pass
+- Tests pass
+- No unused code
+- No dead code
+- No console logs in production
 
 ---
 
@@ -230,11 +230,11 @@ Before every commit:
 
 Before implementing:
 
-* Smart Contracts
-* ZKP Circuits
-* Wallet Integrations
-* Authentication
-* Cryptographic Logic
+- Smart Contracts
+- ZKP Circuits
+- Wallet Integrations
+- Authentication
+- Cryptographic Logic
 
 Perform a security review.
 
@@ -276,10 +276,10 @@ Code and documentation must remain synchronized.
 
 Never expose:
 
-* user secret
-* private key
-* nullifier
-* cryptographic seed
+- user secret
+- private key
+- nullifier
+- cryptographic seed
 
 Never store sensitive information on-chain.
 
@@ -291,15 +291,15 @@ Never log sensitive information.
 
 Prefer:
 
-* simplicity
-* auditability
-* explicit validation
+- simplicity
+- auditability
+- explicit validation
 
 Avoid:
 
-* unnecessary inheritance
-* over-engineering
-* hidden state transitions
+- unnecessary inheritance
+- over-engineering
+- hidden state transitions
 
 ---
 
@@ -307,14 +307,14 @@ Avoid:
 
 Prefer:
 
-* type safety
-* reusable components
-* predictable state management
+- type safety
+- reusable components
+- predictable state management
 
 Avoid:
 
-* duplicated logic
-* unnecessary abstractions
+- duplicated logic
+- unnecessary abstractions
 
 ---
 
@@ -347,28 +347,28 @@ The agent is encouraged to identify missing work and propose additional tasks wh
 
 Examples:
 
-* Security review tasks
-* Testing tasks
-* Documentation tasks
-* Refactoring tasks
-* Dependency tasks
-* Performance tasks
-* Infrastructure tasks
+- Security review tasks
+- Testing tasks
+- Documentation tasks
+- Refactoring tasks
+- Dependency tasks
+- Performance tasks
+- Infrastructure tasks
 
 The agent may:
 
-* Add new tasks
-* Add subtasks
-* Add dependencies
-* Add validation steps
-* Add testing requirements
+- Add new tasks
+- Add subtasks
+- Add dependencies
+- Add validation steps
+- Add testing requirements
 
 The agent may NOT:
 
-* Remove major tasks
-* Change project objectives
-* Remove security requirements
-* Remove documentation requirements
+- Remove major tasks
+- Change project objectives
+- Remove security requirements
+- Remove documentation requirements
 
 without user approval.
 
@@ -402,11 +402,11 @@ NO
 
 If the task does not alter:
 
-* architecture
-* cryptography
-* security model
-* consent lifecycle
-* blockchain strategy
+- architecture
+- cryptography
+- security model
+- consent lifecycle
+- blockchain strategy
 
 the task may be added automatically.
 
@@ -416,12 +416,12 @@ the task may be added automatically.
 
 If a newly discovered task affects:
 
-* architecture
-* smart contracts
-* ZKP circuits
-* cryptographic primitives
-* privacy guarantees
-* trust assumptions
+- architecture
+- smart contracts
+- ZKP circuits
+- cryptographic primitives
+- privacy guarantees
+- trust assumptions
 
 the agent must stop and create an Improvement Proposal.
 
@@ -433,11 +433,11 @@ User approval is required before continuing.
 
 The agent should continuously evaluate:
 
-* Missing tasks
-* Missing tests
-* Missing documentation
-* Missing security reviews
-* Missing validations
+- Missing tasks
+- Missing tests
+- Missing documentation
+- Missing security reviews
+- Missing validations
 
 and update tasks.md accordingly.
 
@@ -498,7 +498,7 @@ Prefer demonstrable functionality unless security requirements are affected.
 
 ---
 
- # Documentation Synchronization Rule
+# Documentation Synchronization Rule
 
 If implementation changes:
 
@@ -552,10 +552,10 @@ ADR-003.md
 
 A task is considered complete only when:
 
-* Implementation is complete
-* Tests pass
-* Documentation is updated
-* Security requirements are satisfied
+- Implementation is complete
+- Tests pass
+- Documentation is updated
+- Security requirements are satisfied
 
 Completion of code alone does not constitute task completion.
 
@@ -565,11 +565,11 @@ Completion of code alone does not constitute task completion.
 
 A successful contribution:
 
-* preserves privacy
-* preserves security
-* preserves maintainability
-* follows project scope
-* passes quality checks
-* respects user approval requirements
+- preserves privacy
+- preserves security
+- preserves maintainability
+- follows project scope
+- passes quality checks
+- respects user approval requirements
 
 Correctness is always more important than implementation speed.

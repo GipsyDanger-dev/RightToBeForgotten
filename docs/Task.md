@@ -32,21 +32,21 @@ PENDING
 
 Tasks:
 
-* [ ] Create monorepo structure
-* [ ] Create documentation directory
-* [ ] Create contracts directory
-* [ ] Create circuits directory
-* [ ] Create applications directory
-* [ ] Configure TypeScript
-* [ ] Configure ESLint
-* [ ] Configure Prettier
-* [ ] Configure Git hooks
-* [ ] Configure environment management
+- [ ] Create monorepo structure
+- [ ] Create documentation directory
+- [ ] Create contracts directory
+- [ ] Create circuits directory
+- [ ] Create applications directory
+- [ ] Configure TypeScript
+- [ ] Configure ESLint
+- [ ] Configure Prettier
+- [ ] Configure Git hooks
+- [ ] Configure environment management
 
 Deliverables:
 
-* Repository initialized
-* Project structure completed
+- Repository initialized
+- Project structure completed
 
 ---
 
@@ -64,20 +64,20 @@ PENDING
 
 Tasks:
 
-* [ ] Setup Hardhat
-* [ ] Configure Polygon Amoy
-* [ ] Create ConsentRegistry.sol
-* [ ] Implement registerConsent()
-* [ ] Implement revokeConsent()
-* [ ] Implement consent validation
-* [ ] Create deployment scripts
-* [ ] Create unit tests
-* [ ] Run security review
+- [ ] Setup Hardhat
+- [ ] Configure Polygon Amoy
+- [ ] Create ConsentRegistry.sol
+- [ ] Implement registerConsent()
+- [ ] Implement revokeConsent()
+- [ ] Implement consent validation
+- [ ] Create deployment scripts
+- [ ] Create unit tests
+- [ ] Run security review
 
 Deliverables:
 
-* ConsentRegistry deployed locally
-* Tests passing
+- ConsentRegistry deployed locally
+- Tests passing
 
 Dependencies:
 
@@ -99,22 +99,22 @@ PENDING
 
 Tasks:
 
-* [ ] Setup Circom
-* [ ] Setup SnarkJS
-* [ ] Create consent.circom
-* [ ] Define private inputs
-* [ ] Define public inputs
-* [ ] Generate witness
-* [ ] Generate proving key
-* [ ] Generate verification key
-* [ ] Generate verifier contract
-* [ ] Test proof generation
-* [ ] Test proof verification
-* [ ] Run security review
+- [ ] Setup Circom
+- [ ] Setup SnarkJS
+- [ ] Create consent.circom
+- [ ] Define private inputs
+- [ ] Define public inputs
+- [ ] Generate witness
+- [ ] Generate proving key
+- [ ] Generate verification key
+- [ ] Generate verifier contract
+- [ ] Test proof generation
+- [ ] Test proof verification
+- [ ] Run security review
 
 Deliverables:
 
-* Working ZK proof system
+- Working ZK proof system
 
 Dependencies:
 
@@ -136,17 +136,17 @@ PENDING
 
 Tasks:
 
-* [ ] Import Verifier.sol
-* [ ] Implement verifyAccess()
-* [ ] Validate proof result
-* [ ] Validate consent state
-* [ ] Reject inactive consent
-* [ ] Add integration tests
-* [ ] Run security review
+- [ ] Import Verifier.sol
+- [ ] Implement verifyAccess()
+- [ ] Validate proof result
+- [ ] Validate consent state
+- [ ] Reject inactive consent
+- [ ] Add integration tests
+- [ ] Run security review
 
 Deliverables:
 
-* End-to-end verification contract
+- End-to-end verification contract
 
 Dependencies:
 
@@ -168,21 +168,21 @@ PENDING
 
 Tasks:
 
-* [ ] Create Next.js application
-* [ ] Configure TypeScript
-* [ ] Configure TailwindCSS
-* [ ] Setup wallet connection
-* [ ] Generate local identity
-* [ ] Create dashboard
-* [ ] Create consent management page
-* [ ] Create revoke workflow
-* [ ] Integrate blockchain actions
-* [ ] Integrate proof generation
-* [ ] Run security review
+- [ ] Create Next.js application
+- [ ] Configure TypeScript
+- [ ] Configure TailwindCSS
+- [ ] Setup wallet connection
+- [ ] Generate local identity
+- [ ] Create dashboard
+- [ ] Create consent management page
+- [ ] Create revoke workflow
+- [ ] Integrate blockchain actions
+- [ ] Integrate proof generation
+- [ ] Run security review
 
 Deliverables:
 
-* Functional User Vault
+- Functional User Vault
 
 Dependencies:
 
@@ -204,18 +204,18 @@ PENDING
 
 Tasks:
 
-* [ ] Create service provider application
-* [ ] Implement login with privacy
-* [ ] Receive proof submission
-* [ ] Call verifyAccess()
-* [ ] Implement access control
-* [ ] Create verification page
-* [ ] Create protected page
-* [ ] Run security review
+- [ ] Create service provider application
+- [ ] Implement login with privacy
+- [ ] Receive proof submission
+- [ ] Call verifyAccess()
+- [ ] Implement access control
+- [ ] Create verification page
+- [ ] Create protected page
+- [ ] Run security review
 
 Deliverables:
 
-* Functional demo application
+- Functional demo application
 
 Dependencies:
 
@@ -237,16 +237,16 @@ PENDING
 
 Tasks:
 
-* [ ] Register consent
-* [ ] Verify access
-* [ ] Revoke consent
-* [ ] Attempt verification again
-* [ ] Confirm verification failure
-* [ ] Document results
+- [ ] Register consent
+- [ ] Verify access
+- [ ] Revoke consent
+- [ ] Attempt verification again
+- [ ] Confirm verification failure
+- [ ] Document results
 
 Deliverables:
 
-* Demonstrated Right to be Forgotten workflow
+- Demonstrated Right to be Forgotten workflow
 
 Dependencies:
 
@@ -268,18 +268,18 @@ PENDING
 
 Tasks:
 
-* [ ] Unit tests
-* [ ] Integration tests
-* [ ] Contract tests
-* [ ] Circuit tests
-* [ ] Frontend tests
-* [ ] End-to-end tests
-* [ ] Security review
-* [ ] Regression testing
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Contract tests
+- [ ] Circuit tests
+- [ ] Frontend tests
+- [ ] End-to-end tests
+- [ ] Security review
+- [ ] Regression testing
 
 Deliverables:
 
-* Stable system
+- Stable system
 
 Dependencies:
 
@@ -301,18 +301,18 @@ PENDING
 
 Tasks:
 
-* [ ] Update README
-* [ ] Create architecture diagrams
-* [ ] Create sequence diagrams
-* [ ] Document threat model
-* [ ] Document gas usage
-* [ ] Create setup guide
-* [ ] Create deployment guide
-* [ ] Create demo guide
+- [ ] Update README
+- [ ] Create architecture diagrams
+- [ ] Create sequence diagrams
+- [ ] Document threat model
+- [ ] Document gas usage
+- [ ] Create setup guide
+- [ ] Create deployment guide
+- [ ] Create demo guide
 
 Deliverables:
 
-* Complete documentation
+- Complete documentation
 
 Dependencies:
 
@@ -334,15 +334,15 @@ PENDING
 
 Tasks:
 
-* [ ] Record demonstration video
-* [ ] Capture screenshots
-* [ ] Create architecture visuals
-* [ ] Create portfolio summary
-* [ ] Create project presentation
+- [ ] Record demonstration video
+- [ ] Capture screenshots
+- [ ] Create architecture visuals
+- [ ] Create portfolio summary
+- [ ] Create project presentation
 
 Deliverables:
 
-* Portfolio-ready project
+- Portfolio-ready project
 
 Dependencies:
 
@@ -366,9 +366,9 @@ CLAUDE.md requires ADRs in docs/adr/ for major technical decisions.
 
 Tasks:
 
-* [x] ADR-001: Groth16 proof system
-* [x] ADR-002: Circom circuit language
-* [x] ADR-003: Polygon Amoy deployment target
+- [x] ADR-001: Groth16 proof system
+- [x] ADR-002: Circom circuit language
+- [x] ADR-003: Polygon Amoy deployment target
 
 Priority:
 
@@ -392,10 +392,10 @@ FR-08 requires demonstrable audit trail. Events are the standard Ethereum mechan
 
 Tasks:
 
-* [ ] Define ConsentRegistered event
-* [ ] Define ConsentRevoked event
-* [ ] Define AccessVerified event
-* [ ] Implement events in ConsentRegistry.sol
+- [ ] Define ConsentRegistered event
+- [ ] Define ConsentRevoked event
+- [ ] Define AccessVerified event
+- [ ] Implement events in ConsentRegistry.sol
 
 Priority:
 
@@ -419,10 +419,10 @@ Circuit implementation requires clear specification of private inputs, public in
 
 Tasks:
 
-* [ ] Define private inputs (userSecret, nullifier)
-* [ ] Define public inputs (consentId, commitment)
-* [ ] Define circuit constraints
-* [ ] Document signal routing
+- [ ] Define private inputs (userSecret, nullifier)
+- [ ] Define public inputs (consentId, commitment)
+- [ ] Define circuit constraints
+- [ ] Document signal routing
 
 Priority:
 
@@ -446,10 +446,10 @@ Verifier.sol is a deliverable in Scope.md. Must be deployed and verified on test
 
 Tasks:
 
-* [ ] Generate Verifier.sol from circuit
-* [ ] Deploy to Polygon Amoy
-* [ ] Verify on block explorer
-* [ ] Document contract address
+- [ ] Generate Verifier.sol from circuit
+- [ ] Deploy to Polygon Amoy
+- [ ] Verify on block explorer
+- [ ] Document contract address
 
 Priority:
 
@@ -473,11 +473,11 @@ Scope.md lists gas analysis as a required deliverable.
 
 Tasks:
 
-* [ ] Measure gas cost for registerConsent()
-* [ ] Measure gas cost for revokeConsent()
-* [ ] Measure gas cost for verifyAccess()
-* [ ] Document gas usage
-* [ ] Identify optimization opportunities
+- [ ] Measure gas cost for registerConsent()
+- [ ] Measure gas cost for revokeConsent()
+- [ ] Measure gas cost for verifyAccess()
+- [ ] Document gas usage
+- [ ] Identify optimization opportunities
 
 Priority:
 
@@ -501,10 +501,10 @@ Security.md Threat Actor 4 mentions proof freshness but no mechanism is specifie
 
 Tasks:
 
-* [ ] Design nonce or timestamp mechanism
-* [ ] Implement in circuit
-* [ ] Implement in smart contract validation
-* [ ] Test replay attack prevention
+- [ ] Design nonce or timestamp mechanism
+- [ ] Implement in circuit
+- [ ] Implement in smart contract validation
+- [ ] Test replay attack prevention
 
 Priority:
 
@@ -528,10 +528,10 @@ Nullifier scope is critical for preventing cross-service linking.
 
 Tasks:
 
-* [x] Define per-consent scope
-* [x] Define derivation formula: poseidon(userSecret, consentId, serviceProviderId)
-* [ ] Implement in circuit
-* [ ] Test uniqueness across services
+- [x] Define per-consent scope
+- [x] Define derivation formula: poseidon(userSecret, consentId, serviceProviderId)
+- [ ] Implement in circuit
+- [ ] Test uniqueness across services
 
 Priority:
 
@@ -547,16 +547,16 @@ Phase 2
 
 The project is complete when:
 
-* [ ] Consent registration works
-* [ ] Proof generation works
-* [ ] Proof verification works
-* [ ] Revocation works
-* [ ] Revocation is irreversible
-* [ ] Service provider access control works
-* [ ] Security review completed
-* [ ] Documentation completed
-* [ ] Demo video completed
-* [ ] User approval obtained
+- [ ] Consent registration works
+- [ ] Proof generation works
+- [ ] Proof verification works
+- [ ] Revocation works
+- [ ] Revocation is irreversible
+- [ ] Service provider access control works
+- [ ] Security review completed
+- [ ] Documentation completed
+- [ ] Demo video completed
+- [ ] User approval obtained
 
 Project Status:
 

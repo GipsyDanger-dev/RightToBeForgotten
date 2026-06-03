@@ -30,9 +30,9 @@ Modern digital services collect and process large amounts of personal data.
 
 Users often have limited control over:
 
-* Who can access their data
-* How long access remains valid
-* Whether permissions can be revoked
+- Who can access their data
+- How long access remains valid
+- Whether permissions can be revoked
 
 In traditional systems, data deletion depends on centralized service providers.
 
@@ -40,9 +40,9 @@ In blockchain systems, deletion is often impossible because records are immutabl
 
 This creates tension between:
 
-* Privacy rights
-* Regulatory compliance
-* Blockchain permanence
+- Privacy rights
+- Regulatory compliance
+- Blockchain permanence
 
 ---
 
@@ -76,9 +76,9 @@ Privacy-conscious individuals.
 
 Characteristics:
 
-* Concerned about personal data usage
-* Interested in decentralized technologies
-* Want stronger control over consent
+- Concerned about personal data usage
+- Interested in decentralized technologies
+- Want stronger control over consent
 
 ---
 
@@ -88,9 +88,9 @@ Application developers.
 
 Characteristics:
 
-* Building privacy-preserving applications
-* Interested in GDPR-inspired architectures
-* Exploring decentralized identity systems
+- Building privacy-preserving applications
+- Interested in GDPR-inspired architectures
+- Exploring decentralized identity systems
 
 ---
 
@@ -100,9 +100,9 @@ Researchers and students.
 
 Characteristics:
 
-* Studying blockchain privacy
-* Studying Zero-Knowledge Proofs
-* Evaluating compliance-oriented architectures
+- Studying blockchain privacy
+- Studying Zero-Knowledge Proofs
+- Evaluating compliance-oriented architectures
 
 ---
 
@@ -380,26 +380,26 @@ Consent status changes shall be publicly auditable.
 
 ## Technical Metrics
 
-* Successful proof generation
-* Successful proof verification
-* Successful consent revocation
-* Successful revocation enforcement
+- Successful proof generation
+- Successful proof verification
+- Successful consent revocation
+- Successful revocation enforcement
 
 ---
 
 ## Demonstration Metrics
 
-* End-to-end workflow completed
-* Live demo completed
-* Documentation completed
+- End-to-end workflow completed
+- Live demo completed
+- Documentation completed
 
 ---
 
 ## Educational Metrics
 
-* Architecture clearly documented
-* Privacy model clearly documented
-* Threat model clearly documented
+- Architecture clearly documented
+- Privacy model clearly documented
+- Threat model clearly documented
 
 ---
 
@@ -422,12 +422,12 @@ Anything beyond these capabilities is considered an enhancement.
 
 Potential future extensions include:
 
-* Multi-service consent management
-* Decentralized storage integration
-* Advanced revocation mechanisms
-* Cross-chain compatibility
-* Wallet-native identity management
-* Privacy-preserving reputation systems
+- Multi-service consent management
+- Decentralized storage integration
+- Advanced revocation mechanisms
+- Cross-chain compatibility
+- Wallet-native identity management
+- Privacy-preserving reputation systems
 
 These features are outside the current project scope.
 

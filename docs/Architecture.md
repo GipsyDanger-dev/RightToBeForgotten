@@ -10,10 +10,10 @@ System Architecture Specification
 
 RightToBeForgotten implements the Right to be Forgotten using:
 
-* Zero-Knowledge Proofs
-* Cryptographic Erasure
-* Smart Contracts
-* Decentralized Consent Management
+- Zero-Knowledge Proofs
+- Cryptographic Erasure
+- Smart Contracts
+- Decentralized Consent Management
 
 The architecture separates:
 
@@ -29,32 +29,32 @@ This separation minimizes trust assumptions and improves privacy.
 # High Level Architecture
 
 ┌──────────────────────┐
-│ User Vault           │
-│ Next.js             │
+│ User Vault │
+│ Next.js │
 └──────────┬───────────┘
 │
 │ Generate Proof
 │
 ▼
 ┌──────────────────────┐
-│ ZKP Layer            │
-│ Circom + SnarkJS     │
+│ ZKP Layer │
+│ Circom + SnarkJS │
 └──────────┬───────────┘
 │
 │ Submit Proof
 │
 ▼
 ┌──────────────────────┐
-│ Consent Registry     │
-│ Solidity Contract    │
+│ Consent Registry │
+│ Solidity Contract │
 └──────────┬───────────┘
 │
 │ Verify Access
 │
 ▼
 ┌──────────────────────┐
-│ Service Provider     │
-│ Demo Application     │
+│ Service Provider │
+│ Demo Application │
 └──────────────────────┘
 
 ---
@@ -71,19 +71,19 @@ Acts as the user's control center.
 
 Responsibilities:
 
-* Generate identity
-* Manage consent
-* Generate proofs
-* Revoke consent
-* Connect wallet
+- Generate identity
+- Manage consent
+- Generate proofs
+- Revoke consent
+- Connect wallet
 
 Technology:
 
-* Next.js
-* React
-* TypeScript
-* Ethers.js
-* Wagmi
+- Next.js
+- React
+- TypeScript
+- Ethers.js
+- Wagmi
 
 ---
 
@@ -97,22 +97,22 @@ Generate privacy-preserving proofs.
 
 Responsibilities:
 
-* Identity verification
-* Proof generation
-* Witness generation
-* Proof export
+- Identity verification
+- Proof generation
+- Witness generation
+- Proof export
 
 Technology:
 
-* Circom
-* SnarkJS
-* Groth16
+- Circom
+- SnarkJS
+- Groth16
 
 Outputs:
 
-* proof.json
-* publicSignals.json
-* verifier.sol
+- proof.json
+- publicSignals.json
+- verifier.sol
 
 ---
 
@@ -126,15 +126,15 @@ Store consent status.
 
 Responsibilities:
 
-* Register consent
-* Revoke consent
-* Validate consent
-* Verify proof
+- Register consent
+- Revoke consent
+- Validate consent
+- Verify proof
 
 Technology:
 
-* Solidity
-* Hardhat
+- Solidity
+- Hardhat
 
 Deployment:
 
@@ -152,15 +152,15 @@ Simulate third-party application access.
 
 Responsibilities:
 
-* Request proof
-* Submit proof
-* Verify authorization
-* Grant access
+- Request proof
+- Submit proof
+- Verify authorization
+- Grant access
 
 Technology:
 
-* Next.js
-* TypeScript
+- Next.js
+- TypeScript
 
 Example:
 
@@ -172,8 +172,8 @@ HealthApp
 
 Every user owns:
 
-* secret
-* nullifier
+- secret
+- nullifier
 
 Generated locally.
 
@@ -197,10 +197,10 @@ poseidon(userSecret, serviceProviderId)
 
 Properties:
 
-* Unique
-* Deterministic
-* Verifiable
-* Privacy-preserving
+- Unique
+- Deterministic
+- Verifiable
+- Privacy-preserving
 
 ---
 
@@ -316,8 +316,8 @@ Step 5
 
 Smart Contract validates:
 
-* proof validity
-* consent status
+- proof validity
+- consent status
 
 ---
 
@@ -371,9 +371,9 @@ Destroy authorization validity.
 
 Result:
 
-* User cannot be verified.
-* Consent becomes unusable.
-* Access becomes impossible.
+- User cannot be verified.
+- Consent becomes unusable.
+- Access becomes impossible.
 
 ---
 
@@ -383,9 +383,9 @@ Result:
 
 Responsibilities:
 
-* registerConsent()
-* revokeConsent()
-* verifyAccess()
+- registerConsent()
+- revokeConsent()
+- verifyAccess()
 
 Storage:
 
@@ -415,8 +415,8 @@ Generated from Circom.
 
 Responsibilities:
 
-* Verify zk-proof.
-* Return valid/invalid result.
+- Verify zk-proof.
+- Return valid/invalid result.
 
 ---
 
@@ -538,10 +538,10 @@ Not included in project scope.
 
 The architecture is successful when:
 
-* Users can generate identities.
-* Users can register consent.
-* Users can generate proofs.
-* Service providers can verify proofs.
-* Revocation permanently disables verification.
-* No personally identifiable information is stored on-chain.
-* End-to-end workflow operates correctly.
+- Users can generate identities.
+- Users can register consent.
+- Users can generate proofs.
+- Service providers can verify proofs.
+- Revocation permanently disables verification.
+- No personally identifiable information is stored on-chain.
+- End-to-end workflow operates correctly.

@@ -22,10 +22,10 @@ Enable users to maintain ownership and control of their digital consent while pr
 
 The system must demonstrate that:
 
-* Blockchain immutability and privacy rights can coexist.
-* User consent can be revoked permanently.
-* Identity verification can occur without identity disclosure.
-* Access rights can be cryptographically destroyed.
+- Blockchain immutability and privacy rights can coexist.
+- User consent can be revoked permanently.
+- Identity verification can occur without identity disclosure.
+- Access rights can be cryptographically destroyed.
 
 ---
 
@@ -37,8 +37,8 @@ Provide privacy-preserving identity verification through Zero-Knowledge Proofs.
 
 Success Criteria:
 
-* No personally identifiable information is revealed.
-* Verification occurs without exposing secrets.
+- No personally identifiable information is revealed.
+- Verification occurs without exposing secrets.
 
 ---
 
@@ -48,9 +48,9 @@ Implement decentralized consent management.
 
 Success Criteria:
 
-* Consent can be registered.
-* Consent status is publicly verifiable.
-* Consent ownership remains private.
+- Consent can be registered.
+- Consent status is publicly verifiable.
+- Consent ownership remains private.
 
 ---
 
@@ -60,9 +60,9 @@ Implement cryptographic erasure.
 
 Success Criteria:
 
-* Users can permanently revoke consent.
-* Revoked consent cannot be restored.
-* Future verification attempts fail permanently.
+- Users can permanently revoke consent.
+- Revoked consent cannot be restored.
+- Future verification attempts fail permanently.
 
 ---
 
@@ -72,11 +72,11 @@ Demonstrate end-to-end workflow.
 
 Success Criteria:
 
-* User can register consent.
-* User can generate proof.
-* Service provider can verify proof.
-* User can revoke consent.
-* Verification becomes impossible after revocation.
+- User can register consent.
+- User can generate proof.
+- Service provider can verify proof.
+- User can revoke consent.
+- Verification becomes impossible after revocation.
 
 ---
 
@@ -88,16 +88,16 @@ The following components are included in the project.
 
 Features:
 
-* Identity commitment generation
-* Proof generation
-* Proof verification
-* Privacy-preserving authentication
+- Identity commitment generation
+- Proof generation
+- Proof verification
+- Privacy-preserving authentication
 
 Confirmed Technology:
 
-* Circom
-* SnarkJS
-* Groth16
+- Circom
+- SnarkJS
+- Groth16
 
 ---
 
@@ -105,16 +105,16 @@ Confirmed Technology:
 
 Features:
 
-* Consent registration
-* Consent revocation
-* Consent validation
-* Proof verification integration
+- Consent registration
+- Consent revocation
+- Consent validation
+- Proof verification integration
 
 Confirmed Technology:
 
-* Solidity
-* Hardhat
-* Polygon Amoy Testnet
+- Solidity
+- Hardhat
+- Polygon Amoy Testnet
 
 ---
 
@@ -122,16 +122,16 @@ Confirmed Technology:
 
 Features:
 
-* Identity generation
-* Consent management
-* Proof generation
-* Consent revocation
+- Identity generation
+- Consent management
+- Proof generation
+- Consent revocation
 
 Confirmed Technology:
 
-* Next.js
-* TypeScript
-* Ethers.js
+- Next.js
+- TypeScript
+- Ethers.js
 
 ---
 
@@ -139,15 +139,15 @@ Confirmed Technology:
 
 Features:
 
-* Privacy login flow
-* Proof submission
-* Access verification
-* Access denial after revocation
+- Privacy login flow
+- Proof submission
+- Access verification
+- Access denial after revocation
 
 Confirmed Technology:
 
-* Next.js
-* TypeScript
+- Next.js
+- TypeScript
 
 ---
 
@@ -155,13 +155,13 @@ Confirmed Technology:
 
 Required Deliverables:
 
-* Architecture diagrams
-* Sequence diagrams
-* Security assumptions
-* Privacy model explanation
-* GDPR mapping
-* Gas analysis
-* Demonstration guide
+- Architecture diagrams
+- Sequence diagrams
+- Security assumptions
+- Privacy model explanation
+- GDPR mapping
+- Gas analysis
+- Demonstration guide
 
 ---
 
@@ -173,10 +173,10 @@ The following features must not be implemented unless explicitly approved by the
 
 Excluded:
 
-* Kubernetes
-* Auto-scaling infrastructure
-* Enterprise deployment architecture
-* Multi-region deployment
+- Kubernetes
+- Auto-scaling infrastructure
+- Enterprise deployment architecture
+- Multi-region deployment
 
 ---
 
@@ -184,10 +184,10 @@ Excluded:
 
 Excluded:
 
-* Government identity integration
-* National ID verification
-* Passport verification
-* KYC providers
+- Government identity integration
+- National ID verification
+- Passport verification
+- KYC providers
 
 ---
 
@@ -195,10 +195,10 @@ Excluded:
 
 Excluded:
 
-* Organization management
-* Team management
-* RBAC systems
-* Billing systems
+- Organization management
+- Team management
+- RBAC systems
+- Billing systems
 
 ---
 
@@ -206,10 +206,10 @@ Excluded:
 
 Excluded:
 
-* Cross-chain interoperability
-* Multi-chain deployment
-* Layer 2 bridging
-* DAO governance
+- Cross-chain interoperability
+- Multi-chain deployment
+- Layer 2 bridging
+- DAO governance
 
 ---
 
@@ -217,9 +217,9 @@ Excluded:
 
 Excluded:
 
-* Social recovery
-* Multi-signature recovery
-* Hardware wallet recovery
+- Social recovery
+- Multi-signature recovery
+- Hardware wallet recovery
 
 ---
 
@@ -227,9 +227,9 @@ Excluded:
 
 Excluded:
 
-* AI assistants
-* LLM integrations
-* AI-generated identity analysis
+- AI assistants
+- LLM integrations
+- AI-generated identity analysis
 
 ---
 
@@ -321,31 +321,31 @@ The system shall provide a demonstrable audit trail of consent state changes.
 
 ## Security
 
-* No plaintext secrets stored on-chain.
-* No private keys transmitted externally.
-* No personally identifiable information stored on-chain.
+- No plaintext secrets stored on-chain.
+- No private keys transmitted externally.
+- No personally identifiable information stored on-chain.
 
 ---
 
 ## Performance
 
-* Proof verification should complete within acceptable blockchain transaction limits.
-* Frontend interactions should remain responsive.
+- Proof verification should complete within acceptable blockchain transaction limits.
+- Frontend interactions should remain responsive.
 
 ---
 
 ## Maintainability
 
-* Modular architecture.
-* Clear separation of concerns.
-* Comprehensive documentation.
+- Modular architecture.
+- Clear separation of concerns.
+- Comprehensive documentation.
 
 ---
 
 ## Auditability
 
-* Consent status changes must be publicly verifiable.
-* Revocation actions must be traceable on-chain.
+- Consent status changes must be publicly verifiable.
+- Revocation actions must be traceable on-chain.
 
 ---
 
@@ -353,35 +353,35 @@ The system shall provide a demonstrable audit trail of consent state changes.
 
 ## Smart Contracts
 
-* ConsentRegistry.sol
-* Verifier.sol
+- ConsentRegistry.sol
+- Verifier.sol
 
 ---
 
 ## ZKP Artifacts
 
-* Circuit files
-* Proving key
-* Verification key
+- Circuit files
+- Proving key
+- Verification key
 
 ---
 
 ## Frontend Applications
 
-* User Vault
-* Service Provider Demo
+- User Vault
+- Service Provider Demo
 
 ---
 
 ## Documentation
 
-* Scope.md
-* Architecture.md
-* PRD.md
-* Tasks.md
-* Security.md
-* Agent-Rules.md
-* README.md
+- Scope.md
+- Architecture.md
+- PRD.md
+- Tasks.md
+- Security.md
+- Agent-Rules.md
+- README.md
 
 ---
 

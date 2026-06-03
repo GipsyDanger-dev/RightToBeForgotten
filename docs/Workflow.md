@@ -27,13 +27,13 @@ Agent Tasks:
 
 Required Documents:
 
-* CLAUDE.md
-* docs/Scope.md
-* docs/Security.md
-* docs/Architecture.md
-* docs/Task.md
-* docs/PRD.md
-* docs/Workflow.md
+- CLAUDE.md
+- docs/Scope.md
+- docs/Security.md
+- docs/Architecture.md
+- docs/Task.md
+- docs/PRD.md
+- docs/Workflow.md
 
 Deliverable:
 
@@ -41,9 +41,9 @@ Review Report
 
 Restrictions:
 
-* No code generation
-* No file modifications
-* No commits
+- No code generation
+- No file modifications
+- No commits
 
 Exit Criteria:
 
@@ -72,8 +72,8 @@ Implementation Plan
 
 Restrictions:
 
-* No coding
-* No commits
+- No coding
+- No commits
 
 Exit Criteria:
 
@@ -104,9 +104,9 @@ Restrictions:
 
 Must follow:
 
-* CLAUDE.md
-* Security.md
-* Architecture.md
+- CLAUDE.md
+- Security.md
+- Architecture.md
 
 Exit Criteria:
 
@@ -124,10 +124,10 @@ Validate security assumptions.
 
 Required For:
 
-* Smart Contracts
-* ZKP Circuits
-* Authentication
-* Wallet Integrations
+- Smart Contracts
+- ZKP Circuits
+- Authentication
+- Wallet Integrations
 
 Review Format:
 
@@ -159,11 +159,11 @@ Verify correctness.
 
 Required Tests:
 
-* Unit Tests
-* Integration Tests
-* Contract Tests
-* Circuit Tests
-* End-to-End Tests
+- Unit Tests
+- Integration Tests
+- Contract Tests
+- Circuit Tests
+- End-to-End Tests
 
 Exit Criteria:
 
@@ -183,10 +183,10 @@ Agent Tasks:
 
 Update affected:
 
-* tasks.md
-* architecture.md
-* security.md
-* README.md
+- tasks.md
+- architecture.md
+- security.md
+- README.md
 
 Restrictions:
 
@@ -204,10 +204,10 @@ Create traceable history.
 
 Rules:
 
-* Commit after feature completion.
-* Commit before major refactor.
-* Commit before risky changes.
-* Maximum 3 modified files without commit.
+- Commit after feature completion.
+- Commit before major refactor.
+- Commit before risky changes.
+- Maximum 3 modified files without commit.
 
 Commit Format:
 
@@ -237,11 +237,11 @@ Handle architecture-impacting changes.
 
 Trigger Conditions:
 
-* Cryptography changes
-* Smart contract redesign
-* Security model changes
-* Architecture changes
-* Blockchain strategy changes
+- Cryptography changes
+- Smart contract redesign
+- Security model changes
+- Architecture changes
+- Blockchain strategy changes
 
 Required Format:
 
@@ -291,24 +291,24 @@ Prepare final deliverables.
 
 Required Deliverables:
 
-* Smart Contracts
-* ZKP Circuits
-* Frontend Applications
-* Documentation
-* Demo Video
-* Deployment Guide
+- Smart Contracts
+- ZKP Circuits
+- Frontend Applications
+- Documentation
+- Demo Video
+- Deployment Guide
 
 Completion Checklist:
 
-* Consent registration works
-* Proof generation works
-* Proof verification works
-* Consent revocation works
-* Revocation is irreversible
-* Security review completed
-* Documentation completed
-* Tests completed
-* User approval obtained
+- Consent registration works
+- Proof generation works
+- Proof verification works
+- Consent revocation works
+- Revocation is irreversible
+- Security review completed
+- Documentation completed
+- Tests completed
+- User approval obtained
 
 Project Status:
 
