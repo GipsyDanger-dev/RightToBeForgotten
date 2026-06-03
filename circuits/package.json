@@ -1,0 +1,18 @@
+{
+  "name": "@right-to-be-forgotten/circuits",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "circom src/consent.circom --r1cs --wasm --sym -o build",
+    "setup": "snarkjs groth16 setup build/consent.r1cs build/pot12_final.ptau build/consent_0000.zkey",
+    "contribute": "snarkjs zkey contribute build/consent_0000.zkey build/consent_final.zkey --name='RightToBeForgotten' -v",
+    "export-vk": "snarkjs zkey export verificationkey build/consent_final.zkey build/verification_key.json",
+    "gen-verifier": "snarkjs zkey export solidityverifier build/consent_final.zkey ../contracts/src/Verifier.sol",
+    "gen-proof": "snarkjs groth16 prove build/consent_final.zkey build/witness.wtns build/proof.json build/public.json",
+    "verify": "snarkjs groth16 verify build/verification_key.json build/public.json build/proof.json"
+  },
+  "devDependencies": {
+    "snarkjs": "^0.7.0",
+    "circomlib": "^2.0.0"
+  }
+}
