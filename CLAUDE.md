@@ -253,10 +253,10 @@ Before implementing major functionality:
 
 Read:
 
-1. docs/scope.md
-2. docs/architecture.md
-3. docs/prd.md
-4. docs/security.md
+1. docs/Scope.md
+2. docs/Architecture.md
+3. docs/PRD.md
+4. docs/Security.md
 
 Implementation must follow documentation.
 

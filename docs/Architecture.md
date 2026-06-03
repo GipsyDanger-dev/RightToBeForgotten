@@ -480,25 +480,46 @@ apps/
 
 contracts/
 │
-├── ConsentRegistry.sol
+├── src/
+│ ├── ConsentRegistry.sol
+│ └── Verifier.sol
 │
-└── Verifier.sol
+├── test/
+│
+├── deploy/
+│
+├── hardhat.config.ts
+│
+└── package.json
 
 circuits/
 │
-├── consent.circom
+├── src/
+│ └── consent.circom
 │
 ├── build/
 │
-└── proofs/
+├── proofs/
+│
+└── package.json
 
 docs/
 │
-├── scope.md
-├── architecture.md
-├── security.md
-├── prd.md
-├── tasks.md
+├── Scope.md
+├── Architecture.md
+├── Security.md
+├── PRD.md
+├── Task.md
+├── Workflow.md
+│
+└── adr/
+├── ADR-001-groth16.md
+├── ADR-002-circom.md
+└── ADR-003-polygon-amoy.md
+
+scripts/
+│
+└── README.md
 
 ---
 

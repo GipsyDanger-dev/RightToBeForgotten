@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Husky internals
+.husky/_/
+
 # Environment
 .env
 .env.local
