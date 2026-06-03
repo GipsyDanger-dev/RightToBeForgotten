@@ -110,12 +110,14 @@ Tasks:
 - [ ] Setup Circom
 - [ ] Setup SnarkJS
 - [ ] Create consent.circom
-- [ ] Define private inputs
-- [ ] Define public inputs
+- [ ] Define private inputs (userSecret, spId, consentVersion)
+- [ ] Define public inputs (consentId, nullifier)
+- [ ] Implement consentId constraint: consentId === poseidon(userSecret, spId, consentVersion)
+- [ ] Implement nullifier constraint: nullifier === poseidon(userSecret, consentId, spId)
 - [ ] Generate witness
-- [ ] Generate proving key
+- [ ] Generate proving key (trusted setup)
 - [ ] Generate verification key
-- [ ] Generate verifier contract
+- [ ] Generate Verifier.sol
 - [ ] Test proof generation
 - [ ] Test proof verification
 - [ ] Run security review
@@ -123,6 +125,7 @@ Tasks:
 Deliverables:
 
 - Working ZK proof system
+- Verifier.sol generated
 
 Dependencies:
 
@@ -431,14 +434,19 @@ Circuit implementation requires clear specification of private inputs, public in
 
 Tasks:
 
-- [ ] Define private inputs (userSecret, nullifier)
-- [ ] Define public inputs (consentId, commitment)
-- [ ] Define circuit constraints
+- [x] Define private inputs (userSecret, spId, consentVersion)
+- [x] Define public inputs (consentId, nullifier)
+- [x] Define circuit constraints
+- [ ] Implement in circuit (Phase 2)
 - [ ] Document signal routing
 
 Priority:
 
 CRITICAL
+
+Status:
+
+SPECIFICATION COMPLETED (implementation pending in Phase 2)
 
 Dependencies:
 

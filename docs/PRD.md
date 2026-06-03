@@ -407,12 +407,14 @@ Consent status changes shall be publicly auditable.
 
 The minimum viable product includes:
 
-1. User identity generation
-2. Consent registration
-3. ZKP proof generation
+1. User identity generation (userSecret, consentVersion)
+2. Consent registration (consentId derived from poseidon)
+3. ZKP proof generation (privacy-preserving)
 4. Smart contract verification
 5. Consent revocation
 6. Verification failure after revocation
+
+Re-consent after revocation is supported through consentVersion. Each new consent generation increments the version, producing a new consentId. Previous revoked consentIds remain permanently revoked.
 
 Anything beyond these capabilities is considered an enhancement.
 

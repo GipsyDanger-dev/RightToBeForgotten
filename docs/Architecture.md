@@ -172,8 +172,8 @@ HealthApp
 
 Every user owns:
 
-- secret
-- nullifier
+- userSecret
+- consentVersion
 
 Generated locally.
 
@@ -182,6 +182,8 @@ Stored locally.
 Never transmitted directly.
 
 Never stored on-chain.
+
+The nullifier is derived per-consent: poseidon(userSecret, consentId, serviceProviderId).
 
 ---
 
@@ -193,7 +195,9 @@ ConsentID
 
 Derived from:
 
-poseidon(userSecret, serviceProviderId)
+poseidon(userSecret, serviceProviderId, consentVersion)
+
+Where consentVersion is a monotonically increasing integer that enables re-consent after revocation while preserving revocation finality for each generation.
 
 Properties:
 
@@ -201,6 +205,7 @@ Properties:
 - Deterministic
 - Verifiable
 - Privacy-preserving
+- Re-consent capable (via consentVersion)
 
 ---
 

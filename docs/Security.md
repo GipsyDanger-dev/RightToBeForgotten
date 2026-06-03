@@ -112,6 +112,18 @@ Must not reveal user identity.
 
 ---
 
+## Consent Version
+
+Purpose:
+
+Enables re-consent after revocation. Each new consent generation uses a higher version number, producing a different consentId even for the same userSecret and serviceProviderId.
+
+Security Requirement:
+
+Must be stored locally. Must not be exposed on-chain.
+
+---
+
 ## Proof Generation Keys
 
 Purpose:
@@ -277,12 +289,16 @@ Reuse old proof submissions.
 
 Mitigation:
 
-- Nullifier design
-- Proof freshness mechanisms
+- Nullifier design (per-consent scope)
+- Proof freshness mechanisms (nonce/timestamp — to be implemented in Phase 3)
+
+Known Gap:
+
+On-chain nullifier tracking is not yet implemented in ConsentRegistry.sol. This will be addressed in Phase 3 when Verifier.sol is integrated. Currently, the nullifier is computed in the circuit but not stored or checked on-chain.
 
 Expected Result:
 
-Replay attack rejected.
+Replay attack rejected (after Phase 3 integration).
 
 ---
 
