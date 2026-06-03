@@ -1,0 +1,19 @@
+commit_msg=$(cat "$1")
+
+pattern="^(feat|fix|refactor|docs|security|test|erase|chore|ci|perf|style|build|revert)(\(.+\))?: .{1,}"
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+  echo "ERROR: Commit message does not follow Conventional Commits format."
+  echo ""
+  echo "Expected format: <type>: <description>"
+  echo ""
+  echo "Allowed types: feat, fix, refactor, docs, security, test, erase, chore, ci, perf, style, build, revert"
+  echo ""
+  echo "Examples:"
+  echo "  feat: add consent registration workflow"
+  echo "  fix: resolve proof verification mismatch"
+  echo "  security: strengthen consent validation"
+  echo "  erase: implement permanent consent revocation"
+  echo ""
+  exit 1
+fi

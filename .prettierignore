@@ -1,0 +1,10 @@
+node_modules/
+build/
+dist/
+circuits/build/
+circuits/proofs/
+artifacts/
+cache/
+coverage/
+typechain-types/
+*.sol

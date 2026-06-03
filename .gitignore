@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# ZKP artifacts
+circuits/build/
+circuits/proofs/
+
+# Hardhat
+artifacts/
+cache/
+typechain-types/
+
+# Testing
+coverage/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

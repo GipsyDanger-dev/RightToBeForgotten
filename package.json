@@ -1,0 +1,28 @@
+{
+  "name": "right-to-be-forgotten",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Decentralized privacy-preserving consent management using ZKP and Cryptographic Erasure",
+  "workspaces": [
+    "apps/*",
+    "contracts",
+    "circuits"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules apps/*/node_modules contracts/node_modules circuits/node_modules"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  }
+}
