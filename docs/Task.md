@@ -157,21 +157,29 @@ Connect verifier contract to consent registry.
 
 Status:
 
-PENDING
+COMPLETED
 
 Tasks:
 
-- [ ] Import Verifier.sol
-- [ ] Implement verifyAccess()
-- [ ] Validate proof result
-- [ ] Validate consent state
-- [ ] Reject inactive consent
-- [ ] Add integration tests
-- [ ] Run security review
+- [x] Import Verifier.sol (Groth16Verifier)
+- [x] Implement verifyAccess() with proof params and nullifier tracking
+- [x] Validate proof result via Groth16Verifier
+- [x] Validate consent state (ACTIVE check before proof verification)
+- [x] Reject inactive consent (early return false)
+- [x] Add integration tests (14 tests in Integration.test.ts)
+- [x] Run security review (AV-01..AV-04, SCR-08/SCR-09 added)
 
 Deliverables:
 
 - End-to-end verification contract
+- 43/43 tests passing
+- Replay attack prevention via nullifier tracking
+
+Gas Report (Phase 3):
+
+- verifyAccess() with proof: 252,009 gas
+- verifyAccess() revoked consent (early exit): 33,870 gas
+- isConsentActive(): 24,090 gas (view estimate)
 
 Dependencies:
 
