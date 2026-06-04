@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { ConsentRegistry } from '../typechain-types';
+import { ConsentRegistry, Groth16Verifier } from '../typechain-types';
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('ConsentRegistry', function () {
   let registry: ConsentRegistry;
+  let verifier: Groth16Verifier;
   let user1: HardhatEthersSigner;
   let user2: HardhatEthersSigner;
 
@@ -14,8 +15,12 @@ describe('ConsentRegistry', function () {
 
   beforeEach(async function () {
     [, user1, user2] = await ethers.getSigners();
-    const factory = await ethers.getContractFactory('ConsentRegistry');
-    registry = await factory.deploy();
+
+    const verifierFactory = await ethers.getContractFactory('Groth16Verifier');
+    verifier = await verifierFactory.deploy();
+
+    const registryFactory = await ethers.getContractFactory('ConsentRegistry');
+    registry = await registryFactory.deploy(await verifier.getAddress());
   });
 
   describe('registerConsent', function () {
@@ -110,42 +115,22 @@ describe('ConsentRegistry', function () {
     });
   });
 
-  describe('verifyAccess', function () {
+  describe('isConsentActive', function () {
     it('should return true for active consent', async function () {
       await registry.connect(user1).registerConsent(CONSENT_ID_1);
 
-      const result = await registry.verifyAccess.staticCall(CONSENT_ID_1);
-      expect(result).to.equal(true);
+      expect(await registry.isConsentActive(CONSENT_ID_1)).to.equal(true);
     });
 
     it('should return false for non-existent consent', async function () {
-      const result = await registry.verifyAccess.staticCall(CONSENT_ID_1);
-      expect(result).to.equal(false);
+      expect(await registry.isConsentActive(CONSENT_ID_1)).to.equal(false);
     });
 
     it('should return false for revoked consent', async function () {
       await registry.connect(user1).registerConsent(CONSENT_ID_1);
       await registry.connect(user1).revokeConsent(CONSENT_ID_1);
 
-      const result = await registry.verifyAccess.staticCall(CONSENT_ID_1);
-      expect(result).to.equal(false);
-    });
-
-    it('should emit AccessVerified event with true for active consent', async function () {
-      await registry.connect(user1).registerConsent(CONSENT_ID_1);
-
-      await expect(registry.verifyAccess(CONSENT_ID_1))
-        .to.emit(registry, 'AccessVerified')
-        .withArgs(CONSENT_ID_1, true);
-    });
-
-    it('should emit AccessVerified event with false for revoked consent', async function () {
-      await registry.connect(user1).registerConsent(CONSENT_ID_1);
-      await registry.connect(user1).revokeConsent(CONSENT_ID_1);
-
-      await expect(registry.verifyAccess(CONSENT_ID_1))
-        .to.emit(registry, 'AccessVerified')
-        .withArgs(CONSENT_ID_1, false);
+      expect(await registry.isConsentActive(CONSENT_ID_1)).to.equal(false);
     });
   });
 

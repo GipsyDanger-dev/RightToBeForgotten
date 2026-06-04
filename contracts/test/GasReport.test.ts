@@ -1,15 +1,19 @@
 /* eslint-disable no-console */
 import { ethers } from 'hardhat';
-import { ConsentRegistry } from '../typechain-types';
+import { ConsentRegistry, Groth16Verifier } from '../typechain-types';
 
 describe('Gas Report', function () {
   let registry: ConsentRegistry;
+  let verifier: Groth16Verifier;
 
   const CONSENT_ID = ethers.keccak256(ethers.toUtf8Bytes('gas-test-consent'));
 
   beforeEach(async function () {
-    const factory = await ethers.getContractFactory('ConsentRegistry');
-    registry = await factory.deploy();
+    const verifierFactory = await ethers.getContractFactory('Groth16Verifier');
+    verifier = await verifierFactory.deploy();
+
+    const registryFactory = await ethers.getContractFactory('ConsentRegistry');
+    registry = await registryFactory.deploy(await verifier.getAddress());
   });
 
   it('should measure gas for registerConsent()', async function () {
@@ -25,11 +29,10 @@ describe('Gas Report', function () {
     console.log(`    revokeConsent() gas used: ${receipt?.gasUsed}`);
   });
 
-  it('should measure gas for verifyAccess()', async function () {
+  it('should measure gas for isConsentActive()', async function () {
     await registry.registerConsent(CONSENT_ID);
-    const tx = await registry.verifyAccess(CONSENT_ID);
-    const receipt = await tx.wait();
-    console.log(`    verifyAccess() gas used: ${receipt?.gasUsed}`);
+    const gas = await registry.isConsentActive.estimateGas(CONSENT_ID);
+    console.log(`    isConsentActive() gas estimated: ${gas}`);
   });
 
   it('should measure gas for getConsentState()', async function () {
