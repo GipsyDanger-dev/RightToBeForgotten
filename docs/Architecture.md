@@ -301,7 +301,7 @@ Service Provider requests verification.
 
 Step 2
 
-User Vault generates proof.
+User Vault generates proof locally (consentId, nullifier as public signals).
 
 ---
 
@@ -313,7 +313,7 @@ Proof sent to Service Provider.
 
 Step 4
 
-Service Provider calls verifyAccess().
+Service Provider calls verifyAccess(consentId, pA, pB, pC, nullifier).
 
 ---
 
@@ -321,14 +321,21 @@ Step 5
 
 Smart Contract validates:
 
-- proof validity
-- consent status
+- consent status is ACTIVE
+- nullifier has not been used before
+- ZK proof is valid (via Groth16Verifier)
 
 ---
 
 Step 6
 
-Access granted.
+Smart Contract marks nullifier as used.
+
+---
+
+Step 7
+
+Access granted. Event emitted.
 
 ---
 
@@ -390,11 +397,14 @@ Responsibilities:
 
 - registerConsent()
 - revokeConsent()
-- verifyAccess()
+- verifyAccess() with ZK proof verification
+- Track used nullifiers to prevent replay attacks
 
 Storage:
 
 mapping(bytes32 => uint8) Consent State
+
+mapping(bytes32 => bool) Used Nullifiers
 
 Enum:
 
@@ -414,14 +424,42 @@ event AccessVerified(bytes32 indexed consentId, bool result)
 
 ---
 
-## Verifier.sol
+## Verifier.sol (Groth16Verifier)
 
-Generated from Circom.
+Generated from Circom via snarkJS.
 
 Responsibilities:
 
-- Verify zk-proof.
+- Verify Groth16 ZK proof.
 - Return valid/invalid result.
+- Pure view function (no state changes).
+
+---
+
+# Phase 3 Integration Architecture
+
+ConsentRegistry acts as the orchestrator. It accepts proof submissions, validates consent state, calls Groth16Verifier for proof verification, and tracks nullifiers.
+
+Flow:
+
+1. Service Provider calls verifyAccess(consentId, pA, pB, pC, nullifier)
+2. ConsentRegistry checks consent state is ACTIVE
+3. ConsentRegistry checks nullifier has not been used
+4. ConsentRegistry calls Groth16Verifier.verifyProof(pA, pB, pC, [consentId, nullifier])
+5. If proof valid, ConsentRegistry marks nullifier as used
+6. ConsentRegistry emits AccessVerified event
+7. Returns true/false
+
+Security properties:
+
+- Proof replay prevented by nullifier tracking
+- Cross-service linking prevented by per-consent nullifier scope
+- Revocation enforced by state check before proof verification
+- CEI pattern applied for reentrancy safety
+
+Known Limitation (PoC):
+
+Potential mempool front-running: an attacker observing a proof in the mempool could theoretically extract the nullifier and attempt to front-run the transaction. However, this is not exploitable because the nullifier can only be marked as used after a valid proof is verified. Without knowledge of userSecret, the attacker cannot produce a valid proof for the same nullifier. In a production system, commit-reveal schemes or private mempools could provide additional protection.
 
 ---
 

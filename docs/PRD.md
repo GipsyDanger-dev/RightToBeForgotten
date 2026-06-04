@@ -250,7 +250,7 @@ Proof Verification
 
 Description:
 
-Validate authorization through blockchain verification.
+Validate authorization through blockchain verification. Service provider submits ZK proof to ConsentRegistry, which verifies proof validity via Groth16Verifier, checks consent is ACTIVE, and tracks nullifiers to prevent replay attacks.
 
 Priority:
 
@@ -341,6 +341,18 @@ Revoked consent shall remain revoked permanently.
 ## FR-07
 
 Verification shall fail after revocation.
+
+---
+
+## FR-08
+
+The system shall provide a demonstrable audit trail of consent state changes.
+
+---
+
+## FR-09
+
+The system shall prevent proof replay attacks through on-chain nullifier tracking.
 
 ---
 

@@ -290,15 +290,13 @@ Reuse old proof submissions.
 Mitigation:
 
 - Nullifier design (per-consent scope)
-- Proof freshness mechanisms (nonce/timestamp — to be implemented in Phase 3)
-
-Known Gap:
-
-On-chain nullifier tracking is not yet implemented in ConsentRegistry.sol. This will be addressed in Phase 3 when Verifier.sol is integrated. Currently, the nullifier is computed in the circuit but not stored or checked on-chain.
+- On-chain nullifier tracking via \_usedNullifiers mapping
+- Nullifier marked as used after successful proof verification
+- Each nullifier is unique per consent relationship: poseidon(userSecret, consentId, serviceProviderId)
 
 Expected Result:
 
-Replay attack rejected (after Phase 3 integration).
+Replay attack rejected. Each proof can only be verified once per consent.
 
 ---
 
@@ -319,6 +317,58 @@ Mitigation:
 Expected Result:
 
 Unauthorized changes prevented.
+
+---
+
+## AV-01: Nullifier Front-Running
+
+Attack:
+
+Attacker sees proof in mempool, extracts nullifier, submits transaction first.
+
+Analysis:
+
+Not exploitable. Nullifier can only be marked as used after a valid proof is verified. Without userSecret, attacker cannot produce a valid proof for the same nullifier.
+
+PoC Limitation:
+
+In a production system, commit-reveal schemes or private mempools could provide additional defense-in-depth.
+
+---
+
+## AV-02: Proof Malleability
+
+Attack:
+
+Attacker modifies proof components (pA, pB, pC) without changing validity.
+
+Analysis:
+
+Mitigated by Groth16. Proof components have strict format. Verifier.sol performs field element validation before pairing check.
+
+---
+
+## AV-03: Wrong Public Signals
+
+Attack:
+
+Attacker uses a valid proof with different public signals.
+
+Analysis:
+
+Mitigated by circuit constraints. Circuit requires consentId === poseidon(userSecret, spId, consentVersion) and nullifier === poseidon(userSecret, consentId, spId). Changing public signals invalidates the proof.
+
+---
+
+## AV-04: Cross-Contract Reentrancy
+
+Attack:
+
+Malicious verifier contract performs reentrant call to ConsentRegistry.
+
+Analysis:
+
+Mitigated. Groth16Verifier is a view function (no state changes). ConsentRegistry uses Checks-Effects-Interactions pattern.
 
 ---
 
@@ -365,6 +415,22 @@ Contracts must avoid unnecessary complexity.
 Contract functions must be protected against reentrancy attacks.
 
 Use ReentrancyGuard or Checks-Effects-Interactions pattern.
+
+---
+
+## SCR-08
+
+Nullifier must be checked for prior use before proof verification.
+
+The \_usedNullifiers mapping must be consulted before calling verifier.verifyProof().
+
+---
+
+## SCR-09
+
+Used nullifiers must be permanently recorded.
+
+Once a nullifier is marked as used, it must remain used. No function may reset or clear nullifier state.
 
 ---
 
