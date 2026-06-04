@@ -1,10 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+/// @title IVerifier
+/// @notice Interface for the Groth16 proof verifier.
+interface IVerifier {
+    function verifyProof(
+        uint256[2] calldata _pA,
+        uint256[2][2] calldata _pB,
+        uint256[2] calldata _pC,
+        uint256[2] calldata _pubSignals
+    ) external view returns (bool);
+}
+
 /// @title ConsentRegistry
-/// @notice Manages consent lifecycle for the RightToBeForgotten system.
-/// @dev ConsentID is derived off-chain using poseidon(userSecret, serviceProviderId).
-///      This contract does NOT store any user secrets, nullifiers, or PII.
+/// @notice Manages consent lifecycle and ZK proof verification for the RightToBeForgotten system.
+/// @dev ConsentID is derived off-chain using poseidon(userSecret, serviceProviderId, consentVersion).
+///      This contract does NOT store any user secrets or PII.
+///      Nullifiers are tracked to prevent replay attacks.
 contract ConsentRegistry {
     // ──────────────────────────────────────────────
     // Errors
@@ -21,6 +33,9 @@ contract ConsentRegistry {
 
     /// @notice Thrown when caller is not the consent registrant.
     error Unauthorized();
+
+    /// @notice Thrown when a nullifier has already been used.
+    error NullifierAlreadyUsed();
 
     // ──────────────────────────────────────────────
     // Events
@@ -54,6 +69,21 @@ contract ConsentRegistry {
     /// @dev Maps consentId to the address that registered it.
     mapping(bytes32 => address) private _consentRegistrant;
 
+    /// @dev Tracks which nullifiers have been used to prevent replay attacks.
+    mapping(bytes32 => bool) private _usedNullifiers;
+
+    /// @dev The Groth16 verifier contract address.
+    IVerifier public immutable verifier;
+
+    // ──────────────────────────────────────────────
+    // Constructor
+    // ──────────────────────────────────────────────
+
+    /// @param _verifier Address of the deployed Groth16Verifier contract.
+    constructor(IVerifier _verifier) {
+        verifier = _verifier;
+    }
+
     // ──────────────────────────────────────────────
     // External Functions
     // ──────────────────────────────────────────────
@@ -85,15 +115,53 @@ contract ConsentRegistry {
         emit ConsentRevoked(consentId, msg.sender);
     }
 
-    /// @notice Verify whether a consent is currently active.
-    /// @param consentId The unique consent identifier to verify.
-    /// @return True if consent is active, false otherwise.
-    function verifyAccess(bytes32 consentId) external returns (bool) {
-        bool isActive = _consentState[consentId] == 1;
+    /// @notice Verify access using a ZK proof and consent state.
+    /// @dev Validates consent is ACTIVE, nullifier is fresh, and proof is valid.
+    ///      Uses Checks-Effects-Interactions pattern for reentrancy safety.
+    /// @param consentId The consent identifier (public signal from circuit).
+    /// @param pA Groth16 proof component A.
+    /// @param pB Groth16 proof component B.
+    /// @param pC Groth16 proof component C.
+    /// @param nullifier The nullifier from circuit (public signal).
+    /// @return True if proof is valid, consent is active, and nullifier is fresh.
+    function verifyAccess(
+        bytes32 consentId,
+        uint256[2] calldata pA,
+        uint256[2][2] calldata pB,
+        uint256[2] calldata pC,
+        bytes32 nullifier
+    ) external returns (bool) {
+        // ── Checks ──
+        if (consentId == bytes32(0)) {
+            emit AccessVerified(consentId, false);
+            return false;
+        }
 
-        emit AccessVerified(consentId, isActive);
+        if (_consentState[consentId] != 1) {
+            emit AccessVerified(consentId, false);
+            return false;
+        }
 
-        return isActive;
+        if (_usedNullifiers[nullifier]) {
+            emit AccessVerified(consentId, false);
+            return false;
+        }
+
+        // ── Interaction: verify proof ──
+        uint256[2] memory pubSignals = [uint256(consentId), uint256(nullifier)];
+        bool proofValid = verifier.verifyProof(pA, pB, pC, pubSignals);
+
+        if (!proofValid) {
+            emit AccessVerified(consentId, false);
+            return false;
+        }
+
+        // ── Effects: mark nullifier as used ──
+        _usedNullifiers[nullifier] = true;
+
+        // ── Interaction: emit event ──
+        emit AccessVerified(consentId, true);
+        return true;
     }
 
     // ──────────────────────────────────────────────
@@ -105,5 +173,19 @@ contract ConsentRegistry {
     /// @return state 0=NOT_REGISTERED, 1=ACTIVE, 2=REVOKED.
     function getConsentState(bytes32 consentId) external view returns (uint8 state) {
         return _consentState[consentId];
+    }
+
+    /// @notice Check if a consent is currently active (no proof required).
+    /// @param consentId The unique consent identifier.
+    /// @return True if consent is active.
+    function isConsentActive(bytes32 consentId) external view returns (bool) {
+        return _consentState[consentId] == 1;
+    }
+
+    /// @notice Check if a nullifier has been used.
+    /// @param nullifier The nullifier to check.
+    /// @return True if nullifier has been used.
+    function isNullifierUsed(bytes32 nullifier) external view returns (bool) {
+        return _usedNullifiers[nullifier];
     }
 }
