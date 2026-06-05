@@ -16,7 +16,9 @@ self.onmessage = async (e: MessageEvent) => {
         return BigInt(s);
       });
       const hash = poseidon(bigIntInputs);
-      const result = '0x' + F.toString(hash).toString(16).padStart(64, '0');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const hashStr = (F as any).toString(hash);
+      const result = '0x' + BigInt(hashStr).toString(16).padStart(64, '0');
       self.postMessage({ result });
     } else {
       self.postMessage({ error: `Unknown type: ${type}` });

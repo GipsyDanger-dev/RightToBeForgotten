@@ -18,7 +18,11 @@ self.onmessage = async (e: MessageEvent<{ inputs: ProofInputs }>) => {
     const wasmPath = '/circuits/consent.wasm';
     const zkeyPath = '/circuits/consent_final.zkey';
 
-    const { proof, publicSignals } = await groth16.fullProve(inputs, wasmPath, zkeyPath);
+    const { proof, publicSignals } = await groth16.fullProve(
+      inputs as unknown as Record<string, string>,
+      wasmPath,
+      zkeyPath
+    );
 
     self.postMessage({
       proof: {

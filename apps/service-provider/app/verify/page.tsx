@@ -30,13 +30,13 @@ export default function VerifyPage() {
 
   // Check verification result from receipt
   useEffect(() => {
-    if (isSuccess && receipt) {
+    if (isSuccess) {
       // For PoC, transaction success means verification passed
       // In production, parse AccessVerified event from receipt.logs
       setVerificationResult(true);
       sessionStorage.setItem('verificationResult', 'true');
     }
-  }, [isSuccess, receipt]);
+  }, [isSuccess]);
 
   function handleVerify() {
     setError('');
@@ -46,15 +46,23 @@ export default function VerifyPage() {
     }
 
     try {
+      // Convert proof data from strings to bigints for contract call
+      const pA: [bigint, bigint] = [BigInt(proofData.proof.a[0]), BigInt(proofData.proof.a[1])];
+      const pB: [[bigint, bigint], [bigint, bigint]] = [
+        [BigInt(proofData.proof.b[0][0]), BigInt(proofData.proof.b[0][1])],
+        [BigInt(proofData.proof.b[1][0]), BigInt(proofData.proof.b[1][1])],
+      ];
+      const pC: [bigint, bigint] = [BigInt(proofData.proof.c[0]), BigInt(proofData.proof.c[1])];
+
       writeContract({
         address: CONSENT_REGISTRY_ADDRESS as `0x${string}`,
         abi: CONSENT_REGISTRY_ABI,
         functionName: 'verifyAccess',
         args: [
           proofData.consentId as `0x${string}`,
-          proofData.proof.a as [bigint, bigint],
-          proofData.proof.b as [[bigint, bigint], [bigint, bigint]],
-          proofData.proof.c as [bigint, bigint],
+          pA,
+          pB,
+          pC,
           proofData.nullifier as `0x${string}`,
         ],
       });
