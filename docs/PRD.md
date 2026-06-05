@@ -300,6 +300,62 @@ Medium
 
 ---
 
+## Feature 8
+
+Identity Management
+
+Description:
+
+Generate, store, export, and import cryptographic identity (userSecret, consentVersion). Identity is encrypted at rest using PBKDF2 + AES-GCM in IndexedDB.
+
+Priority:
+
+Critical
+
+---
+
+## Feature 9
+
+Wallet Integration
+
+Description:
+
+Connect user wallet via Wagmi v2 + ConnectKit for signing transactions. Wallet address is separate from cryptographic identity.
+
+Priority:
+
+Critical
+
+---
+
+## Feature 10
+
+Browser-Side Proof Generation
+
+Description:
+
+Generate ZK proofs in the browser using SnarkJS WASM. Proofs are generated in a Web Worker to avoid blocking the UI. Circuit files served from /public/circuits/.
+
+Priority:
+
+Critical
+
+---
+
+## Feature 11
+
+Multi-Service Provider Consent
+
+Description:
+
+Users can register and manage consent for multiple independent service providers. Each consent is scoped to a unique spId (service provider wallet address).
+
+Priority:
+
+High
+
+---
+
 # Functional Requirements
 
 ## FR-01
@@ -353,6 +409,30 @@ The system shall provide a demonstrable audit trail of consent state changes.
 ## FR-09
 
 The system shall prevent proof replay attacks through on-chain nullifier tracking.
+
+---
+
+## FR-10
+
+Users shall be able to generate and store cryptographic identity locally with encryption at rest.
+
+---
+
+## FR-11
+
+Users shall be able to export and import identity backups.
+
+---
+
+## FR-12
+
+Proof generation shall occur in the browser using Web Workers.
+
+---
+
+## FR-13
+
+Users shall be able to manage consent for multiple service providers.
 
 ---
 

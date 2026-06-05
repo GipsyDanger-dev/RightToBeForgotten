@@ -177,13 +177,17 @@ Every user owns:
 
 Generated locally.
 
-Stored locally.
+Stored locally (encrypted in IndexedDB using PBKDF2 + AES-GCM).
 
 Never transmitted directly.
 
 Never stored on-chain.
 
-The nullifier is derived per-consent: poseidon(userSecret, consentId, serviceProviderId).
+Service Provider Identifier (spId):
+
+The service provider's Ethereum wallet address. This serves as a unique, deterministic identifier for each service provider in consent and nullifier derivation.
+
+The nullifier is derived per-consent: poseidon(userSecret, consentId, spId).
 
 ---
 
@@ -465,6 +469,68 @@ Potential mempool front-running: an attacker observing a proof in the mempool co
 
 # Frontend Architecture
 
+## Identity Storage
+
+Technology:
+
+IndexedDB with PBKDF2 + AES-GCM encryption.
+
+Storage Keys:
+
+- userSecret: random 256-bit integer
+- consentVersion: monotonically increasing integer per spId
+
+Encryption:
+
+Identity is encrypted at rest using a key derived from the user's passphrase via PBKDF2. In development mode, auto-unlock may be used for demo purposes.
+
+Production deployments must require passphrase unlock (FER-06).
+
+---
+
+## Wallet Integration
+
+Technology:
+
+Wagmi v2 + ConnectKit.
+
+Purpose:
+
+- Connect user wallet (MetaMask, WalletConnect)
+- Sign transactions (registerConsent, revokeConsent)
+- Read on-chain state (getConsentState, isConsentActive)
+
+Wallet address is NOT used as identity. Identity is separate from wallet.
+
+---
+
+## Proof Generation
+
+Technology:
+
+SnarkJS (browser-side, using WASM).
+
+Inputs:
+
+- userSecret (from encrypted identity store)
+- spId (service provider wallet address, as uint256)
+- consentVersion (from encrypted identity store)
+- consentId (computed: poseidon(userSecret, spId, consentVersion))
+- nullifier (computed: poseidon(userSecret, consentId, spId))
+
+Output:
+
+- proof (a, b, c points)
+- publicSignals ([consentId, nullifier])
+
+Execution:
+
+Proof generation runs in a Web Worker to avoid blocking the UI thread.
+
+Circuit files (consent.wasm, consent_final.zkey) are served from /public/circuits/.
+
+---
+
 ## User Vault Pages
 
 /
@@ -477,17 +543,31 @@ Landing Page
 
 Consent Dashboard
 
+Displays all registered consents, their status, and service provider details.
+
 ---
 
 /consent
 
 Consent Management
 
+Register new consent for a service provider. Requires spId input.
+
 ---
 
 /revoke
 
 Forget Me Workflow
+
+Revoke active consent. Requires wallet signature and confirmation.
+
+---
+
+/identity
+
+Identity Management
+
+View identity status, export/backup identity, import identity from backup.
 
 ---
 
@@ -497,17 +577,23 @@ Forget Me Workflow
 
 Login With Privacy
 
+Service provider initiates verification request. User generates proof client-side and submits to service provider.
+
 ---
 
 /verify
 
 Verification Status
 
+Displays verification result. Calls verifyAccess() on ConsentRegistry.
+
 ---
 
 /access
 
 Protected Content
+
+Content accessible only after successful verification.
 
 ---
 

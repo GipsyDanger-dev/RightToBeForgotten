@@ -124,6 +124,22 @@ Must be stored locally. Must not be exposed on-chain.
 
 ---
 
+## Service Provider Identifier (spId)
+
+Purpose:
+
+Uniquely identifies a service provider in consent derivation and nullifier derivation.
+
+Definition:
+
+spId is the service provider's Ethereum wallet address (e.g., 0x1234...abcd). This ensures each service provider has a unique, deterministic identifier tied to their on-chain identity.
+
+Security Requirement:
+
+Must be a valid Ethereum address. Used in poseidon hashing as a field element (uint256 cast of the address).
+
+---
+
 ## Proof Generation Keys
 
 Purpose:
@@ -495,6 +511,26 @@ Proof generation should occur locally.
 ## FER-05
 
 User actions must be confirmed before irreversible operations.
+
+---
+
+## FER-06
+
+Identity storage (userSecret, consentVersion) must be encrypted at rest using PBKDF2 + AES-GCM. IndexedDB is used as the storage backend. Encryption keys must be derived from a user-provided passphrase.
+
+Development mode may use auto-unlock for demo purposes. Production deployments must require passphrase unlock.
+
+---
+
+## FER-07
+
+Identity export must be encrypted with a passphrase-derived key. Exported files must be in JSON format with all sensitive fields encrypted.
+
+---
+
+## FER-08
+
+Circuit files (WASM, zkey) served from /public/circuits must be integrity-verified before proof generation. File hashes must be pinned at build time.
 
 ---
 

@@ -197,7 +197,7 @@ Provide user control interface.
 
 Status:
 
-PENDING
+IN PROGRESS
 
 Tasks:
 
@@ -459,8 +459,8 @@ Tasks:
 - [x] Define private inputs (userSecret, spId, consentVersion)
 - [x] Define public inputs (consentId, nullifier)
 - [x] Define circuit constraints
-- [ ] Implement in circuit (Phase 2)
-- [ ] Document signal routing
+- [x] Implement in circuit (Phase 2)
+- [x] Document signal routing
 
 Priority:
 
@@ -468,7 +468,7 @@ CRITICAL
 
 Status:
 
-SPECIFICATION COMPLETED (implementation pending in Phase 2)
+COMPLETED (implemented in Phase 2)
 
 Dependencies:
 
@@ -516,9 +516,10 @@ Scope.md lists gas analysis as a required deliverable.
 Tasks:
 
 - [x] Measure gas cost for registerConsent() — 67,941 gas
-- [x] Measure gas cost for revokeConsent() — 30,800 gas
-- [x] Measure gas cost for verifyAccess() — 25,506 gas
-- [x] Document gas usage — documented in Phase 1 completion
+- [x] Measure gas cost for revokeConsent() — 30,823 gas
+- [x] Measure gas cost for verifyAccess() with proof — 252,009 gas
+- [x] Measure gas cost for verifyAccess() revoked (early exit) — 33,870 gas
+- [x] Document gas usage — documented in Phase 1-3 completion
 - [ ] Identify optimization opportunities
 
 Priority:
@@ -576,16 +577,47 @@ Tasks:
 
 - [x] Define per-consent scope
 - [x] Define derivation formula: poseidon(userSecret, consentId, serviceProviderId)
-- [ ] Implement in circuit
-- [ ] Test uniqueness across services
+- [x] Implement in circuit
+- [x] Test uniqueness across services
 
 Priority:
 
 CRITICAL
 
+Status:
+
+COMPLETED (implemented in Phase 2)
+
 Dependencies:
 
 Phase 2
+
+---
+
+## DT-08
+
+Task:
+
+Identity Export and Backup
+
+Reason:
+
+Users need ability to export and backup their cryptographic identity (userSecret, consentVersion) for recovery purposes. Loss of identity means loss of consent ownership.
+
+Tasks:
+
+- [ ] Implement identity export as encrypted JSON
+- [ ] Implement identity import from backup
+- [ ] Add passphrase-based encryption for export
+- [ ] Test round-trip export/import
+
+Priority:
+
+HIGH
+
+Dependencies:
+
+Phase 4
 
 ---
 
