@@ -1,6 +1,7 @@
 'use client';
 
 import { Identity } from './identity';
+import { verifyCircuitIntegrity } from './circuit-integrity';
 
 // Types matching the circuit interface
 export interface ProofInput {
@@ -74,6 +75,12 @@ export async function computeNullifier(
 }
 
 export async function generateProof(identity: Identity, spId: string): Promise<ProofOutput> {
+  // FER-08: Verify circuit file integrity before proof generation
+  const integrity = await verifyCircuitIntegrity();
+  if (!integrity.valid) {
+    throw new Error(`Circuit file integrity check failed: ${integrity.errors.join(', ')}`);
+  }
+
   // Compute consentId: poseidon(userSecret, spId, consentVersion)
   const consentId = await computeConsentId(identity.userSecret, spId, identity.consentVersion);
 

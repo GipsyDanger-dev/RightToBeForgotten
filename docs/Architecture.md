@@ -529,6 +529,10 @@ Proof generation runs in a Web Worker to avoid blocking the UI thread.
 
 Circuit files (consent.wasm, consent_final.zkey) are served from /public/circuits/.
 
+Integrity Verification (FER-08):
+
+Before proof generation, SHA-256 hashes of circuit files are verified against pinned values. Implemented in `lib/circuit-integrity.ts`. Proof generation fails if integrity check does not pass.
+
 ---
 
 ## User Vault Pages

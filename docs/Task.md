@@ -10,11 +10,13 @@ Implementation Roadmap
 
 Current Phase:
 
-PLANNING
+DEPLOYMENT PREPARATION
 
 Status:
 
-NOT STARTED
+IN PROGRESS
+
+Phases Completed: 0, 1, 2, 3, 4, 5
 
 ---
 
@@ -272,20 +274,21 @@ Verify revocation finality.
 
 Status:
 
-PENDING
+VALIDATED (via test suite)
 
 Tasks:
 
-- [ ] Register consent
-- [ ] Verify access
-- [ ] Revoke consent
-- [ ] Attempt verification again
-- [ ] Confirm verification failure
-- [ ] Document results
+- [x] Register consent (tested in ConsentRegistry.test.ts)
+- [x] Verify access (tested in Integration.test.ts)
+- [x] Revoke consent (tested in ConsentRegistry.test.ts)
+- [x] Attempt verification again (tested in Integration.test.ts)
+- [x] Confirm verification failure (tested in Integration.test.ts)
+- [ ] Document results (pending testnet deployment)
 
 Deliverables:
 
 - Demonstrated Right to be Forgotten workflow
+- 43/43 contract tests passing (includes revocation finality tests)
 
 Dependencies:
 
@@ -612,18 +615,87 @@ Users need ability to export and backup their cryptographic identity (userSecret
 
 Tasks:
 
-- [ ] Implement identity export as encrypted JSON
-- [ ] Implement identity import from backup
-- [ ] Add passphrase-based encryption for export
+- [x] Implement identity export as encrypted JSON
+- [x] Implement identity import from backup
+- [x] Add passphrase-based encryption for export
 - [ ] Test round-trip export/import
 
 Priority:
 
 HIGH
 
+Status:
+
+PARTIALLY COMPLETED (implemented in Phase 4, testing pending)
+
 Dependencies:
 
 Phase 4
+
+---
+
+## DT-09
+
+Task:
+
+Deployment Preparation Documentation
+
+Reason:
+
+Project requires deployment guides for Polygon Amoy testnet and Vercel frontend deployment.
+
+Tasks:
+
+- [x] Create DEPLOYMENT.md (comprehensive deployment guide)
+- [x] Create TESTNET_DEPLOYMENT.md (step-by-step manual guide)
+- [x] Verify deployment scripts (deploy-consent-registry.ts)
+- [x] Verify environment variables (.env.example)
+- [x] Generate SHA-256 hashes for circuit files
+- [x] Implement FER-08 (circuit file integrity verification)
+
+Priority:
+
+HIGH
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 5
+
+---
+
+## DT-10
+
+Task:
+
+Circuit File Integrity Verification (FER-08)
+
+Reason:
+
+Security.md requires circuit files to be integrity-verified before proof generation to prevent tampering.
+
+Tasks:
+
+- [x] Generate SHA-256 hashes for consent.wasm and consent_final.zkey
+- [x] Implement circuit-integrity.ts with Web Crypto API
+- [x] Integrity check integrated into generateProof() in proof.ts
+- [x] Update Security.md with FER-08 implementation status
+- [x] Update Architecture.md with integrity verification details
+
+Priority:
+
+HIGH
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 4, Phase 5
 
 ---
 

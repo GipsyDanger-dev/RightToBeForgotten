@@ -532,6 +532,17 @@ Identity export must be encrypted with a passphrase-derived key. Exported files 
 
 Circuit files (WASM, zkey) served from /public/circuits must be integrity-verified before proof generation. File hashes must be pinned at build time.
 
+Status: IMPLEMENTED
+
+Implementation:
+
+- `apps/user-vault/lib/circuit-integrity.ts` verifies SHA-256 hashes before proof generation
+- Known-good hashes pinned at build time (2026-06-06):
+  - consent.wasm: `88c57c466c4214d501bb4d452250a1bfef58a9d74d7fd596345e04a8fc7855b7`
+  - consent_final.zkey: `24acca388172cf60e2451debf570e90107a6e5b0bf33c41abbd706b20b680f1e`
+- Integrity check runs in `generateProof()` before snarkjs worker invocation
+- Proof generation fails with descriptive error if hash mismatch detected
+
 ---
 
 # Revocation Security Model
