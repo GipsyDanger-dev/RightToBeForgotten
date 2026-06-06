@@ -339,7 +339,7 @@ Never implement undocumented work.
 
 # Task Management Rules
 
-The tasks.md document is a living document.
+The Task.md document is a living document.
 
 Tasks may be added, refined, split, reprioritized, or expanded as new information becomes available during implementation.
 
@@ -376,7 +376,7 @@ without user approval.
 
 # Task Discovery Rule
 
-When new work is discovered, the agent should update tasks.md using the following format:
+When new work is discovered, the agent should update Task.md using the following format:
 
 ## New Task Proposal
 
@@ -439,7 +439,7 @@ The agent should continuously evaluate:
 - Missing security reviews
 - Missing validations
 
-and update tasks.md accordingly.
+and update Task.md accordingly.
 
 The goal is not merely to complete tasks.
 
@@ -542,9 +542,9 @@ docs/adr/
 
 Format:
 
-ADR-001.md
-ADR-002.md
-ADR-003.md
+ADR-001-groth16.md
+ADR-002-circom.md
+ADR-003-polygon-amoy.md
 
 ---
 

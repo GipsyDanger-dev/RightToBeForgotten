@@ -131,7 +131,7 @@ Confirmed Technology:
 
 - Next.js
 - TypeScript
-- Ethers.js
+- viem
 
 ---
 
@@ -378,9 +378,12 @@ The system shall provide a demonstrable audit trail of consent state changes.
 - Scope.md
 - Architecture.md
 - PRD.md
-- Tasks.md
+- Task.md
 - Security.md
-- Agent-Rules.md
+- CLAUDE.md
+- Workflow.md
+- DEPLOYMENT.md
+- TESTNET_DEPLOYMENT.md
 - README.md
 
 ---

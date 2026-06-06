@@ -183,9 +183,9 @@ Agent Tasks:
 
 Update affected:
 
-- tasks.md
-- architecture.md
-- security.md
+- Task.md
+- Architecture.md
+- Security.md
 - README.md
 
 Restrictions:
