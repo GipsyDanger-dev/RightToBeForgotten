@@ -1,4 +1,4 @@
-# ADR-002: Pilihan Circom sebagai Circuit Language
+# ADR-002: Choice of Circom as Circuit Language
 
 **Status:** Accepted
 
@@ -8,44 +8,44 @@
 
 ## Context
 
-RightToBeForgotten membutuhkan domain-specific language untuk mendefinisikan ZKP circuits. Circuit harus:
+RightToBeForgotten requires a domain-specific language for defining ZKP circuits. The circuit language must:
 
-- Mudah dipahami oleh developer yang tidak ahli kriptografi
-- Punya library standar yang kaya (hash, comparison, dll.)
-- Menghasilkan R1CS yang kompatibel dengan Groth16
-- Punya tooling yang mature
+- Be understandable by developers who are not cryptography experts
+- Have a rich standard library (hash, comparison, etc.)
+- Produce R1CS compatible with Groth16
+- Have mature tooling
 
-Opsi yang dipertimbangkan:
+Options considered:
 
-1. **Circom** — DSL paling populer untuk ZKP, library circomlib lengkap, komunitas besar
-2. **Halo2** — dari Zcash, lebih fleksibel, tapi kurva belajar lebih curam
-3. **Noir** — baru, menarik, tapi ekosistem belum matang
+1. **Circom** — most popular DSL for ZKP, comprehensive circomlib library, large community
+2. **Halo2** — from Zcash, more flexible, but steeper learning curve
+3. **Noir** — new, interesting, but ecosystem not yet mature
 
 ---
 
 ## Decision
 
-Gunakan **Circom** (v2) sebagai circuit language, dengan **SnarkJS** sebagai proving/verification library.
+Use **Circom** (v2) as the circuit language, with **SnarkJS** as the proving/verification library.
 
 ---
 
 ## Consequences
 
-**Positif:**
+**Positive:**
 
-- Sintaks yang relatif mudah dipahami
-- circomlib menyediakan komponen standar: Poseidon, MiMC, comparators, dll.
-- SnarkJS berjalan di browser (witness generation lokal)
-- Integrasi dengan Groth16 native
-- Dokumentasi dan tutorial berlimpah
+- Relatively easy-to-understand syntax
+- circomlib provides standard components: Poseidon, MiMC, comparators, etc.
+- SnarkJS runs in the browser (local witness generation)
+- Native integration with Groth16
+- Abundant documentation and tutorials
 
-**Negatif:**
+**Negative:**
 
-- R1CS-based (kurang fleksibel dibanding arithmetization lain)
-- Debugging circuit bisa sulit
-- Compile time bisa lama untuk circuit besar
+- R1CS-based (less flexible than other arithmetization schemes)
+- Circuit debugging can be difficult
+- Compile time can be long for large circuits
 
-**Mitigasi:**
+**Mitigations:**
 
-- Circuit dalam project ini relatif sederhana
-- Testing menyeluruh untuk memverifikasi kebenaran circuit
+- The circuit in this project is relatively simple
+- Thorough testing to verify circuit correctness

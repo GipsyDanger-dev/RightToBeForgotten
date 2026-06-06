@@ -1,4 +1,4 @@
-# ADR-003: Pilihan Polygon Amoy sebagai Deployment Target
+# ADR-003: Choice of Polygon Amoy as Deployment Target
 
 **Status:** Accepted
 
@@ -8,44 +8,44 @@
 
 ## Context
 
-RightToBeForgotten membutuhkan blockchain untuk deploy smart contract. Target harus:
+RightToBeForgotten requires a blockchain for deploying smart contracts. The target must:
 
-- Testnet yang aktif dan stabil
-- Gas cost rendah untuk development
-- Kompatibel dengan Ethereum tooling (Hardhat, Ethers.js)
-- Block explorer untuk verifikasi
+- Be an active and stable testnet
+- Have low gas costs for development
+- Be compatible with Ethereum tooling (Hardhat, Ethers.js/viem)
+- Have a block explorer for verification
 
-Opsi yang dipertimbangkan:
+Options considered:
 
-1. **Polygon Amoy** — testnet resmi Polygon, menggantikan Mumbai, EVM-compatible
-2. **Sepolia** — testnet Ethereum, paling standar, tapi gas lebih mahal
-3. **Base Sepolia** — L2 testnet dari Coinbase, murah tapi kurang mature
+1. **Polygon Amoy** — official Polygon testnet, replacing Mumbai, EVM-compatible
+2. **Sepolia** — Ethereum testnet, most standard, but more expensive gas
+3. **Base Sepolia** — L2 testnet from Coinbase, cheap but less mature
 
 ---
 
 ## Decision
 
-Gunakan **Polygon Amoy Testnet** sebagai deployment target untuk testing dan demo.
+Use **Polygon Amoy Testnet** as the deployment target for testing and demo.
 
 ---
 
 ## Consequences
 
-**Positif:**
+**Positive:**
 
-- Gas cost sangat rendah (ideal untuk demo)
-- EVM-compatible (tooling Ethereum langsung berfungsi)
-- Block explorer tersedia (Amoy PolygonScan)
-- Mendukung Groth16 verifier contract (precompile atau Solidity)
+- Very low gas costs (ideal for demo)
+- EVM-compatible (Ethereum tooling works directly)
+- Block explorer available (Amoy PolygonScan)
+- Supports Groth16 verifier contract (precompile or Solidity)
 
-**Negatif:**
+**Negative:**
 
-- Relatif baru (menggantikan Mumbai yang sudah deprecated)
-- Faucet mungkin perlu request manual
-- Jaringan bisa kurang stabil dibanding Sepolia
+- Relatively new (replacing deprecated Mumbai)
+- Faucet may require manual requests
+- Network may be less stable than Sepolia
 
-**Mitigasi:**
+**Mitigations:**
 
-- Untuk proof-of-concept, stabilitas testnet sudah memadai
-- Hardhat local network tersedia untuk development lokal
-- Data penting hanya di testnet, bukan mainnet
+- For a proof-of-concept, testnet stability is adequate
+- Hardhat local network available for local development
+- Important data only on testnet, not mainnet

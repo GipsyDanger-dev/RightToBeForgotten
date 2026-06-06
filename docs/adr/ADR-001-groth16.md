@@ -1,4 +1,4 @@
-# ADR-001: Pilihan Groth16 sebagai Proof System
+# ADR-001: Choice of Groth16 as Proof System
 
 **Status:** Accepted
 
@@ -8,44 +8,44 @@
 
 ## Context
 
-RightToBeForgotten membutuhkan zero-knowledge proof system untuk memverifikasi consent tanpa mengungkap identitas user. Proof system harus:
+RightToBeForgotten requires a zero-knowledge proof system to verify consent without revealing the user's identity. The proof system must:
 
-- Menghasilkan proof yang ringkas (small proof size)
-- Verifikasi yang cepat di on-chain (low gas cost)
-- Mature dan battle-tested
-- Kompatibel dengan Circom
+- Produce concise proofs (small proof size)
+- Enable fast on-chain verification (low gas cost)
+- Be mature and battle-tested
+- Be compatible with Circom
 
-Opsi yang dipertimbangkan:
+Options considered:
 
-1. **Groth16** — proof size terkecil, verifikasi paling cepat, tapi memerlukan trusted setup per circuit
-2. **PLONK** — universal trusted setup, tapi proof lebih besar dan verifikasi lebih mahal
-3. **STARK** — no trusted setup, tapi proof sangat besar dan verifikasi sangat mahal di on-chain
+1. **Groth16** — smallest proof size, fastest verification, but requires trusted setup per circuit
+2. **PLONK** — universal trusted setup, but larger proofs and more expensive verification
+3. **STARK** — no trusted setup, but very large proofs and very expensive on-chain verification
 
 ---
 
 ## Decision
 
-Gunakan **Groth16** sebagai proof system.
+Use **Groth16** as the proof system.
 
 ---
 
 ## Consequences
 
-**Positif:**
+**Positive:**
 
-- Proof size ~128 bytes (terkecil di antara opsi)
-- Verifikasi di Ethereum hanya ~200k gas (paling murah)
-- Ekosistem Circom + SnarkJS sangat mendukung Groth16
-- Banyak referensi dan dokumentasi
+- Proof size ~128 bytes (smallest among options)
+- Verification on Ethereum costs only ~200k gas (cheapest)
+- Circom + SnarkJS ecosystem has strong Groth16 support
+- Extensive references and documentation available
 
-**Negatif:**
+**Negative:**
 
-- Memerlukan trusted setup ceremony per circuit
-- Tidak universal (setup berbeda untuk circuit berbeda)
-- Jika toxic waste bocor, proof bisa di-forge
+- Requires trusted setup ceremony per circuit
+- Not universal (different setup for different circuits)
+- If toxic waste leaks, proofs can be forged
 
-**Mitigasi:**
+**Mitigations:**
 
-- Trusted setup dilakukan dengan kontribusi yang cukup
-- Toxic waste dihapus setelah ceremony
-- Untuk proof-of-concept, trusted setup sederhana sudah memadai
+- Trusted setup performed with sufficient contributions
+- Toxic waste deleted after ceremony
+- For a proof-of-concept, a simple trusted setup is adequate
