@@ -22,8 +22,9 @@ export default function VerifyPage() {
     if (stored) {
       try {
         setProofData(JSON.parse(stored));
-      } catch {
+      } catch (err) {
         setProofData(null);
+        setError((err as Error).message || 'Failed to load proof data.');
       }
     }
   }, []);

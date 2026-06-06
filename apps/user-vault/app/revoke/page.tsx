@@ -38,8 +38,9 @@ export default function RevokePage() {
     try {
       const all = await getAllConsents();
       setConsents(all.filter((c) => c.state === 'active'));
-    } catch {
+    } catch (err) {
       setConsents([]);
+      setError((err as Error).message || 'Failed to load consents.');
     } finally {
       setLoading(false);
     }

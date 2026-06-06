@@ -10,6 +10,7 @@ export default function DashboardPage() {
   const { isConnected } = useAccount();
   const [consents, setConsents] = useState<ConsentRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (isDevMode()) {
@@ -23,8 +24,9 @@ export default function DashboardPage() {
     try {
       const all = await getAllConsents();
       setConsents(all);
-    } catch {
+    } catch (err) {
       setConsents([]);
+      setError((err as Error).message || 'Failed to load consents.');
     } finally {
       setLoading(false);
     }
@@ -43,6 +45,12 @@ export default function DashboardPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Consent Dashboard</h1>
+
+      {error && (
+        <div className="p-3 mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+        </div>
+      )}
 
       {loading ? (
         <p className="text-gray-500">Loading...</p>
