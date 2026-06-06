@@ -516,7 +516,6 @@ Anything beyond these capabilities is considered an enhancement.
 
 Potential future extensions include:
 
-- Multi-service consent management
 - Decentralized storage integration
 - Advanced revocation mechanisms
 - Cross-chain compatibility
@@ -524,6 +523,8 @@ Potential future extensions include:
 - Privacy-preserving reputation systems
 
 These features are outside the current project scope.
+
+Note: Multi-service provider consent is already implemented (Feature 11, DT-07). Each consent is scoped to a unique spId (service provider wallet address).
 
 ---
 

@@ -180,8 +180,8 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=...
 
 Ensure circuit files are in `apps/user-vault/public/circuits/`:
 
-- consent.wasm (1.84 MB)
-- consent_final.zkey (567 KB)
+- consent.wasm (1,839,814 bytes / ~1.75 MB)
+- consent_final.zkey (567,428 bytes / ~554 KB)
 
 ### Step 3: Deploy to Vercel
 

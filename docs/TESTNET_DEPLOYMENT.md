@@ -54,7 +54,7 @@ Edit `.env` with your values:
 POLYGON_AMOY_RPC_URL=https://rpc-amoy.polygon.technology
 PRIVATE_KEY=your_wallet_private_key_here
 ETHERSCAN_API_KEY=your_polygonscan_api_key_here
-NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_walletconnect_project_id
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
 ```
 
 **WARNING:** Never commit `.env` to version control. Never share private keys.
