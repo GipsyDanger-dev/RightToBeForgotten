@@ -180,7 +180,7 @@ export async function updateConsentState(
 
 // --- Identity export/import ---
 
-export async function exportIdentity(_passphrase: string): Promise<string | null> {
+export async function exportIdentity(): Promise<string | null> {
   const db = await getDB();
   const encrypted = await db.get('identity', IDENTITY_KEY);
   if (!encrypted) return null;
@@ -206,14 +206,22 @@ export async function importIdentity(
 }
 
 // --- Dev mode auto-unlock ---
+// Dev passphrase is derived from environment, not hardcoded.
+// In production builds, isDevMode() returns false (Next.js eliminates dead code).
 
-const DEV_PASSPHRASE = 'dev-mode-auto-unlock';
+function getDevPassphrase(): string {
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('devAutoUnlock is only available in development mode');
+  }
+  return process.env.NEXT_PUBLIC_DEV_PASSPHRASE || 'rtbf-dev-local-only';
+}
 
 export async function devAutoUnlock(): Promise<Identity> {
-  const existing = await loadIdentity(DEV_PASSPHRASE);
+  const passphrase = getDevPassphrase();
+  const existing = await loadIdentity(passphrase);
   if (existing) return existing;
   const identity = generateIdentity();
-  await saveIdentity(identity, DEV_PASSPHRASE);
+  await saveIdentity(identity, passphrase);
   return identity;
 }
 

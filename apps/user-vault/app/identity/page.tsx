@@ -80,7 +80,7 @@ export default function IdentityPage() {
   async function handleExport() {
     setError('');
     try {
-      const data = await exportIdentity(passphrase);
+      const data = await exportIdentity();
       if (!data) {
         setError('No identity found or invalid passphrase.');
         return;
