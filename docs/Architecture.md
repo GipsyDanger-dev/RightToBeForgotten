@@ -82,8 +82,9 @@ Technology:
 - Next.js
 - React
 - TypeScript
-- Ethers.js
-- Wagmi
+- viem
+- Wagmi v2
+- ConnectKit
 
 ---
 
@@ -111,7 +112,7 @@ Technology:
 Outputs:
 
 - proof.json
-- publicSignals.json
+- public.json
 - verifier.sol
 
 ---
@@ -195,11 +196,11 @@ The nullifier is derived per-consent: poseidon(userSecret, consentId, spId).
 
 Consent is represented by:
 
-ConsentID
+consentId
 
 Derived from:
 
-poseidon(userSecret, serviceProviderId, consentVersion)
+poseidon(userSecret, spId, consentVersion)
 
 Where consentVersion is a monotonically increasing integer that enables re-consent after revocation while preserving revocation finality for each generation.
 
@@ -406,9 +407,11 @@ Responsibilities:
 
 Storage:
 
-mapping(bytes32 => uint8) Consent State
+mapping(bytes32 => uint8) private \_consentState
 
-mapping(bytes32 => bool) Used Nullifiers
+mapping(bytes32 => address) private \_consentRegistrant — stores the address that registered each consent, used to enforce that only the registrant can revoke
+
+mapping(bytes32 => bool) private \_usedNullifiers
 
 Enum:
 
@@ -437,6 +440,8 @@ Responsibilities:
 - Verify Groth16 ZK proof.
 - Return valid/invalid result.
 - Pure view function (no state changes).
+
+ConsentRegistry.sol defines an IVerifier interface (lines 6–13) that abstracts the verifier dependency, enabling potential future replacement of the proof system without modifying the registry contract.
 
 ---
 
@@ -644,6 +649,8 @@ docs/
 ├── PRD.md
 ├── Task.md
 ├── Workflow.md
+├── DEPLOYMENT.md
+├── TESTNET_DEPLOYMENT.md
 │
 └── adr/
 ├── ADR-001-groth16.md
