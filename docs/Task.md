@@ -10,13 +10,56 @@ Implementation Roadmap
 
 Current Phase:
 
-Phase 8 — Testing
+Phase 9 — Testing
 
 Status:
 
 PENDING
 
-Phases Completed: 0, 1, 2, 3, 4, 5, 6, 7
+Phases Completed: 0, 1, 2, 3, 4, 5, 6, 7, 8
+
+---
+
+# Phase 8
+
+Pre-Deployment Remediation
+
+Goal:
+
+Fix deployment script mismatches, synchronize environment configuration, and validate deployment readiness.
+
+Status:
+
+COMPLETED
+
+Tasks:
+
+- [x] Fix contracts/package.json deploy script paths (scripts/deploy.ts → deploy/deploy-consent-registry.ts)
+- [x] Fix root .env.example WalletConnect variable name (NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID → NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID)
+- [x] Remove dead CIRCUIT_BUILD_DIR from root .env.example
+- [x] Verify contracts compile (npx hardhat compile — PASS)
+- [x] Verify 43/43 contract tests pass
+- [x] Verify user-vault build (6 routes — PASS)
+- [x] Verify service-provider build (4 routes — PASS)
+- [x] Verify deployment documentation commands match repo structure
+- [x] Verify environment variable consistency across all .env.example files
+- [x] Verify circuit files present with correct SHA-256 hashes
+
+Deliverables:
+
+- All deployment scripts point to correct paths
+- All environment variables named consistently
+- Both frontends build successfully
+- All 43 contract tests pass
+- Contracts compile successfully
+
+Commit:
+
+- a5ab9d3: fix: correct deployment script paths and env variable names
+
+Dependencies:
+
+Phase 7
 
 ---
 
@@ -348,7 +391,7 @@ Phase 5
 
 ---
 
-# Phase 8
+# Phase 9
 
 Testing
 
@@ -377,11 +420,11 @@ Deliverables:
 
 Dependencies:
 
-Phase 7
+Phase 8
 
 ---
 
-# Phase 9
+# Phase 10
 
 Documentation
 
@@ -410,11 +453,11 @@ Deliverables:
 
 Dependencies:
 
-Phase 8
+Phase 9
 
 ---
 
-# Phase 10
+# Phase 11
 
 Portfolio Preparation
 
@@ -440,7 +483,7 @@ Deliverables:
 
 Dependencies:
 
-Phase 9
+Phase 10
 
 ---
 
