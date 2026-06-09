@@ -312,6 +312,7 @@ See [Security.md](docs/Security.md) for full threat model.
 | [PROJECT_SUMMARY.md](docs/PROJECT_SUMMARY.md)       | Comprehensive project summary            |
 | [RECRUITER_GUIDE.md](docs/RECRUITER_GUIDE.md)       | Guide for technical interviews           |
 | [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)               | 5-minute live demo script                |
+| [RELEASE_REPORT.md](docs/RELEASE_REPORT.md)         | v1.0.0 release audit report              |
 | [ADR-001](docs/adr/ADR-001-groth16.md)              | Decision: Groth16 proof system           |
 | [ADR-002](docs/adr/ADR-002-circom.md)               | Decision: Circom circuit language        |
 | [ADR-003](docs/adr/ADR-003-polygon-amoy.md)         | Decision: Polygon Amoy testnet           |

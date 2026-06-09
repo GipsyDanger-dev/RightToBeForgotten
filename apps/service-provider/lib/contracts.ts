@@ -1,8 +1,6 @@
 // Contract ABIs and addresses
-// Update addresses after deployment
 
-export const CONSENT_REGISTRY_ADDRESS =
-  process.env.NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS ?? '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+export const CONSENT_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS!;
 
 export const CONSENT_REGISTRY_ABI = [
   {
