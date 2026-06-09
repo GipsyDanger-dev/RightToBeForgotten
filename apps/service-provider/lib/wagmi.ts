@@ -16,7 +16,11 @@ export const config = createConfig(
       [hardhat.id]: http('http://127.0.0.1:8545'),
       [polygonAmoy.id]: http(process.env.NEXT_PUBLIC_POLYGON_AMOY_RPC),
     },
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? 'demo',
+    walletConnectProjectId:
+      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID &&
+      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID !== 'demo'
+        ? process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
+        : undefined,
     appName: 'RightToBeForgotten - Service Provider',
     appDescription: 'Privacy-preserving access verification',
   })
