@@ -12,12 +12,13 @@ export default function AccessPage() {
 
   if (!verified) {
     return (
-      <div className="max-w-lg mx-auto py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Protected Content</h1>
-        <p className="text-gray-500 mb-4">
-          You must verify your authorization before accessing this content.
+      <div className="wallet-gate">
+        <p className="wallet-gate-eyebrow">Verification Required</p>
+        <h1 className="wallet-gate-heading">You must verify your authorization first</h1>
+        <p className="wallet-gate-desc">
+          This content is only accessible after a successful Zero-Knowledge Proof verification.
         </p>
-        <a href="/verify" className="text-sm text-blue-600 dark:text-blue-400 underline">
+        <a href="/verify" className="btn-primary">
           Go to Verification
         </a>
       </div>
@@ -25,53 +26,119 @@ export default function AccessPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-2">Protected Content</h1>
-      <p className="text-sm text-gray-500 mb-6">
-        Your authorization has been verified via Zero-Knowledge Proof. Your identity remains
-        private.
-      </p>
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <p className="eyebrow">Protected Content</p>
+        <h1 className="hero-title">
+          Access
+          <br />
+          <span className="muted">granted.</span>
+        </h1>
+        <div className="hero-body">
+          <p className="hero-desc">
+            Your authorization has been verified via Zero-Knowledge Proof. Your identity remains
+            private — only consent validity was confirmed on-chain.
+          </p>
+        </div>
+      </section>
 
-      <div className="p-6 border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 rounded-lg">
-        <h2 className="font-medium text-green-800 dark:text-green-200 mb-3">Access Granted</h2>
-        <p className="text-sm text-green-700 dark:text-green-300 mb-4">
-          This content is only accessible to users with valid, active consent. The verification was
-          performed using a Zero-Knowledge Proof, meaning:
-        </p>
-        <ul className="text-sm text-green-700 dark:text-green-300 space-y-2">
-          <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-0.5">-</span>
-            <span>Your identity (userSecret) was never revealed</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-0.5">-</span>
-            <span>Only the validity of your consent was confirmed</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-0.5">-</span>
-            <span>The nullifier prevents this proof from being replayed</span>
-          </li>
-        </ul>
-      </div>
+      {/* Privacy Guarantees */}
+      <section className="section">
+        <div className="section-header">
+          <span className="section-label">Privacy Guarantees</span>
+        </div>
 
-      <div className="mt-6 p-4 border border-gray-200 dark:border-gray-800 rounded-lg">
-        <h3 className="text-sm font-medium mb-2">Demo Content</h3>
-        <p className="text-sm text-gray-500">
+        <div className="consent-item">
+          <div className="consent-header">
+            <div>
+              <p className="consent-title">Zero-Knowledge Verification</p>
+              <p className="consent-desc">
+                This content is only accessible to users with valid, active consent. The
+                verification was performed using a Zero-Knowledge Proof.
+              </p>
+            </div>
+            <div className="consent-meta">
+              <span className="status-badge status-badge--green">
+                <span className="status-dot status-dot--green"></span>
+                verified
+              </span>
+            </div>
+          </div>
+          <div style={{ marginTop: 'var(--gap-12)' }}>
+            <div className="key-row">
+              <span className="key-label">Identity</span>
+              <span className="key-value">userSecret was never revealed</span>
+            </div>
+            <div className="key-row">
+              <span className="key-label">Consent</span>
+              <span className="key-value">Only validity was confirmed</span>
+            </div>
+            <div className="key-row">
+              <span className="key-label">Replay</span>
+              <span className="key-value">Nullifier prevents proof reuse</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr className="rule" />
+
+      {/* Demo Content */}
+      <section className="section">
+        <div className="section-header">
+          <span className="section-label">Demo Content</span>
+        </div>
+        <p className="u-mono-xs" style={{ maxWidth: '480px' }}>
           This is a demonstration of privacy-preserving access control. In a real application, this
           page would contain sensitive data that only authorized users should see.
         </p>
+      </section>
+
+      {/* Logout */}
+      <div className="content-section" style={{ paddingTop: 'var(--gap-24)' }}>
+        <button
+          onClick={() => {
+            sessionStorage.removeItem('verificationResult');
+            sessionStorage.removeItem('proofData');
+            window.location.href = '/';
+          }}
+          className="btn-ghost"
+        >
+          End Session
+        </button>
       </div>
 
-      <button
-        onClick={() => {
-          sessionStorage.removeItem('verificationResult');
-          sessionStorage.removeItem('proofData');
-          window.location.href = '/';
-        }}
-        className="mt-4 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
-      >
-        Logout
-      </button>
-    </div>
+      {/* Footer Stats */}
+      <div className="footer-stats">
+        <div className="fs-cell">
+          <span className="fs-label">Status</span>
+          <span className="fs-value fs-value--green">Verified</span>
+        </div>
+        <div className="fs-cell">
+          <span className="fs-label">Method</span>
+          <span className="fs-value">Groth16 ZKP</span>
+        </div>
+        <div className="fs-cell">
+          <span className="fs-label">Network</span>
+          <span className="fs-value">Polygon Amoy</span>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="bottom-spacer"></div>
+      <div className="bottom-bar">
+        <div className="bb-left">
+          <span className="bb-item">
+            <span className="bb-dot"></span>connected
+          </span>
+        </div>
+        <div className="bb-right">
+          <span className="bb-item">polygon amoy</span>
+          <div className="bb-sep"></div>
+          <span className="bb-item">v1.0.0</span>
+        </div>
+      </div>
+    </>
   );
 }
