@@ -56,7 +56,6 @@ export default function ConsentPage() {
         args: [formattedCid as `0x${string}`],
       });
 
-      // Save consent record locally
       await saveConsent({
         consentId: formattedCid,
         spId: spId.toLowerCase(),
@@ -72,71 +71,123 @@ export default function ConsentPage() {
 
   if (!isConnected) {
     return (
-      <div className="max-w-lg mx-auto py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Register Consent</h1>
-        <p className="text-gray-500 mb-4">Connect your wallet to register consent.</p>
+      <div className="wallet-gate">
+        <p className="wallet-gate-eyebrow">Wallet Required</p>
+        <h1 className="wallet-gate-heading">Connect your wallet to continue</h1>
+        <p className="wallet-gate-desc">You need a connected wallet to register consent.</p>
         <ConnectWallet />
       </div>
     );
   }
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Register Consent</h1>
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <p className="eyebrow">Register Consent</p>
+        <h1 className="hero-title">
+          Authorize
+          <br />
+          <span className="muted">a provider.</span>
+        </h1>
+        <div className="hero-body">
+          <p className="hero-desc">
+            Register a new consent for a service provider. Your identity is protected by a
+            Zero-Knowledge Proof — the provider can verify consent validity without ever seeing your
+            secret.
+          </p>
+        </div>
+      </section>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Service Provider Address (spId)</label>
+      {/* Form */}
+      <div className="content-section">
+        <div className="form-group">
+          <label className="rtf-label">Service Provider Address (spId)</label>
           <input
             type="text"
             value={spId}
             onChange={(e) => setSpId(e.target.value)}
             placeholder="0x..."
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm font-mono"
+            className="rtf-input"
           />
-          <p className="text-xs text-gray-500 mt-1">
-            The Ethereum wallet address of the service provider.
-          </p>
+          <p className="form-hint">The Ethereum wallet address of the service provider.</p>
         </div>
 
         {!isDevMode() && (
-          <div>
-            <label className="block text-sm font-medium mb-1">Passphrase</label>
+          <div className="form-group">
+            <label className="rtf-label">Passphrase</label>
             <input
               type="password"
               value={passphrase}
               onChange={(e) => setPassphrase(e.target.value)}
               placeholder="Enter your passphrase"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
+              className="rtf-input"
             />
           </div>
         )}
 
+        {/* Submit */}
         <button
           onClick={handleRegister}
           disabled={isConfirming || !!txHash}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
+          className="btn-primary btn-primary--full"
         >
           {isConfirming ? 'Confirming...' : txHash ? 'Submitted' : 'Register Consent'}
         </button>
 
-        {status && <p className="text-sm text-blue-600 dark:text-blue-400">{status}</p>}
-        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+        {/* Pending */}
+        {isConfirming && (
+          <div className="tx-pending">
+            <span className="tx-pending-dot"></span>
+            <span className="tx-pending-text">Waiting for confirmation</span>
+          </div>
+        )}
 
+        {/* Status */}
+        {status && !isConfirming && (
+          <div className="state-success">
+            <div className="state-success-row">
+              <span className="state-success-dot"></span>
+              <span className="state-success-text">{status}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <div className="state-error">
+            <span className="state-error-dot"></span>
+            <span className="state-error-text">{error}</span>
+          </div>
+        )}
+
+        {/* Success */}
         {isSuccess && consentId && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-            <p className="text-sm text-green-800 dark:text-green-200 font-medium">
-              Consent registered successfully!
-            </p>
-            <p className="text-xs text-green-700 dark:text-green-300 mt-1 font-mono break-all">
-              consentId: {formatConsentId(consentId)}
-            </p>
-            <p className="text-xs text-green-700 dark:text-green-300 mt-1 font-mono">
-              tx: {txHash}
-            </p>
+          <div className="state-success">
+            <div className="state-success-row">
+              <span className="state-success-dot"></span>
+              <span className="state-success-text">Consent registered successfully</span>
+            </div>
+            <p className="state-success-detail">consentId: {formatConsentId(consentId)}</p>
+            <p className="state-success-detail">tx: {txHash}</p>
           </div>
         )}
       </div>
-    </div>
+
+      {/* Bottom Bar */}
+      <div className="bottom-spacer"></div>
+      <div className="bottom-bar">
+        <div className="bb-left">
+          <span className="bb-item">
+            <span className="bb-dot"></span>connected
+          </span>
+        </div>
+        <div className="bb-right">
+          <span className="bb-item">polygon amoy</span>
+          <div className="bb-sep"></div>
+          <span className="bb-item">v1.0.0</span>
+        </div>
+      </div>
+    </>
   );
 }

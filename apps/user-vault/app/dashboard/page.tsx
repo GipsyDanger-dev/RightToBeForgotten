@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { getAllConsents, ConsentRecord, isDevMode, devAutoUnlock } from '@/lib/identity';
@@ -34,70 +35,145 @@ export default function DashboardPage() {
 
   if (!isConnected) {
     return (
-      <div className="max-w-lg mx-auto py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        <p className="text-gray-500 mb-4">Connect your wallet to view your consents.</p>
+      <div className="wallet-gate">
+        <p className="wallet-gate-eyebrow">Wallet Required</p>
+        <h1 className="wallet-gate-heading">Connect your wallet to continue</h1>
+        <p className="wallet-gate-desc">
+          You need a connected wallet to view your consent dashboard.
+        </p>
         <ConnectWallet />
       </div>
     );
   }
 
-  return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Consent Dashboard</h1>
+  const activeCount = consents.filter((c) => c.state === 'active').length;
+  const revokedCount = consents.filter((c) => c.state === 'revoked').length;
 
+  return (
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <p className="eyebrow">Consent Dashboard</p>
+        <h1 className="hero-title">
+          Your consents.
+          <br />
+          <span className="muted">At a glance.</span>
+        </h1>
+        <div className="hero-body">
+          <p className="hero-desc">
+            Every service provider you&apos;ve authorized, their consent status, and verification
+            history. Review who can access your data — and cut them off when you&apos;re done.
+          </p>
+          <div>
+            <div className="hero-deco-num">{consents.length.toString().padStart(2, '0')}</div>
+            <div className="hero-deco-label">consents</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Error */}
       {error && (
-        <div className="p-3 mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+        <div className="section">
+          <div className="state-error">
+            <span className="state-error-dot"></span>
+            <span className="state-error-text">{error}</span>
+          </div>
         </div>
       )}
 
-      {loading ? (
-        <p className="text-gray-500">Loading...</p>
-      ) : consents.length === 0 ? (
-        <div className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg text-center">
-          <p className="text-gray-500">No consents registered yet.</p>
+      {/* Consent List */}
+      <section className="section">
+        <div className="section-header">
+          <span className="section-label">All Consents</span>
+          <span className="section-count">
+            {activeCount} active · {revokedCount} revoked
+          </span>
         </div>
-      ) : (
-        <div className="space-y-4">
-          {consents.map((c) => (
-            <div
-              key={c.consentId}
-              className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">Consent</span>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    c.state === 'active'
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                      : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                  }`}
-                >
-                  {c.state.toUpperCase()}
-                </span>
+
+        {loading ? (
+          <p className="loading-text">Loading consents...</p>
+        ) : consents.length === 0 ? (
+          <div className="empty-state">
+            <p>No consents registered yet.</p>
+            <p style={{ marginTop: '0.5rem' }}>
+              <Link href="/consent">Register your first consent →</Link>
+            </p>
+          </div>
+        ) : (
+          consents.map((c) => (
+            <div key={c.consentId} className="consent-item">
+              <div className="consent-header">
+                <div>
+                  <p className="consent-title">Consent</p>
+                  <p className="consent-desc">
+                    Registered {new Date(c.registeredAt).toLocaleDateString()} · Version{' '}
+                    {c.consentVersion}
+                  </p>
+                </div>
+                <div className="consent-meta">
+                  <span
+                    className={`status-badge ${
+                      c.state === 'active' ? 'status-badge--green' : 'status-badge--red'
+                    }`}
+                  >
+                    <span
+                      className={`status-dot ${
+                        c.state === 'active' ? 'status-dot--green' : 'status-dot--red'
+                      }`}
+                    ></span>
+                    {c.state}
+                  </span>
+                </div>
               </div>
-              <div className="text-xs text-gray-500 space-y-1">
-                <p>
-                  <span className="font-mono">consentId:</span>{' '}
-                  <span className="font-mono break-all">{formatConsentId(c.consentId)}</span>
-                </p>
-                <p>
-                  <span className="font-mono">spId:</span>{' '}
-                  <span className="font-mono">{c.spId}</span>
-                </p>
-                <p>
-                  <span className="font-mono">version:</span> {c.consentVersion}
-                </p>
-                <p>
-                  <span className="font-mono">registered:</span>{' '}
-                  {new Date(c.registeredAt).toLocaleString()}
-                </p>
+              <div style={{ marginTop: 'var(--gap-12)' }}>
+                <div className="key-row">
+                  <span className="key-label">Consent ID</span>
+                  <span className="key-value">{formatConsentId(c.consentId)}</span>
+                </div>
+                <div className="key-row">
+                  <span className="key-label">Provider</span>
+                  <span className="key-value">{c.spId}</span>
+                </div>
+                <div className="key-row">
+                  <span className="key-label">Registered</span>
+                  <span className="key-value">{new Date(c.registeredAt).toLocaleString()}</span>
+                </div>
               </div>
             </div>
-          ))}
+          ))
+        )}
+      </section>
+
+      {/* Footer Stats */}
+      <div className="footer-stats">
+        <div className="fs-cell">
+          <span className="fs-label">Active</span>
+          <span className="fs-value fs-value--green">{activeCount} consents</span>
         </div>
-      )}
-    </div>
+        <div className="fs-cell">
+          <span className="fs-label">Revoked</span>
+          <span className="fs-value fs-value--red">{revokedCount}</span>
+        </div>
+        <div className="fs-cell">
+          <span className="fs-label">Total</span>
+          <span className="fs-value">{consents.length}</span>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="bottom-spacer"></div>
+      <div className="bottom-bar">
+        <div className="bb-left">
+          <span className="bb-item">
+            <span className="bb-dot"></span>connected
+          </span>
+        </div>
+        <div className="bb-right">
+          <span className="bb-item">polygon amoy</span>
+          <div className="bb-sep"></div>
+          <span className="bb-item">v1.0.0</span>
+        </div>
+      </div>
+    </>
   );
 }

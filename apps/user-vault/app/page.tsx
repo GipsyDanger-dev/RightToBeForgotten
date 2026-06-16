@@ -18,62 +18,116 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto py-16">
-      <h1 className="text-3xl font-bold mb-4">RightToBeForgotten</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
-        Privacy-preserving consent management using Zero-Knowledge Proofs. Register consent,
-        generate proofs, and exercise your right to be forgotten.
-      </p>
+    <>
+      {/* Warning Banner */}
+      {identityReady === false && (
+        <div className="warning-banner">
+          <span className="warning-dot"></span>
+          <span className="warning-text">
+            No identity found. <Link href="/identity">Generate one to get started.</Link>
+          </span>
+        </div>
+      )}
 
-      <div className="space-y-4">
-        {identityReady === false && (
-          <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-            <p className="text-sm text-yellow-800 dark:text-yellow-200">
-              No identity found. Generate one to get started.
-            </p>
-            <Link
-              href="/identity"
-              className="mt-2 inline-block text-sm text-yellow-900 dark:text-yellow-100 underline"
-            >
-              Generate Identity
-            </Link>
+      {/* Hero */}
+      <section className="hero">
+        <p className="eyebrow">Right to be Forgotten · User Vault</p>
+        <h1 className="hero-title">
+          Your data.
+          <br />
+          <span className="muted">Your rules.</span>
+        </h1>
+        <div className="hero-body">
+          <p className="hero-desc">
+            Privacy-preserving consent management using Zero-Knowledge Proofs. Register consent,
+            generate proofs, and exercise your right to be forgotten — without ever revealing your
+            identity.
+          </p>
+          <div>
+            <div className="hero-deco-num">04</div>
+            <div className="hero-deco-label">modules</div>
           </div>
-        )}
+        </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link
-            href="/dashboard"
-            className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-          >
-            <h2 className="font-semibold mb-2">Dashboard</h2>
-            <p className="text-sm text-gray-500">View and manage your active consents.</p>
+      {/* Navigation List */}
+      <ul className="nav-list">
+        <li className="nav-list-item">
+          <Link href="/dashboard">
+            <span className="nl-num">01</span>
+            <span className="nl-title">Dashboard</span>
+            <div className="nl-meta">
+              <span className="nl-tag">consent overview</span>
+              <span className="nl-desc">View and manage all your registered consents</span>
+            </div>
+            <span className="nl-arrow">↗</span>
           </Link>
+        </li>
+        <li className="nav-list-item">
+          <Link href="/consent">
+            <span className="nl-num">02</span>
+            <span className="nl-title">Register Consent</span>
+            <div className="nl-meta">
+              <span className="nl-tag">new consent</span>
+              <span className="nl-desc">Authorize a service provider with ZK proof</span>
+            </div>
+            <span className="nl-arrow">↗</span>
+          </Link>
+        </li>
+        <li className="nav-list-item nav-list-item--danger">
+          <Link href="/revoke">
+            <span className="nl-num">03</span>
+            <span className="nl-title">Revoke Consent</span>
+            <div className="nl-meta">
+              <span className="nl-tag">destructive</span>
+              <span className="nl-desc">Permanently revoke access — irreversible</span>
+            </div>
+            <span className="nl-arrow">↗</span>
+          </Link>
+        </li>
+        <li className="nav-list-item">
+          <Link href="/identity">
+            <span className="nl-num">04</span>
+            <span className="nl-title">Identity</span>
+            <div className="nl-meta">
+              <span className="nl-tag">cryptographic identity</span>
+              <span className="nl-desc">Create, unlock, export, or import your identity</span>
+            </div>
+            <span className="nl-arrow">↗</span>
+          </Link>
+        </li>
+      </ul>
 
-          <Link
-            href="/consent"
-            className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-          >
-            <h2 className="font-semibold mb-2">Register Consent</h2>
-            <p className="text-sm text-gray-500">Register consent for a service provider.</p>
-          </Link>
-
-          <Link
-            href="/revoke"
-            className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-          >
-            <h2 className="font-semibold mb-2">Revoke Consent</h2>
-            <p className="text-sm text-gray-500">Exercise your right to be forgotten.</p>
-          </Link>
-
-          <Link
-            href="/identity"
-            className="p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-          >
-            <h2 className="font-semibold mb-2">Identity</h2>
-            <p className="text-sm text-gray-500">Manage your cryptographic identity.</p>
-          </Link>
+      {/* Footer Stats */}
+      <div className="footer-stats">
+        <div className="fs-cell">
+          <span className="fs-label">Network</span>
+          <span className="fs-value">Polygon Amoy</span>
+        </div>
+        <div className="fs-cell">
+          <span className="fs-label">Identity</span>
+          <span className={`fs-value ${identityReady ? 'fs-value--green' : 'fs-value--red'}`}>
+            {identityReady ? 'Ready' : 'Not Found'}
+          </span>
+        </div>
+        <div className="fs-cell">
+          <span className="fs-label">ZK Circuit</span>
+          <span className="fs-value">Groth16 · Poseidon</span>
         </div>
       </div>
-    </div>
+
+      {/* Bottom Bar */}
+      <div className="bottom-spacer"></div>
+      <div className="bottom-bar">
+        <div className="bb-left">
+          <span className="bb-item">
+            <span className="bb-dot"></span>polygon amoy
+          </span>
+        </div>
+        <div className="bb-right">
+          <span className="bb-item">v1.0.0</span>
+        </div>
+      </div>
+    </>
   );
 }

@@ -15,6 +15,14 @@ import {
 
 type View = 'status' | 'create' | 'unlock' | 'export' | 'import';
 
+const tabs: { key: View; label: string }[] = [
+  { key: 'status', label: 'Status' },
+  { key: 'create', label: 'Create' },
+  { key: 'unlock', label: 'Unlock' },
+  { key: 'export', label: 'Export' },
+  { key: 'import', label: 'Import' },
+];
+
 export default function IdentityPage() {
   const [view, setView] = useState<View>('status');
   const [identityExists, setIdentityExists] = useState<boolean | null>(null);
@@ -113,253 +121,325 @@ export default function IdentityPage() {
     }
   }
 
+  function resetFormState() {
+    setPassphrase('');
+    setConfirmPassphrase('');
+    setExportData('');
+    setImportData('');
+    setError('');
+  }
+
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Identity Management</h1>
-
-      {status && (
-        <div className="p-3 mb-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-          <p className="text-sm text-green-800 dark:text-green-200">{status}</p>
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <p className="eyebrow">Identity Management</p>
+        <h1 className="hero-title">
+          Your
+          <br />
+          <span className="muted">identity.</span>
+        </h1>
+        <div className="hero-body">
+          <p className="hero-desc">
+            Create, unlock, export, or import your cryptographic identity. Your identity is
+            encrypted locally and never leaves your device.
+          </p>
         </div>
-      )}
+      </section>
 
-      {view === 'status' && (
-        <div className="space-y-4">
-          <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg">
-            <h2 className="font-medium mb-2">Identity Status</h2>
-            {identityExists === null ? (
-              <p className="text-sm text-gray-500">Loading...</p>
-            ) : identityExists ? (
-              <p className="text-sm text-green-600 dark:text-green-400">Identity exists</p>
-            ) : (
-              <p className="text-sm text-yellow-600 dark:text-yellow-400">No identity found</p>
-            )}
+      {/* Tab Bar */}
+      <div className="content-section">
+        <div className="tab-bar">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => {
+                setView(tab.key);
+                resetFormState();
+              }}
+              className={`tab-item${view === tab.key ? ' tab-item--active' : ''}`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
-            {identity && (
-              <div className="mt-3 text-xs font-mono space-y-1 text-gray-500">
-                <p>
-                  userSecret: {identity.userSecret.slice(0, 10)}...{identity.userSecret.slice(-8)}
-                </p>
-                <p>consentVersion: {identity.consentVersion}</p>
+        {/* Status Message */}
+        {status && (
+          <div className="state-success" style={{ marginBottom: 'var(--gap-24)' }}>
+            <div className="state-success-row">
+              <span className="state-success-dot"></span>
+              <span className="state-success-text">{status}</span>
+            </div>
+          </div>
+        )}
+
+        {/* STATUS View */}
+        {view === 'status' && (
+          <div>
+            <div className="consent-item">
+              <div className="consent-header">
+                <div>
+                  <p className="consent-title">Identity Status</p>
+                  <p className="consent-desc">
+                    {identityExists === null
+                      ? 'Checking...'
+                      : identityExists
+                        ? 'Your cryptographic identity is loaded and ready.'
+                        : 'No identity found. Create one or import a backup.'}
+                  </p>
+                </div>
+                <div className="consent-meta">
+                  {identityExists !== null && (
+                    <span
+                      className={`status-badge ${
+                        identityExists ? 'status-badge--green' : 'status-badge--yellow'
+                      }`}
+                    >
+                      <span
+                        className={`status-dot ${
+                          identityExists ? 'status-dot--green' : 'status-dot--yellow'
+                        }`}
+                      ></span>
+                      {identityExists ? 'active' : 'missing'}
+                    </span>
+                  )}
+                </div>
               </div>
-            )}
 
-            {isDevMode() && (
-              <p className="mt-2 text-xs text-yellow-600 dark:text-yellow-400">
-                Dev mode: auto-unlock enabled
-              </p>
-            )}
-          </div>
+              {identity && (
+                <div style={{ marginTop: 'var(--gap-12)' }}>
+                  <div className="key-row">
+                    <span className="key-label">User Secret</span>
+                    <span className="key-value">
+                      {identity.userSecret.slice(0, 10)}...{identity.userSecret.slice(-8)}
+                    </span>
+                  </div>
+                  <div className="key-row">
+                    <span className="key-label">Version</span>
+                    <span className="key-value">{identity.consentVersion}</span>
+                  </div>
+                </div>
+              )}
 
-          <div className="grid grid-cols-2 gap-3">
-            {!identityExists && (
-              <button
-                onClick={() => setView('create')}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-              >
-                Create Identity
-              </button>
-            )}
-            {identityExists && !identity && (
-              <button
-                onClick={() => setView('unlock')}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-              >
-                Unlock
-              </button>
-            )}
-            {identityExists && (
-              <button
-                onClick={() => setView('export')}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors text-sm"
-              >
-                Export Backup
-              </button>
-            )}
-            <button
-              onClick={() => setView('import')}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors text-sm"
-            >
-              Import Backup
-            </button>
-          </div>
-        </div>
-      )}
+              {isDevMode() && (
+                <div style={{ marginTop: 'var(--gap-12)' }}>
+                  <span className="status-badge status-badge--yellow">
+                    <span className="status-dot status-dot--yellow"></span>
+                    dev mode · auto-unlock
+                  </span>
+                </div>
+              )}
+            </div>
 
-      {view === 'create' && (
-        <div className="space-y-4">
-          <p className="text-sm text-gray-500">
-            Create a new cryptographic identity. This will generate a random userSecret.
-          </p>
-          <div>
-            <label className="block text-sm font-medium mb-1">Passphrase</label>
-            <input
-              type="password"
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              placeholder="Min 8 characters"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Confirm Passphrase</label>
-            <input
-              type="password"
-              value={confirmPassphrase}
-              onChange={(e) => setConfirmPassphrase(e.target.value)}
-              placeholder="Repeat passphrase"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
-            />
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={handleCreate}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-            >
-              Create
-            </button>
-            <button
-              onClick={() => {
-                setView('status');
-                setError('');
-              }}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {view === 'unlock' && (
-        <div className="space-y-4">
-          <p className="text-sm text-gray-500">Enter your passphrase to unlock your identity.</p>
-          <div>
-            <label className="block text-sm font-medium mb-1">Passphrase</label>
-            <input
-              type="password"
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
-            />
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={handleUnlock}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-            >
-              Unlock
-            </button>
-            <button
-              onClick={() => {
-                setView('status');
-                setError('');
-              }}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {view === 'export' && (
-        <div className="space-y-4">
-          <p className="text-sm text-gray-500">
-            Export your encrypted identity backup. Enter your passphrase to decrypt and re-encrypt
-            for export.
-          </p>
-          <div>
-            <label className="block text-sm font-medium mb-1">Passphrase</label>
-            <input
-              type="password"
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
-            />
-          </div>
-          <button
-            onClick={handleExport}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-          >
-            Generate Backup
-          </button>
-          {exportData && (
-            <div>
-              <label className="block text-sm font-medium mb-1">Backup Data</label>
-              <textarea
-                readOnly
-                value={exportData}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-xs font-mono h-32"
-              />
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(exportData);
-                  setStatus('Copied to clipboard.');
-                }}
-                className="mt-2 text-sm text-blue-600 dark:text-blue-400"
-              >
-                Copy to Clipboard
+            {/* Action Buttons */}
+            <div className="btn-row" style={{ marginTop: 'var(--gap-24)' }}>
+              {!identityExists && (
+                <button onClick={() => setView('create')} className="btn-primary">
+                  Create Identity
+                </button>
+              )}
+              {identityExists && !identity && (
+                <button onClick={() => setView('unlock')} className="btn-primary">
+                  Unlock
+                </button>
+              )}
+              {identityExists && (
+                <button onClick={() => setView('export')} className="btn-ghost">
+                  Export Backup
+                </button>
+              )}
+              <button onClick={() => setView('import')} className="btn-ghost">
+                Import Backup
               </button>
             </div>
-          )}
-          <button
-            onClick={() => {
-              setView('status');
-              setError('');
-              setExportData('');
-            }}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
-          >
-            Back
-          </button>
-        </div>
-      )}
+          </div>
+        )}
 
-      {view === 'import' && (
-        <div className="space-y-4">
-          <p className="text-sm text-gray-500">
-            Import an identity from a backup file. Enter the passphrase used during export.
-          </p>
+        {/* CREATE View */}
+        {view === 'create' && (
           <div>
-            <label className="block text-sm font-medium mb-1">Backup Data</label>
-            <textarea
-              value={importData}
-              onChange={(e) => setImportData(e.target.value)}
-              placeholder="Paste backup JSON here"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-xs font-mono h-32"
-            />
+            <p className="u-mono-xs" style={{ marginBottom: 'var(--gap-24)' }}>
+              Create a new cryptographic identity. This will generate a random 256-bit userSecret.
+            </p>
+            <div className="form-group">
+              <label className="rtf-label">Passphrase</label>
+              <input
+                type="password"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                placeholder="Min 8 characters"
+                className="rtf-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="rtf-label">Confirm Passphrase</label>
+              <input
+                type="password"
+                value={confirmPassphrase}
+                onChange={(e) => setConfirmPassphrase(e.target.value)}
+                placeholder="Repeat passphrase"
+                className="rtf-input"
+              />
+            </div>
+            <div className="btn-row">
+              <button onClick={handleCreate} className="btn-primary" style={{ flex: 1 }}>
+                Create
+              </button>
+              <button
+                onClick={() => {
+                  setView('status');
+                  resetFormState();
+                }}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
+        )}
+
+        {/* UNLOCK View */}
+        {view === 'unlock' && (
           <div>
-            <label className="block text-sm font-medium mb-1">Passphrase</label>
-            <input
-              type="password"
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-transparent text-sm"
-            />
+            <p className="u-mono-xs" style={{ marginBottom: 'var(--gap-24)' }}>
+              Enter your passphrase to decrypt and unlock your identity.
+            </p>
+            <div className="form-group">
+              <label className="rtf-label">Passphrase</label>
+              <input
+                type="password"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                className="rtf-input"
+              />
+            </div>
+            <div className="btn-row">
+              <button onClick={handleUnlock} className="btn-primary" style={{ flex: 1 }}>
+                Unlock
+              </button>
+              <button
+                onClick={() => {
+                  setView('status');
+                  resetFormState();
+                }}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-          <div className="flex gap-3">
-            <button
-              onClick={handleImport}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-            >
-              Import
+        )}
+
+        {/* EXPORT View */}
+        {view === 'export' && (
+          <div>
+            <p className="u-mono-xs" style={{ marginBottom: 'var(--gap-24)' }}>
+              Export your encrypted identity backup. The backup is encrypted with your passphrase.
+            </p>
+            <div className="form-group">
+              <label className="rtf-label">Passphrase</label>
+              <input
+                type="password"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                className="rtf-input"
+              />
+            </div>
+            <button onClick={handleExport} className="btn-primary btn-primary--full">
+              Generate Backup
             </button>
+            {exportData && (
+              <div className="form-group" style={{ marginTop: 'var(--gap-24)' }}>
+                <label className="rtf-label">Backup Data</label>
+                <textarea readOnly value={exportData} className="rtf-textarea" />
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(exportData);
+                    setStatus('Copied to clipboard.');
+                  }}
+                  className="btn-ghost"
+                  style={{ marginTop: 'var(--gap-8)' }}
+                >
+                  Copy to Clipboard
+                </button>
+              </div>
+            )}
             <button
               onClick={() => {
                 setView('status');
-                setError('');
+                resetFormState();
               }}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
+              className="btn-ghost btn-ghost--full"
+              style={{ marginTop: 'var(--gap-12)' }}
             >
-              Cancel
+              Back
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
-    </div>
+        {/* IMPORT View */}
+        {view === 'import' && (
+          <div>
+            <p className="u-mono-xs" style={{ marginBottom: 'var(--gap-24)' }}>
+              Import an identity from a backup. Enter the passphrase used during export.
+            </p>
+            <div className="form-group">
+              <label className="rtf-label">Backup Data</label>
+              <textarea
+                value={importData}
+                onChange={(e) => setImportData(e.target.value)}
+                placeholder="Paste backup JSON here"
+                className="rtf-textarea"
+              />
+            </div>
+            <div className="form-group">
+              <label className="rtf-label">Passphrase</label>
+              <input
+                type="password"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                className="rtf-input"
+              />
+            </div>
+            <div className="btn-row">
+              <button onClick={handleImport} className="btn-primary" style={{ flex: 1 }}>
+                Import
+              </button>
+              <button
+                onClick={() => {
+                  setView('status');
+                  resetFormState();
+                }}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <div className="state-error" style={{ marginTop: 'var(--gap-24)' }}>
+            <span className="state-error-dot"></span>
+            <span className="state-error-text">{error}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="bottom-spacer"></div>
+      <div className="bottom-bar">
+        <div className="bb-left">
+          <span className="bb-item">
+            <span className="bb-dot"></span>polygon amoy
+          </span>
+        </div>
+        <div className="bb-right">
+          <span className="bb-item">v1.0.0</span>
+        </div>
+      </div>
+    </>
   );
 }
