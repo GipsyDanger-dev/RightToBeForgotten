@@ -4,7 +4,7 @@ import { Navigation } from '@/components/Navigation';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Service Provider - RightToBeForgotten',
+  title: 'Service Provider — RTF',
   description: 'Privacy-preserving access verification',
 };
 
@@ -13,10 +13,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <WalletProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navigation />
-            <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
-          </div>
+          <Navigation />
+          <main>{children}</main>
         </WalletProvider>
       </body>
     </html>

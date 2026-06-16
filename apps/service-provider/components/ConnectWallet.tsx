@@ -12,7 +12,7 @@ export function ConnectWallet() {
 
   if (!mounted) {
     return (
-      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium opacity-50">
+      <button className="btn-wallet" style={{ opacity: 0.5 }}>
         Connect Wallet
       </button>
     );
@@ -23,7 +23,7 @@ export function ConnectWallet() {
       {({ isConnected, show, truncatedAddress }) => (
         <button
           onClick={show}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          className={`btn-wallet${isConnected ? ' btn-wallet--connected' : ''}`}
         >
           {isConnected ? truncatedAddress : 'Connect Wallet'}
         </button>
