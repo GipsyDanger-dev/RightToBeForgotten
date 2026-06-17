@@ -37,6 +37,9 @@ contract ConsentRegistry {
     /// @notice Thrown when a nullifier has already been used.
     error NullifierAlreadyUsed();
 
+    /// @notice Thrown when verifier address is zero.
+    error InvalidVerifier();
+
     // ──────────────────────────────────────────────
     // Events
     // ──────────────────────────────────────────────
@@ -81,6 +84,7 @@ contract ConsentRegistry {
 
     /// @param _verifier Address of the deployed Groth16Verifier contract.
     constructor(IVerifier _verifier) {
+        if (address(_verifier) == address(0)) revert InvalidVerifier();
         verifier = _verifier;
     }
 
