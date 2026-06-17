@@ -1,6 +1,10 @@
 // Contract ABIs and addresses
 
-export const CONSENT_REGISTRY_ADDRESS = process.env.NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS!;
+const _address = process.env.NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS;
+if (!_address) {
+  console.warn('NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS is not set. Contract calls will fail.');
+}
+export const CONSENT_REGISTRY_ADDRESS = _address as `0x${string}`;
 
 export const CONSENT_REGISTRY_ABI = [
   {
