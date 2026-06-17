@@ -106,6 +106,14 @@ export default function IdentityPage() {
       return;
     }
 
+    // Confirm before overwriting existing identity
+    if (identityExists) {
+      const confirmed = window.confirm(
+        'You already have an identity. Importing will OVERWRITE it permanently. Continue?'
+      );
+      if (!confirmed) return;
+    }
+
     try {
       const id = await importIdentity(importData, passphrase);
       if (!id) {
@@ -335,17 +343,9 @@ export default function IdentityPage() {
         {view === 'export' && (
           <div>
             <p className="u-mono-xs" style={{ marginBottom: 'var(--gap-24)' }}>
-              Export your encrypted identity backup. The backup is encrypted with your passphrase.
+              Export your encrypted identity backup. The backup is already encrypted with your
+              passphrase from identity creation.
             </p>
-            <div className="form-group">
-              <label className="rtf-label">Passphrase</label>
-              <input
-                type="password"
-                value={passphrase}
-                onChange={(e) => setPassphrase(e.target.value)}
-                className="rtf-input"
-              />
-            </div>
             <button onClick={handleExport} className="btn-primary btn-primary--full">
               Generate Backup
             </button>
