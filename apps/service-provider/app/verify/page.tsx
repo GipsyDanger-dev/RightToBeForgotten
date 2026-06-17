@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from 'wagmi';
+import { decodeEventLog } from 'viem';
 import { CONSENT_REGISTRY_ADDRESS, CONSENT_REGISTRY_ABI } from '@/lib/contracts';
 import { ConnectWallet } from '@/components/ConnectWallet';
 import type { ProofData } from '@/app/page';
@@ -12,8 +13,14 @@ export default function VerifyPage() {
   const [error, setError] = useState('');
   const [verificationResult, setVerificationResult] = useState<boolean | null>(null);
 
-  const { writeContract, data: txHash } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+  const { writeContract, data: txHash, error: writeError, isPending } = useWriteContract();
+  const publicClient = usePublicClient();
+  const {
+    isLoading: isConfirming,
+    isSuccess,
+    isError: isTxError,
+    error: txError,
+  } = useWaitForTransactionReceipt({
     hash: txHash,
   });
 
@@ -29,12 +36,57 @@ export default function VerifyPage() {
     }
   }, []);
 
+  // Read AccessVerified event from tx receipt to get actual contract return value
   useEffect(() => {
-    if (isSuccess) {
-      setVerificationResult(true);
-      sessionStorage.setItem('verificationResult', 'true');
+    if (isSuccess && txHash && publicClient) {
+      const readEventResult = async () => {
+        try {
+          const receipt = await publicClient.getTransactionReceipt({ hash: txHash });
+          // Find AccessVerified event in logs
+          for (const log of receipt.logs) {
+            try {
+              const decoded = decodeEventLog({
+                abi: CONSENT_REGISTRY_ABI,
+                data: log.data,
+                topics: log.topics,
+              });
+              if (decoded.eventName === 'AccessVerified') {
+                const result = decoded.args.result as boolean;
+                setVerificationResult(result);
+                sessionStorage.setItem('verificationResult', String(result));
+                return;
+              }
+            } catch {
+              // Not our event, continue
+            }
+          }
+          // Fallback: if event not found, mark as failed
+          setVerificationResult(false);
+          sessionStorage.setItem('verificationResult', 'false');
+          setError('Could not decode verification result from transaction.');
+        } catch (err) {
+          setVerificationResult(false);
+          setError((err as Error).message || 'Failed to read verification result.');
+        }
+      };
+      readEventResult();
     }
-  }, [isSuccess]);
+  }, [isSuccess, txHash, publicClient]);
+
+  // Handle write errors (wallet rejection, RPC errors)
+  useEffect(() => {
+    if (writeError) {
+      setError(writeError.message || 'Transaction failed.');
+    }
+  }, [writeError]);
+
+  // Handle tx revert errors
+  useEffect(() => {
+    if (isTxError && txError) {
+      setVerificationResult(false);
+      setError(`Transaction failed: ${txError.message}`);
+    }
+  }, [isTxError, txError]);
 
   function handleVerify() {
     setError('');
@@ -45,9 +97,10 @@ export default function VerifyPage() {
 
     try {
       const pA: [bigint, bigint] = [BigInt(proofData.proof.a[0]), BigInt(proofData.proof.a[1])];
+      // snarkJS pi_b is row-major [y][x], Solidity Groth16Verifier expects column-major [x][y]
       const pB: [[bigint, bigint], [bigint, bigint]] = [
-        [BigInt(proofData.proof.b[0][0]), BigInt(proofData.proof.b[0][1])],
-        [BigInt(proofData.proof.b[1][0]), BigInt(proofData.proof.b[1][1])],
+        [BigInt(proofData.proof.b[0][1]), BigInt(proofData.proof.b[0][0])],
+        [BigInt(proofData.proof.b[1][1]), BigInt(proofData.proof.b[1][0])],
       ];
       const pC: [bigint, bigint] = [BigInt(proofData.proof.c[0]), BigInt(proofData.proof.c[1])];
 
@@ -131,15 +184,17 @@ export default function VerifyPage() {
             {/* Verify Button */}
             <button
               onClick={handleVerify}
-              disabled={isConfirming || verificationResult !== null}
+              disabled={isPending || isConfirming || verificationResult !== null}
               className="btn-primary btn-primary--full"
               style={{ marginTop: 'var(--gap-24)' }}
             >
-              {isConfirming
-                ? 'Verifying...'
-                : verificationResult !== null
-                  ? 'Verified'
-                  : 'Verify Access'}
+              {isPending
+                ? 'Confirm in wallet...'
+                : isConfirming
+                  ? 'Verifying...'
+                  : verificationResult !== null
+                    ? 'Verified'
+                    : 'Verify Access'}
             </button>
 
             {/* Pending */}
