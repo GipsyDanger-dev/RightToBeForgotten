@@ -213,7 +213,11 @@ function getDevPassphrase(): string {
   if (process.env.NODE_ENV !== 'development') {
     throw new Error('devAutoUnlock is only available in development mode');
   }
-  return process.env.NEXT_PUBLIC_DEV_PASSPHRASE || 'rtbf-dev-local-only';
+  const passphrase = process.env.NEXT_PUBLIC_DEV_PASSPHRASE;
+  if (!passphrase) {
+    throw new Error('NEXT_PUBLIC_DEV_PASSPHRASE is not set in development mode');
+  }
+  return passphrase;
 }
 
 export async function devAutoUnlock(): Promise<Identity> {
