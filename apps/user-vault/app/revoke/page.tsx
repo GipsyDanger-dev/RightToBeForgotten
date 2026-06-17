@@ -72,7 +72,11 @@ export default function RevokePage() {
 
   useEffect(() => {
     if (isSuccess && selectedConsent) {
-      updateConsentState(selectedConsent, 'revoked');
+      updateConsentState(selectedConsent, 'revoked')
+        .then(() => loadConsents())
+        .catch((err) =>
+          setError((err as Error).message || 'Failed to update local consent state.')
+        );
     }
   }, [isSuccess, selectedConsent]);
 
