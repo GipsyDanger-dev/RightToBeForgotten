@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { devAutoUnlock, isDevMode, loadIdentity, saveConsent } from '@/lib/identity';
 import { computeConsentId, formatConsentId } from '@/lib/proof';
@@ -13,12 +13,28 @@ export default function ConsentPage() {
   const [passphrase, setPassphrase] = useState('');
   const [status, setStatus] = useState('');
   const [consentId, setConsentId] = useState('');
+  const [consentVersion, setConsentVersion] = useState(1);
   const [error, setError] = useState('');
 
   const { writeContract, data: txHash } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash: txHash,
   });
+
+  // Save consent to IndexedDB ONLY after on-chain tx is confirmed
+  useEffect(() => {
+    if (isSuccess && consentId && spId) {
+      saveConsent({
+        consentId: formatConsentId(consentId),
+        spId: spId.toLowerCase(),
+        consentVersion,
+        state: 'active',
+        registeredAt: Date.now(),
+      }).catch((err) => {
+        console.error('Failed to save consent locally:', err);
+      });
+    }
+  }, [isSuccess, consentId, spId, consentVersion]);
 
   async function handleRegister() {
     setError('');
@@ -45,6 +61,7 @@ export default function ConsentPage() {
         identity.consentVersion
       );
       setConsentId(cid);
+      setConsentVersion(identity.consentVersion);
 
       setStatus('Submitting transaction...');
       const formattedCid = formatConsentId(cid);
@@ -54,14 +71,6 @@ export default function ConsentPage() {
         abi: CONSENT_REGISTRY_ABI,
         functionName: 'registerConsent',
         args: [formattedCid as `0x${string}`],
-      });
-
-      await saveConsent({
-        consentId: formattedCid,
-        spId: spId.toLowerCase(),
-        consentVersion: identity.consentVersion,
-        state: 'active',
-        registeredAt: Date.now(),
       });
     } catch (err) {
       setError((err as Error).message);
