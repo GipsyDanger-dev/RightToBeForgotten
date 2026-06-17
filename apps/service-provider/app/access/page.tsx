@@ -1,14 +1,42 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useReadContract } from 'wagmi';
+import { CONSENT_REGISTRY_ADDRESS, CONSENT_REGISTRY_ABI } from '@/lib/contracts';
 
 export default function AccessPage() {
   const [verified, setVerified] = useState(false);
+  const [consentId, setConsentId] = useState<string | null>(null);
 
   useEffect(() => {
     const result = sessionStorage.getItem('verificationResult');
-    setVerified(result === 'true');
+    const stored = sessionStorage.getItem('proofData');
+    if (result === 'true' && stored) {
+      try {
+        const data = JSON.parse(stored);
+        setConsentId(data.consentId);
+        setVerified(true);
+      } catch {
+        setVerified(false);
+      }
+    } else {
+      setVerified(false);
+    }
   }, []);
+
+  // On-chain re-verification: check consent is still active
+  const { data: isActive, isLoading: checkingOnChain } = useReadContract({
+    address: CONSENT_REGISTRY_ADDRESS as `0x${string}`,
+    abi: CONSENT_REGISTRY_ABI,
+    functionName: 'isConsentActive',
+    args: consentId ? [consentId as `0x${string}`] : undefined,
+    query: {
+      enabled: verified && !!consentId,
+    },
+  });
+
+  // Final access decision: sessionStorage verified AND on-chain active
+  const accessGranted = verified && isActive === true;
 
   if (!verified) {
     return (
@@ -17,6 +45,35 @@ export default function AccessPage() {
         <h1 className="wallet-gate-heading">You must verify your authorization first</h1>
         <p className="wallet-gate-desc">
           This content is only accessible after a successful Zero-Knowledge Proof verification.
+        </p>
+        <a href="/verify" className="btn-primary">
+          Go to Verification
+        </a>
+      </div>
+    );
+  }
+
+  // On-chain check in progress
+  if (checkingOnChain) {
+    return (
+      <div className="wallet-gate">
+        <p className="wallet-gate-eyebrow">Verifying</p>
+        <h1 className="wallet-gate-heading">Checking consent on-chain...</h1>
+        <p className="wallet-gate-desc">
+          Re-verifying consent status with the ConsentRegistry smart contract.
+        </p>
+      </div>
+    );
+  }
+
+  // On-chain check failed — consent revoked or not active
+  if (!accessGranted) {
+    return (
+      <div className="wallet-gate">
+        <p className="wallet-gate-eyebrow">Access Denied</p>
+        <h1 className="wallet-gate-heading">Consent is no longer active</h1>
+        <p className="wallet-gate-desc">
+          The consent associated with this proof has been revoked or is no longer valid on-chain.
         </p>
         <a href="/verify" className="btn-primary">
           Go to Verification
