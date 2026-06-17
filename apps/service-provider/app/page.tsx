@@ -28,6 +28,36 @@ export default function LoginPage() {
         setError('Invalid proof format. Required: consentId, nullifier, proof');
         return;
       }
+
+      // Validate bytes32 format for consentId and nullifier
+      const bytes32Regex = /^0x[0-9a-fA-F]{64}$/;
+      if (!bytes32Regex.test(data.consentId)) {
+        setError('consentId must be a bytes32 value (0x + 64 hex chars).');
+        return;
+      }
+      if (!bytes32Regex.test(data.nullifier)) {
+        setError('nullifier must be a bytes32 value (0x + 64 hex chars).');
+        return;
+      }
+
+      // Validate proof structure: a=[2], b=[2][2], c=[2]
+      const { a, b, c } = data.proof;
+      if (
+        !Array.isArray(a) ||
+        a.length !== 2 ||
+        !Array.isArray(b) ||
+        b.length !== 2 ||
+        !Array.isArray(b[0]) ||
+        b[0].length !== 2 ||
+        !Array.isArray(b[1]) ||
+        b[1].length !== 2 ||
+        !Array.isArray(c) ||
+        c.length !== 2
+      ) {
+        setError('Invalid proof structure: a must be [2], b must be [2][2], c must be [2].');
+        return;
+      }
+
       setParsed(data as ProofData);
       sessionStorage.setItem('proofData', JSON.stringify(data));
     } catch {
