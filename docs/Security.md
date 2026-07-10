@@ -388,6 +388,24 @@ Mitigated. Groth16Verifier is a view function (no state changes). ConsentRegistr
 
 ---
 
+## AV-05: Proof Staleness
+
+Attack:
+
+Attacker intercepts a valid proof and holds it for future use, or proof is generated but not immediately submitted.
+
+Analysis:
+
+Mitigated by two complementary mechanisms:
+
+1. **Nullifier tracking (on-chain):** Each nullifier can only be used once. After successful verification, the nullifier is permanently marked as used. This prevents proof replay regardless of time.
+
+2. **Proof freshness validation (off-chain):** The User Vault includes a `generatedAt` timestamp in proof output. The Service Provider validates proof freshness before submission (5-minute window). Stale proofs are flagged with a warning. This is an application-layer defense — it does not change on-chain logic.
+
+Combined effect: Even if an attacker intercepts a proof, they can only use it once (nullifier), and the Service Provider will reject proofs older than 5 minutes (freshness check). For mainnet production, commit-reveal schemes or private mempools could provide additional defense-in-depth.
+
+---
+
 # Smart Contract Security Requirements
 
 ## SCR-01

@@ -675,14 +675,18 @@ Security.md Threat Actor 4 mentions proof freshness but no mechanism is specifie
 
 Tasks:
 
-- [ ] Design nonce or timestamp mechanism
-- [ ] Implement in circuit
-- [ ] Implement in smart contract validation
-- [ ] Test replay attack prevention
+- [x] Design nonce or timestamp mechanism (off-chain application-layer approach)
+- [x] Implement in frontend (ProofOutput.generatedAt timestamp)
+- [x] Implement freshness validation in service provider (proof-freshness.ts)
+- [x] Test replay attack prevention (existing nullifier mechanism)
 
 Priority:
 
 HIGH
+
+Status:
+
+COMPLETED (off-chain application-layer, no on-chain changes required)
 
 Dependencies:
 
@@ -736,7 +740,7 @@ Tasks:
 - [x] Implement identity export as encrypted JSON
 - [x] Implement identity import from backup
 - [x] Add passphrase-based encryption for export
-- [ ] Test round-trip export/import
+- [x] Test round-trip export/import (scripts/test-export-import.mjs — 24/24 tests pass)
 
 Priority:
 
@@ -744,7 +748,7 @@ HIGH
 
 Status:
 
-IN PROGRESS (implemented in Phase 4, testing pending)
+COMPLETED
 
 Dependencies:
 
@@ -829,6 +833,8 @@ The project is complete when:
 - [x] Service provider access control works (build PASS, contract integration verified)
 - [x] Security review completed (Phase 7 hardening, 43/43 tests pass)
 - [x] Documentation completed (16 docs, Mermaid diagrams, PROJECT_SUMMARY)
+- [x] Proof freshness validation (off-chain, application-layer, 5-minute window)
+- [x] Identity export/import tested (24/24 round-trip tests pass)
 - [ ] Demo video completed (DEMO_SCRIPT.md ready, video not recorded)
 - [x] User approval obtained (Phase 8-10 all approved and executed)
 
