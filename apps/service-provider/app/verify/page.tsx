@@ -5,6 +5,7 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt, usePublicCl
 import { decodeEventLog } from 'viem';
 import { CONSENT_REGISTRY_ADDRESS, CONSENT_REGISTRY_ABI } from '@/lib/contracts';
 import { ConnectWallet } from '@/components/ConnectWallet';
+import { checkProofFreshness } from '@/lib/proof-freshness';
 import type { ProofData } from '@/app/page';
 
 export default function VerifyPage() {
@@ -12,6 +13,7 @@ export default function VerifyPage() {
   const [proofData, setProofData] = useState<ProofData | null>(null);
   const [error, setError] = useState('');
   const [verificationResult, setVerificationResult] = useState<boolean | null>(null);
+  const [freshness, setFreshness] = useState<{ fresh: boolean; ageDisplay: string } | null>(null);
 
   const { writeContract, data: txHash, error: writeError, isPending } = useWriteContract();
   const publicClient = usePublicClient();
@@ -28,7 +30,9 @@ export default function VerifyPage() {
     const stored = sessionStorage.getItem('proofData');
     if (stored) {
       try {
-        setProofData(JSON.parse(stored));
+        const data = JSON.parse(stored);
+        setProofData(data);
+        setFreshness(checkProofFreshness(data.generatedAt));
       } catch (err) {
         setProofData(null);
         setError((err as Error).message || 'Failed to load proof data.');
@@ -178,6 +182,17 @@ export default function VerifyPage() {
                   <span className="key-label">Nullifier</span>
                   <span className="key-value">{proofData.nullifier}</span>
                 </div>
+                {freshness && (
+                  <div className="key-row">
+                    <span className="key-label">Freshness</span>
+                    <span
+                      className="key-value"
+                      style={{ color: freshness.fresh ? 'var(--green)' : 'var(--red)' }}
+                    >
+                      {freshness.fresh ? freshness.ageDisplay : `Expired (${freshness.ageDisplay})`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

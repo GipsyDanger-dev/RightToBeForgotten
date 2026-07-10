@@ -34,6 +34,7 @@ self.onmessage = async (e: MessageEvent<{ inputs: ProofInputs }>) => {
         c: proof.pi_c.slice(0, 2) as [string, string],
       },
       publicSignals: publicSignals as [string, string],
+      generatedAt: Date.now(),
     });
   } catch (err) {
     self.postMessage({ error: (err as Error).message });

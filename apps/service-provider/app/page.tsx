@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { ConnectWallet } from '@/components/ConnectWallet';
+import { checkProofFreshness } from '@/lib/proof-freshness';
 
 export interface ProofData {
   consentId: string;
@@ -12,6 +13,7 @@ export interface ProofData {
     b: [[string, string], [string, string]];
     c: [string, string];
   };
+  generatedAt?: number; // Unix timestamp (ms) — optional for backward compatibility
 }
 
 export default function LoginPage() {
@@ -19,6 +21,7 @@ export default function LoginPage() {
   const [proofJson, setProofJson] = useState('');
   const [error, setError] = useState('');
   const [parsed, setParsed] = useState<ProofData | null>(null);
+  const [freshness, setFreshness] = useState<{ fresh: boolean; ageDisplay: string } | null>(null);
 
   function handleParse() {
     setError('');
@@ -59,6 +62,7 @@ export default function LoginPage() {
       }
 
       setParsed(data as ProofData);
+      setFreshness(checkProofFreshness(data.generatedAt));
       sessionStorage.setItem('proofData', JSON.stringify(data));
     } catch {
       setError('Invalid JSON.');
@@ -134,6 +138,16 @@ export default function LoginPage() {
             </div>
             <p className="state-success-detail">consentId: {parsed.consentId}</p>
             <p className="state-success-detail">nullifier: {parsed.nullifier}</p>
+            {freshness && (
+              <p
+                className="state-success-detail"
+                style={{ color: freshness.fresh ? 'var(--green)' : 'var(--red)' }}
+              >
+                {freshness.fresh
+                  ? `Proof freshness: ${freshness.ageDisplay}`
+                  : `Proof expired: ${freshness.ageDisplay}`}
+              </p>
+            )}
             <a
               href="/verify"
               className="btn-primary"

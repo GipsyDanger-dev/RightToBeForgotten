@@ -19,6 +19,7 @@ export interface ProofOutput {
     c: [string, string];
   };
   publicSignals: [string, string]; // [consentId, nullifier]
+  generatedAt: number; // Unix timestamp (ms) when proof was generated
 }
 
 // Poseidon hash computed in a Web Worker
