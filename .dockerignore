@@ -1,0 +1,36 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+**/.next
+**/out
+**/dist
+**/build
+**/coverage
+**/artifacts
+**/cache
+**/*.tsbuildinfo
+circuits/proofs
+circuits/*.ptau
+
+# Environment (never ship secrets into images)
+.env
+.env.local
+.env.*.local
+!.env.example
+deploy/**/.env
+
+# Git / CI
+.git
+.gitignore
+.husky
+
+# Tooling
+.mimocode
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,81 @@
+# RightToBeForgotten — VPS deployment stack
+#
+# Services:
+#   user-vault        — Next.js app (identity, consent, proof generation) on :3000
+#   service-provider  — Next.js app (proof verification demo) on :3000
+#   nginx-proxy       — reverse proxy + TLS termination (80/443)
+#   acme-companion    — automatic Let's Encrypt certificates
+#
+# Usage (from this directory):
+#   cp .env.example .env   # then edit values
+#   docker compose up -d --build
+#
+# Requirements: Docker Engine 24+ with the compose plugin, Ubuntu 22.04/24.04.
+# DNS: point VAULT_DOMAIN and SP_DOMAIN (A records) at this server BEFORE first start.
+
+services:
+  user-vault:
+    build:
+      context: ../..
+      dockerfile: deploy/vps/user-vault.Dockerfile
+      args:
+        NEXT_PUBLIC_POLYGON_AMOY_RPC: ${NEXT_PUBLIC_POLYGON_AMOY_RPC:-https://polygon-amoy.drpc.org}
+        NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS: ${NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS:?set in .env}
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-demo}
+    environment:
+      VIRTUAL_HOST: ${VAULT_DOMAIN:?set in .env}
+      LETSENCRYPT_HOST: ${VAULT_DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-admin@example.com}
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  service-provider:
+    build:
+      context: ../..
+      dockerfile: deploy/vps/service-provider.Dockerfile
+      args:
+        NEXT_PUBLIC_POLYGON_AMOY_RPC: ${NEXT_PUBLIC_POLYGON_AMOY_RPC:-https://polygon-amoy.drpc.org}
+        NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS: ${NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS:?set in .env}
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-demo}
+    environment:
+      VIRTUAL_HOST: ${SP_DOMAIN:?set in .env}
+      LETSENCRYPT_HOST: ${SP_DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-admin@example.com}
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:1.6
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: unless-stopped
+
+  acme-companion:
+    image: nginxproxy/acme-companion:2.6
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL:-admin@example.com}
+    depends_on:
+      - nginx-proxy
+    restart: unless-stopped
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:

@@ -10,13 +10,13 @@ Implementation Roadmap
 
 Current Phase:
 
-Phase 11 — Portfolio Preparation
+Phase 12 — VPS Deployment Preparation
 
 Status:
 
 COMPLETED
 
-Phases Completed: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+Phases Completed: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 
 ---
 
@@ -504,6 +504,45 @@ Phase 10
 
 ---
 
+# Phase 12
+
+VPS Deployment Preparation
+
+Goal:
+
+Prepare self-hosted Docker deployment for both frontend applications (User Vault + Service Provider) on a user-owned Ubuntu VPS with automatic TLS.
+
+Status:
+
+COMPLETED
+
+Tasks:
+
+- [x] Add `output: 'standalone'` to both Next.js configs (apps/user-vault, apps/service-provider)
+- [x] Create deploy/vps/user-vault.Dockerfile (3-stage: deps, builder, standalone runner)
+- [x] Create deploy/vps/service-provider.Dockerfile (3-stage: deps, builder, standalone runner)
+- [x] Create deploy/vps/docker-compose.yml (user-vault, service-provider, nginx-proxy, acme-companion)
+- [x] Create deploy/vps/.env.example (domains, Let's Encrypt email, build-time NEXT*PUBLIC*\* vars)
+- [x] Create deploy/vps/README.md (setup + troubleshooting)
+- [x] Create .dockerignore (exclude node_modules, .next, secrets, .git, tooling)
+- [x] Create docs/VPS_DEPLOYMENT.md (comprehensive deployment guide)
+- [x] Verify standalone builds: user-vault (8 routes) PASS, service-provider (6 routes) PASS
+- [x] Verify docker-compose.yml structure (4 services) PASS
+- [x] Update .gitignore (.mimocode/, deploy/\*\*/.env)
+
+Deliverables:
+
+- Two production-ready Docker images built from Next.js standalone output
+- One-command stack: `docker compose up -d --build`
+- Automatic Let's Encrypt TLS via nginx-proxy + acme-companion
+- Smart contracts remain on Polygon Amoy (not redeployed)
+
+Dependencies:
+
+Phase 11
+
+---
+
 # Discovered Tasks
 
 Tasks identified during Phase 1 documentation review.
@@ -872,7 +911,8 @@ The project is complete when:
 - [x] Identity export/import tested (24/24 round-trip tests pass)
 - [ ] Demo video completed (DEMO_SCRIPT.md ready, video not recorded)
 - [x] User approval obtained (Phase 8-10 all approved and executed)
+- [x] VPS deployment stack prepared (Docker Compose, standalone builds verified)
 
 Project Status:
 
-FUNCTIONALLY COMPLETE — Demo video pending
+FUNCTIONALLY COMPLETE — Demo video pending, VPS deployment ready
