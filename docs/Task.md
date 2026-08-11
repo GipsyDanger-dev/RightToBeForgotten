@@ -933,6 +933,37 @@ Note:
 
 ---
 
+## DT-14
+
+Task:
+
+Make the circuit test suite runnable (mocha + chai setup)
+
+Reason:
+
+The circuits workspace had no `test` script and no documented way to run `circuits/test/consent-circuit.test.js`. Running mocha directly hung indefinitely because snarkjs/circomlibjs leave WASM handles open after tests finish (mocha does not exit); additionally chai's `expect` was not registered as a global.
+
+Tasks:
+
+- [x] Add circuits/package.json `test` script: `mocha --exit --require ./test/mocha-setup.js test/*.test.js` (`--exit` forces process termination despite open WASM handles)
+- [x] Add circuits/test/mocha-setup.js (registers `global.expect` from chai)
+- [x] Add mocha/chai to circuits devDependencies (already hoisted; lockfile re-linked)
+- [x] Verify 6/6 circuit tests pass (~730ms) and lint stays clean (0 errors)
+
+Priority:
+
+MEDIUM
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 2 (test file existed; runner was missing)
+
+---
+
 # Completion Checklist
 
 The project is complete when:
