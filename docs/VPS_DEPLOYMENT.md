@@ -264,6 +264,51 @@ docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
 
 ---
 
+# Host-Caddy Variant (systemd Caddy)
+
+When Caddy is installed **on the host** (e.g. `/usr/bin/caddy` as a systemd
+service) instead of running as a Docker container, it cannot join a Docker
+network. Use `deploy/vps/docker-compose.caddy-host.yml`, which publishes both
+apps on **localhost-only** host ports that the host Caddy proxies to:
+
+| App                | Host port        |
+| ------------------ | ---------------- |
+| `user-vault`       | `127.0.0.1:3001` |
+| `service-provider` | `127.0.0.1:3002` |
+
+```bash
+cd deploy/vps
+cp .env.example .env
+docker compose -f docker-compose.caddy-host.yml up -d --build
+```
+
+Append site blocks to `/etc/caddy/Caddyfile` (after backing it up), then
+validate and reload:
+
+```caddyfile
+vault.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3001
+}
+verify.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3002
+}
+```
+
+```bash
+sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak-$(date +%Y%m%d)
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+```
+
+- DNS A records are still required (Caddy issues certs only after the
+  subdomains resolve to the server).
+- `VAULT_DOMAIN`, `SP_DOMAIN`, `LETSENCRYPT_EMAIL` and `RTBF_CADDY_NETWORK`
+  are **not** used by this variant.
+
+---
+
 # Security Notes
 
 - Environment files (`.env`) are never committed and are excluded by `.dockerignore`.

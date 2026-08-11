@@ -171,6 +171,42 @@ docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
 docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
 ```
 
+### Host-installed Caddy (systemd, not Docker)
+
+If Caddy runs as a **host service** (`/usr/bin/caddy` managed by systemd,
+owners of ports 80/443 directly), containers cannot share a Docker network
+with it. Use `docker-compose.caddy-host.yml` instead — it publishes both apps
+on **localhost-only** host ports:
+
+| App                | Host port        |
+| ------------------ | ---------------- |
+| `user-vault`       | `127.0.0.1:3001` |
+| `service-provider` | `127.0.0.1:3002` |
+
+```bash
+docker compose -f docker-compose.caddy-host.yml up -d --build
+```
+
+Append site blocks to the **host** Caddyfile and reload:
+
+```caddyfile
+vault.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3001
+}
+verify.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3002
+}
+```
+
+```bash
+# backup first, then validate and reload (as root / with sudo)
+sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak-$(date +%Y%m%d)
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+```
+
 TLS is handled by Caddy itself (automatic Let's Encrypt). The main
 `docker-compose.yml` stack remains the default for servers with free ports
 80/443.

@@ -1027,6 +1027,37 @@ Phase 12
 
 ---
 
+## DT-17
+
+Task:
+
+Add host-Caddy deployment variant (docker-compose.caddy-host.yml)
+
+Reason:
+
+docker-compose.caddy.yml targets a Dockerized Caddy sharing a Docker network. The production VPS (gipsy, 43.163.106.178) runs Caddy as a host systemd service — containers must publish localhost-only ports instead. Required for the VPS deployment.
+
+Tasks:
+
+- [x] Create deploy/vps/docker-compose.caddy-host.yml (publish 127.0.0.1:3001/3002)
+- [x] Document host-Caddy variant in deploy/vps/README.md (section 10)
+- [x] Document host-Caddy variant in docs/VPS_DEPLOYMENT.md
+- [x] Validate YAML parses (prettier)
+
+Priority:
+
+LOW
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+DT-16
+
+---
+
 # Completion Checklist
 
 The project is complete when:
