@@ -176,7 +176,7 @@ RightToBeForgotten/
 │   ├── src/                 # Solidity contracts
 │   │   ├── ConsentRegistry.sol
 │   │   └── Verifier.sol
-│   ├── test/                # Contract tests (43 tests)
+│   ├── test/                # Contract tests (44 tests)
 │   └── deploy/              # Deployment scripts
 ├── circuits/
 │   └── src/                 # Circom circuit source

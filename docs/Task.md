@@ -964,6 +964,38 @@ Phase 2 (test file existed; runner was missing)
 
 ---
 
+## DT-15
+
+Task:
+
+Solidity test coverage to 100% (hardhat coverage)
+
+Reason:
+
+First `hardhat coverage` run showed 94.44% branch coverage — the constructor zero-address revert path (`if (address(_verifier) == address(0)) revert InvalidVerifier();`) had no test.
+
+Tasks:
+
+- [x] Run `npx hardhat coverage` (baseline: 100% stmts / 94.44% branch / 100% funcs / 100% lines)
+- [x] Identify uncovered branch: ConsentRegistry constructor `InvalidVerifier` revert
+- [x] Add constructor zero-address test (contracts/test/ConsentRegistry.test.ts) — 43 → 44 tests
+- [x] Re-run coverage: **100% statements / 100% branch / 100% functions / 100% lines** for both contracts
+- [x] Update test counts in README.md, PROJECT_SUMMARY.md, RECRUITER_GUIDE.md, VALIDATION_REPORT.md, Task.md
+
+Priority:
+
+MEDIUM
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 1
+
+---
+
 # Completion Checklist
 
 The project is complete when:
@@ -974,7 +1006,7 @@ The project is complete when:
 - [x] Revocation works (on-chain validated: TX 0x13a54aa1..., state=REVOKED)
 - [x] Revocation is irreversible (ConsentAlreadyExists blocks re-registration)
 - [x] Service provider access control works (build PASS, contract integration verified)
-- [x] Security review completed (Phase 7 hardening, 43/43 tests pass)
+- [x] Security review completed (Phase 7 hardening, 44/44 tests pass)
 - [x] Documentation completed (16 docs, Mermaid diagrams, PROJECT_SUMMARY)
 - [x] Proof freshness validation (off-chain, application-layer, 5-minute window)
 - [x] Identity export/import tested (24/24 round-trip tests pass)

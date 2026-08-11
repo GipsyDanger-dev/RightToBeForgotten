@@ -148,7 +148,7 @@ Details:
 **Mitigation:**
 
 - Contract state verified: revoked consent returns state=2, isConsentActive=false
-- Contract logic verified in local Hardhat tests (43/43 pass)
+- Contract logic verified in local Hardhat tests (44/44 pass, 100% Solidity coverage)
 - verifyAccess() checks consent state BEFORE proof verification, guaranteeing denial for revoked consents
 - The early-exit path costs ~33,870 gas (measured locally)
 

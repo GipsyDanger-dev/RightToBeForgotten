@@ -23,6 +23,16 @@ describe('ConsentRegistry', function () {
     registry = await registryFactory.deploy(await verifier.getAddress());
   });
 
+  describe('constructor', function () {
+    it('should revert when verifier address is zero', async function () {
+      const registryFactory = await ethers.getContractFactory('ConsentRegistry');
+      await expect(registryFactory.deploy(ethers.ZeroAddress)).to.be.revertedWithCustomError(
+        registryFactory,
+        'InvalidVerifier'
+      );
+    });
+  });
+
   describe('registerConsent', function () {
     it('should register a new consent successfully', async function () {
       await expect(registry.connect(user1).registerConsent(CONSENT_ID_1))

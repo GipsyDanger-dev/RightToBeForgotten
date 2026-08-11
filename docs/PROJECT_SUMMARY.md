@@ -238,12 +238,14 @@ _USD estimates based on Polygon gas prices. Actual costs vary with network conge
 
 | Test Suite                   | Tests  | Status       |
 | ---------------------------- | ------ | ------------ |
-| ConsentRegistry              | 16     | PASS         |
+| ConsentRegistry              | 17     | PASS         |
 | Integration (ZKP + Contract) | 14     | PASS         |
-| Circuit verification         | 5      | PASS         |
+| Circuit verification         | 6      | PASS         |
 | Gas measurement              | 4      | PASS         |
 | Additional                   | 4      | PASS         |
-| **Total**                    | **43** | **ALL PASS** |
+| **Total**                    | **45** | **ALL PASS** |
+
+Solidity test coverage (hardhat coverage): **100% statements / 100% branch / 100% functions / 100% lines** for both ConsentRegistry.sol and Verifier.sol.
 
 ---
 

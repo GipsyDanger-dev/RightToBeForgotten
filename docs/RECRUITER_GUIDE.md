@@ -31,7 +31,7 @@ RightToBeForgotten is a decentralized privacy-preserving consent management syst
 - Designed ConsentRegistry with Checks-Effects-Interactions (CEI) pattern
 - Implemented nullifier-based replay attack prevention
 - Used custom errors instead of string reverts for gas optimization
-- 43/43 tests passing, including integration tests with actual ZK proofs
+- 44/44 contract tests passing with 100% Solidity coverage, including integration tests with actual ZK proofs
 
 **Talking point:** "The smart contract verifies ZK proofs on-chain while tracking nullifiers to prevent replay attacks. I used the CEI pattern and custom errors for security and gas efficiency."
 
@@ -226,7 +226,7 @@ Properties: deterministic, per-consent scoped, prevents replay, prevents cross-s
 
 | Metric                        | Value                                  |
 | ----------------------------- | -------------------------------------- |
-| Smart contract tests          | 43/43 passing                          |
+| Smart contract tests          | 44/44 passing (100% coverage)          |
 | Gas cost (registerConsent)    | 74,649                                 |
 | Gas cost (verifyAccess)       | 363,197                                |
 | Circuit constraints           | 528 non-linear                         |
