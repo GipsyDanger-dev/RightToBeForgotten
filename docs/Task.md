@@ -895,6 +895,39 @@ Phase 9 (deployed contracts remain valid; only RPC endpoints changed)
 
 ---
 
+## DT-13
+
+Task:
+
+Migrate ESLint to ESLint 9 flat config (Next 14 `next lint` incompatibility)
+
+Reason:
+
+Next.js 14's `next lint` invokes removed ESLint 9 options (`useEslintrc`, `extensions`), producing `⨯ ESLint: Invalid Options` during every build. Additionally, `eslint-config-next@14.2.x` only supports legacy eslintrc format and ESLint ≤ 8, and was not even installed — the app-level `.eslintrc.json` files were non-functional.
+
+Tasks:
+
+- [x] Add `eslint.ignoreDuringBuilds: true` to both next.config.js files (lint runs via flat config `eslint .` instead of the incompatible `next lint`; type checking during build is unaffected)
+- [x] Remove legacy `.eslintrc.json` from apps/user-vault and apps/service-provider
+- [x] Rewrite root eslint.config.mjs: global ignores for generated dirs (.next, typechain-types, artifacts, circuits build/proofs), Node globals for scripts/configs, Mocha globals + CommonJS for circuit tests, `caughtErrorsIgnorePattern` for no-unused-vars
+- [x] Replace `next lint` scripts with `eslint .` (root + both apps); remove `--ext` (removed in ESLint 9)
+- [x] Fix unused catch params in scripts/test-export-import.mjs (24/24 tests still pass)
+- [x] Validate: `npm run lint` 0 errors (3 pre-existing no-console warnings), both apps build without the ESLint warning
+
+Priority:
+
+MEDIUM
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 12 (Docker builds invoke `npm run build` — no lint step required)
+
+---
+
 # Completion Checklist
 
 The project is complete when:

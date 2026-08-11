@@ -114,7 +114,7 @@ async function testWrongPassphrase() {
   try {
     await importIdentity(exported, 'wrong-passphrase');
     assert(false, 'Should have thrown');
-  } catch (e) {
+  } catch (_e) {
     assert(true, 'Wrong passphrase throws error');
   }
 }
@@ -145,7 +145,7 @@ async function testTamperedData() {
   try {
     await importIdentity(tampered, 'passphrase');
     assert(false, 'Should have thrown');
-  } catch (e) {
+  } catch (_e) {
     assert(true, 'Tampered data throws error');
   }
 }
