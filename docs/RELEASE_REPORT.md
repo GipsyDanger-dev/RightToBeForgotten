@@ -51,12 +51,14 @@ Release Report — v1.0.0
 
 | Suite                        | Tests  | Status       |
 | ---------------------------- | ------ | ------------ |
-| ConsentRegistry              | 16     | PASS         |
+| ConsentRegistry              | 17     | PASS         |
 | Integration (ZKP + Contract) | 14     | PASS         |
-| Circuit verification         | 5      | PASS         |
+| Circuit verification         | 6      | PASS         |
 | Gas measurement              | 4      | PASS         |
 | Additional                   | 4      | PASS         |
-| **Total**                    | **43** | **ALL PASS** |
+| **Total**                    | **45** | **ALL PASS** |
+
+Solidity coverage (hardhat coverage): **100% statements / 100% branch / 100% functions / 100% lines** for both contracts.
 
 ## On-Chain Validation (Polygon Amoy)
 
@@ -150,13 +152,14 @@ Release Report — v1.0.0
 | docs/TESTNET_DEPLOYMENT.md       | Step-by-step testnet deployment                 | COMPLETE         |
 | docs/DEPLOYMENT_RECORD.md        | Deployment artifacts and TX hashes              | COMPLETE         |
 | docs/VALIDATION_REPORT.md        | End-to-end validation results                   | COMPLETE         |
+| docs/VPS_DEPLOYMENT.md           | Self-hosted VPS deployment guide                | COMPLETE         |
 | docs/PROJECT_SUMMARY.md          | Comprehensive project summary                   | COMPLETE         |
 | docs/RECRUITER_GUIDE.md          | Interview preparation guide                     | COMPLETE         |
 | docs/DEMO_SCRIPT.md              | 5-minute live demo script                       | COMPLETE         |
 | docs/adr/ADR-001-groth16.md      | Decision: Groth16 proof system                  | COMPLETE         |
 | docs/adr/ADR-002-circom.md       | Decision: Circom circuit language               | COMPLETE         |
 | docs/adr/ADR-003-polygon-amoy.md | Decision: Polygon Amoy testnet                  | COMPLETE         |
-| **Total**                        | **17 documents**                                | **ALL COMPLETE** |
+| **Total**                        | **18 documents**                                | **ALL COMPLETE** |
 
 ## Cross-Reference Verification
 
@@ -193,7 +196,7 @@ All markdown links and file path references across 9 documentation files verifie
 
 **Description:** The complete Flow B (register → revoke → generate proof → verifyAccess denied) could not be verified on-chain due to deployer wallet MATIC depletion after prior test transactions.
 
-**Mitigation:** Contract state verified (REVOKED=2, isConsentActive=false). Contract logic verified in 43/43 local Hardhat tests. verifyAccess() checks consent state BEFORE proof verification.
+**Mitigation:** Contract state verified (REVOKED=2, isConsentActive=false). Contract logic verified in 44/44 local Hardhat tests (100% Solidity coverage). verifyAccess() checks consent state BEFORE proof verification.
 
 **Impact:** LOW
 
@@ -282,13 +285,13 @@ All markdown links and file path references across 9 documentation files verifie
 
 | Metric                        | Value                                  |
 | ----------------------------- | -------------------------------------- |
-| Smart contract tests          | 43/43 passing                          |
+| Smart contract tests          | 44/44 passing (100% coverage)          |
 | Gas cost (registerConsent)    | 74,649                                 |
 | Gas cost (verifyAccess)       | 363,197                                |
 | Circuit constraints           | 528 non-linear                         |
 | Proof size                    | ~256 bytes                             |
 | Frontend apps                 | 2 (User Vault + Service Provider)      |
-| Documentation pages           | 17                                     |
+| Documentation pages           | 18                                     |
 | Architecture Decision Records | 3                                      |
 | Implementation phases         | 12 (all complete)                      |
 | Deployment                    | Polygon Amoy (verified on Polygonscan) |
@@ -300,7 +303,7 @@ All markdown links and file path references across 9 documentation files verifie
 | Check                                     | Status |
 | ----------------------------------------- | ------ |
 | All 12 implementation phases complete     | PASS   |
-| 43/43 contract tests pass                 | PASS   |
+| 44/44 contract tests pass                 | PASS   |
 | Both frontend apps build                  | PASS   |
 | Contracts deployed to Polygon Amoy        | PASS   |
 | Contracts verified on Polygonscan         | PASS   |
