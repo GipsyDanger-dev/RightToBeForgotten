@@ -926,6 +926,11 @@ Dependencies:
 
 Phase 12 (Docker builds invoke `npm run build` — no lint step required)
 
+Note:
+
+- `next/core-web-vitals` rules (React hooks, Next route/link, jsx-a11y) are intentionally NOT carried over — eslint-config-next@14.2.x is legacy-format only and peer-incompatible with ESLint 9 (installing it would break `npm ci` with ERESOLVE). If React-specific checks are wanted later, add `eslint-plugin-react-hooks@^5` (flat-config native) to the root config.
+- Lint enforcement now lives in the pre-commit hook (lint-staged) and `npm run lint` — `npm run lint` should be added to any future CI pipeline since builds no longer lint.
+
 ---
 
 # Completion Checklist
