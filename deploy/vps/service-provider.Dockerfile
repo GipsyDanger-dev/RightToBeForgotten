@@ -32,7 +32,10 @@ FROM node:20-alpine AS runner
 WORKDIR /repo
 ENV NODE_ENV=production
 ENV PORT=3000
-COPY --from=builder /repo/apps/service-provider/.next/standalone ./
-COPY --from=builder /repo/apps/service-provider/.next/static ./apps/service-provider/.next/static
+ENV HOSTNAME=0.0.0.0
+COPY --from=builder --chown=node:node /repo/apps/service-provider/.next/standalone ./
+COPY --from=builder --chown=node:node /repo/apps/service-provider/.next/static ./apps/service-provider/.next/static
+# Run unprivileged (see docs/VPS_DEPLOYMENT.md security notes)
+USER node
 EXPOSE 3000
 CMD ["node", "apps/service-provider/server.js"]

@@ -32,9 +32,12 @@ FROM node:20-alpine AS runner
 WORKDIR /repo
 ENV NODE_ENV=production
 ENV PORT=3000
-COPY --from=builder /repo/apps/user-vault/.next/standalone ./
-COPY --from=builder /repo/apps/user-vault/.next/static ./apps/user-vault/.next/static
+ENV HOSTNAME=0.0.0.0
+COPY --from=builder --chown=node:node /repo/apps/user-vault/.next/standalone ./
+COPY --from=builder --chown=node:node /repo/apps/user-vault/.next/static ./apps/user-vault/.next/static
 # Public assets (includes circuits/consent.wasm + consent_final.zkey)
-COPY --from=builder /repo/apps/user-vault/public ./apps/user-vault/public
+COPY --from=builder --chown=node:node /repo/apps/user-vault/public ./apps/user-vault/public
+# Run unprivileged (see docs/VPS_DEPLOYMENT.md security notes)
+USER node
 EXPOSE 3000
 CMD ["node", "apps/user-vault/server.js"]
