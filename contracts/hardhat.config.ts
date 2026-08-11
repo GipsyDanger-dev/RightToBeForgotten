@@ -23,7 +23,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {},
     polygonAmoy: {
-      url: process.env.POLYGON_AMOY_RPC_URL || 'https://rpc-amoy.polygon.technology',
+      url: process.env.POLYGON_AMOY_RPC_URL || 'https://polygon-amoy.drpc.org', // fallback for retired official RPC
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },

@@ -51,9 +51,14 @@ cp .env.example .env
 Edit `.env` with your values:
 
 ```
-POLYGON_AMOY_RPC_URL=https://rpc-amoy.polygon.technology
+POLYGON_AMOY_RPC_URL=https://polygon-amoy.drpc.org
 PRIVATE_KEY=your_wallet_private_key_here
 ETHERSCAN_API_KEY=your_polygonscan_api_key_here
+
+> **Note (2026-07):** The official `rpc-amoy.polygon.technology` endpoint was retired
+> by Polygon Labs. The Amoy testnet itself remains active. Use
+> `https://polygon-amoy.drpc.org` (primary) or
+> `https://polygon-amoy-bor-rpc.publicnode.com` (fallback).
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
 ```
 
@@ -182,7 +187,7 @@ cp .env.example .env.local
 Edit `.env.local`:
 
 ```
-NEXT_PUBLIC_POLYGON_AMOY_RPC=https://rpc-amoy.polygon.technology
+NEXT_PUBLIC_POLYGON_AMOY_RPC=https://polygon-amoy.drpc.org
 NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS=[CONSENT_REGISTRY_ADDRESS from Step 5]
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=[YOUR_PROJECT_ID]
 ```
@@ -197,7 +202,7 @@ cp .env.example .env.local
 Edit `.env.local`:
 
 ```
-NEXT_PUBLIC_POLYGON_AMOY_RPC=https://rpc-amoy.polygon.technology
+NEXT_PUBLIC_POLYGON_AMOY_RPC=https://polygon-amoy.drpc.org
 NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS=[SAME ADDRESS AS USER VAULT]
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=[YOUR_PROJECT_ID]
 ```
@@ -288,7 +293,7 @@ Follow prompts:
    - Build Command: `npm run build`
    - Output Directory: `.next`
 5. Add Environment Variables:
-   - `NEXT_PUBLIC_POLYGON_AMOY_RPC` = `https://rpc-amoy.polygon.technology`
+   - `NEXT_PUBLIC_POLYGON_AMOY_RPC` = `https://polygon-amoy.drpc.org`
    - `NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS` = `[CONSENT_REGISTRY_ADDRESS]`
    - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` = `[YOUR_PROJECT_ID]`
 6. Click "Deploy"
@@ -314,7 +319,7 @@ If Polygon Amoy is not in your MetaMask:
 3. Click "Add Network"
 4. Enter:
    - Network Name: Polygon Amoy
-   - RPC URL: https://rpc-amoy.polygon.technology
+   - RPC URL: https://polygon-amoy.drpc.org
    - Chain ID: 80002
    - Currency Symbol: MATIC
    - Block Explorer: https://amoy.polygonscan.com

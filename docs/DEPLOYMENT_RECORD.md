@@ -6,7 +6,7 @@
 | -------------- | ------------------------------------------ |
 | Network        | Polygon Amoy Testnet                       |
 | Chain ID       | 80002                                      |
-| RPC URL        | https://rpc-amoy.polygon.technology        |
+| RPC URL        | https://polygon-amoy.drpc.org              |
 | Block Explorer | https://amoy.polygonscan.com               |
 | Deployer       | 0x0168B23EcDa6Bc972343c49ee2ed9e472FfA9af2 |
 | Timestamp      | 2026-06-09T07:21:42Z                       |

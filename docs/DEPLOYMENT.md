@@ -40,9 +40,14 @@ Create a `.env` file in the project root:
 
 ```bash
 # Blockchain
-POLYGON_AMOY_RPC_URL=https://rpc-amoy.polygon.technology
+POLYGON_AMOY_RPC_URL=https://polygon-amoy.drpc.org
 PRIVATE_KEY=your_wallet_private_key
 ETHERSCAN_API_KEY=your_polygonscan_api_key
+
+> **Note (2026-07):** Polygon Labs retired the official free Amoy RPC endpoint
+> (`rpc-amoy.polygon.technology`). Use `https://polygon-amoy.drpc.org` (primary)
+> or `https://polygon-amoy-bor-rpc.publicnode.com` (fallback). The Amoy testnet
+> itself (Chain ID 80002) remains fully operational.
 
 # Frontend
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
@@ -171,7 +176,7 @@ cp .env.example .env.local
 Edit `.env.local`:
 
 ```bash
-NEXT_PUBLIC_POLYGON_AMOY_RPC=https://rpc-amoy.polygon.technology
+NEXT_PUBLIC_POLYGON_AMOY_RPC=https://polygon-amoy.drpc.org
 NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS=0x...  # From deployment
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=...
 ```
@@ -218,7 +223,7 @@ cp .env.example .env.local
 Edit `.env.local`:
 
 ```bash
-NEXT_PUBLIC_POLYGON_AMOY_RPC=https://rpc-amoy.polygon.technology
+NEXT_PUBLIC_POLYGON_AMOY_RPC=https://polygon-amoy.drpc.org
 NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS=0x...  # Same as User Vault
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=...
 ```
@@ -348,7 +353,7 @@ Same process as User Vault, with root directory set to `apps/service-provider`.
 
 - Add Polygon Amoy to MetaMask:
   - Network Name: Polygon Amoy
-  - RPC URL: https://rpc-amoy.polygon.technology
+  - RPC URL: https://polygon-amoy.drpc.org
   - Chain ID: 80002
   - Currency Symbol: MATIC
   - Block Explorer: https://amoy.polygonscan.com

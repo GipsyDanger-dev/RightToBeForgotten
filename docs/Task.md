@@ -821,6 +821,41 @@ Phase 4, Phase 5
 
 ---
 
+## DT-11
+
+Task:
+
+Migrate Polygon Amoy RPC endpoints (official RPC retirement)
+
+Reason:
+
+Polygon Labs retired the free official Amoy RPC endpoint `rpc-amoy.polygon.technology` (announced 2026-07-14, taken offline 2026-07-17). The Amoy testnet (Chain ID 80002) remains operational but requires community endpoints. Verified live endpoints: `https://polygon-amoy.drpc.org` (primary) and `https://polygon-amoy-bor-rpc.publicnode.com` (fallback).
+
+Tasks:
+
+- [x] Replace dead RPC in contracts/hardhat.config.ts default + fallback
+- [x] Replace dead RPC in root .env and .env.example
+- [x] Replace dead RPC in apps/user-vault and apps/service-provider .env.local and .env.example
+- [x] Add wagmi `fallback()` transport (drpc primary + publicnode fallback) in both apps
+- [x] Override viem polygonAmoy chain rpcUrls in both apps (polygonAmoyLive) so all consumers use live endpoints
+- [x] Update docs: DEPLOYMENT.md, TESTNET_DEPLOYMENT.md, DEPLOYMENT_RECORD.md, VALIDATION_REPORT.md, RELEASE_REPORT.md
+- [x] Verify deployed contracts reachable via new RPC (getConsentState, isConsentActive, verifier — PASS, block 44,600,256)
+- [x] Rebuild both frontends (PASS) and re-run 43/43 contract tests (PASS)
+
+Priority:
+
+CRITICAL (deployment-blocking)
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 9 (deployed contracts remain valid; only RPC endpoints changed)
+
+---
+
 # Completion Checklist
 
 The project is complete when:

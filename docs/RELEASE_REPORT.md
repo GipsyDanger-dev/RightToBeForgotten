@@ -26,7 +26,7 @@ Release Report — v1.0.0
 | ---------------- | ------------------------------------------ |
 | Network          | Polygon Amoy Testnet                       |
 | Chain ID         | 80002                                      |
-| RPC URL          | https://rpc-amoy.polygon.technology        |
+| RPC URL          | https://polygon-amoy.drpc.org              |
 | Block Explorer   | https://amoy.polygonscan.com               |
 | Deployment Date  | 2026-06-09                                 |
 | Deployer Address | 0x0168B23EcDa6Bc972343c49ee2ed9e472FfA9af2 |

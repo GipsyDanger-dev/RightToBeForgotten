@@ -8,13 +8,13 @@ End-to-End Validation Report
 
 # Network Information
 
-| Field          | Value                               |
-| -------------- | ----------------------------------- |
-| Network        | Polygon Amoy Testnet                |
-| Chain ID       | 80002                               |
-| RPC URL        | https://rpc-amoy.polygon.technology |
-| Block Explorer | https://amoy.polygonscan.com        |
-| Timestamp      | 2026-06-09                          |
+| Field          | Value                         |
+| -------------- | ----------------------------- |
+| Network        | Polygon Amoy Testnet          |
+| Chain ID       | 80002                         |
+| RPC URL        | https://polygon-amoy.drpc.org |
+| Block Explorer | https://amoy.polygonscan.com  |
+| Timestamp      | 2026-06-09                    |
 
 ---
 
