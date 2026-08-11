@@ -1,0 +1,58 @@
+# RightToBeForgotten — Caddy integration variant
+#
+# For servers where ports 80/443 are already owned by an existing Caddy
+# reverse proxy (e.g. an n8n stack). The two apps join the existing docker
+# network and are routed by ADDING site blocks to that Caddy's Caddyfile
+# (backup + validate + reload). No ports are published to the host, so
+# existing sites are never disturbed.
+#
+# Usage (from this directory):
+#   cp .env.example .env          # edit NEXT_PUBLIC_* values
+#   docker compose -f docker-compose.caddy.yml up -d --build
+#
+# Requirements:
+#   - The external docker network (RTBF_CADDY_NETWORK, default n8n_default)
+#     must exist and the Caddy container must be attached to it.
+#   - Caddyfile additions, e.g.:
+#       vault.righttobeforgotten.my.id {
+#         encode zstd gzip
+#         reverse_proxy user-vault:3000 { transport http { versions 1.1 } }
+#       }
+#       verify.righttobeforgotten.my.id {
+#         encode zstd gzip
+#         reverse_proxy service-provider:3000 { transport http { versions 1.1 } }
+#       }
+
+services:
+  user-vault:
+    build:
+      context: ../..
+      dockerfile: deploy/vps/user-vault.Dockerfile
+      args:
+        NEXT_PUBLIC_POLYGON_AMOY_RPC: ${NEXT_PUBLIC_POLYGON_AMOY_RPC:-https://polygon-amoy.drpc.org}
+        NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS: ${NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS:?set in .env}
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-demo}
+    expose:
+      - "3000"
+    restart: unless-stopped
+    networks:
+      - rtbf-caddy
+
+  service-provider:
+    build:
+      context: ../..
+      dockerfile: deploy/vps/service-provider.Dockerfile
+      args:
+        NEXT_PUBLIC_POLYGON_AMOY_RPC: ${NEXT_PUBLIC_POLYGON_AMOY_RPC:-https://polygon-amoy.drpc.org}
+        NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS: ${NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS:?set in .env}
+        NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:-demo}
+    expose:
+      - "3000"
+    restart: unless-stopped
+    networks:
+      - rtbf-caddy
+
+networks:
+  rtbf-caddy:
+    external: true
+    name: ${RTBF_CADDY_NETWORK:-n8n_default}

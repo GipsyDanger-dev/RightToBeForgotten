@@ -996,6 +996,37 @@ Phase 1
 
 ---
 
+## DT-16
+
+Task:
+
+Integrate and document the Caddy deployment variant
+
+Reason:
+
+deploy/vps/docker-compose.caddy.yml was created for servers where ports 80/443 are already owned by an existing Caddy reverse proxy (e.g. an n8n stack), but it was never committed or documented. Required by the Documentation Synchronization Rule.
+
+Tasks:
+
+- [x] Add RTBF_CADDY_NETWORK to deploy/vps/.env.example (Caddy variant only)
+- [x] Document Caddy variant in deploy/vps/README.md (section 10)
+- [x] Document Caddy variant in docs/VPS_DEPLOYMENT.md
+- [x] Validate both compose files parse (prettier YAML parse; docker compose unavailable on dev machine)
+
+Priority:
+
+LOW
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 12
+
+---
+
 # Completion Checklist
 
 The project is complete when:
@@ -1013,6 +1044,7 @@ The project is complete when:
 - [ ] Demo video completed (DEMO_SCRIPT.md ready, video not recorded)
 - [x] User approval obtained (Phase 8-10 all approved and executed)
 - [x] VPS deployment stack prepared (Docker Compose, standalone builds verified)
+- [x] Caddy integration variant documented (deploy/vps/docker-compose.caddy.yml)
 
 Project Status:
 

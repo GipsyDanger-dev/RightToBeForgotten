@@ -119,3 +119,58 @@ docker compose down -v       # ALSO wipes SSL certs & volumes — avoid unless i
 > (`rpc-amoy.polygon.technology`) in July 2026. The stack uses
 > `https://polygon-amoy.drpc.org` with a publicnode fallback — both verified
 > live. The Amoy testnet (Chain ID 80002) itself remains operational.
+
+## 10. Alternative: join an existing Caddy reverse proxy
+
+If ports 80/443 are **already owned by a Caddy instance** on this server (for
+example an n8n stack), the two apps can join that proxy instead of running a
+second one (nginx-proxy + acme-companion). Use `docker-compose.caddy.yml`:
+
+```bash
+cp .env.example .env   # set RTBF_CADDY_NETWORK if Caddy is not on n8n_default
+nano .env
+docker compose -f docker-compose.caddy.yml up -d --build
+```
+
+This variant:
+
+- Publishes **no host ports** — apps only `expose` port 3000 on the internal
+  Docker network shared with Caddy, so existing sites are never disturbed.
+- Requires an **existing external Docker network** that the Caddy container is
+  attached to (`RTBF_CADDY_NETWORK`, default `n8n_default`).
+- Does **not** use `VAULT_DOMAIN`, `SP_DOMAIN`, or `LETSENCRYPT_EMAIL` — there
+  is no nginx-proxy/acme-companion in this stack; Caddy handles TLS itself.
+- Still needs the **DNS A records** from section 3 — Caddy's automatic HTTPS
+  only issues certificates after the subdomains resolve to this server.
+- Needs site blocks added to the **existing Caddyfile**, then a reload:
+
+```caddyfile
+vault.example.com {
+    encode zstd gzip
+    reverse_proxy user-vault:3000 { transport http { versions 1.1 } }
+}
+
+sp.example.com {
+    encode zstd gzip
+    reverse_proxy service-provider:3000 { transport http { versions 1.1 } }
+}
+```
+
+Back up the Caddyfile, then validate and reload — either on the host or inside
+the Caddy container if it is Dockerized (common for n8n stacks):
+
+```bash
+# host-level Caddy install (as root / with sudo)
+caddy validate --config /etc/caddy/Caddyfile
+caddy reload --config /etc/caddy/Caddyfile
+```
+
+```bash
+# Dockerized Caddy (adjust the container name)
+docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
+docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
+```
+
+TLS is handled by Caddy itself (automatic Let's Encrypt). The main
+`docker-compose.yml` stack remains the default for servers with free ports
+80/443.

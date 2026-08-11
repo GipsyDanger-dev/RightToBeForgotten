@@ -12,13 +12,13 @@ This guide describes how to deploy the two frontend applications (User Vault and
 
 The smart contracts are already deployed and verified on Polygon Amoy testnet and are **not** redeployed by this guide.
 
-| Component        | Deployment                                |
-| ---------------- | ----------------------------------------- |
-| Groth16Verifier  | Polygon Amoy (existing)                   |
-| ConsentRegistry  | Polygon Amoy (existing)                   |
-| User Vault       | VPS — Docker container (this guide)       |
-| Service Provider | VPS — Docker container (this guide)       |
-| Reverse proxy    | nginx-proxy (auto TLS via acme-companion) |
+| Component        | Deployment                                                                  |
+| ---------------- | --------------------------------------------------------------------------- |
+| Groth16Verifier  | Polygon Amoy (existing)                                                     |
+| ConsentRegistry  | Polygon Amoy (existing)                                                     |
+| User Vault       | VPS — Docker container (this guide)                                         |
+| Service Provider | VPS — Docker container (this guide)                                         |
+| Reverse proxy    | nginx-proxy (auto TLS via acme-companion) — default; Caddy variant optional |
 
 ---
 
@@ -199,6 +199,68 @@ docker compose logs -f user-vault
 docker compose logs -f service-provider
 docker compose logs -f nginx-proxy
 ```
+
+---
+
+# Caddy Integration Variant
+
+If the VPS already runs **Caddy** on ports 80/443 (e.g. an n8n stack), the two
+apps can join that proxy instead of starting nginx-proxy + acme-companion.
+`deploy/vps/docker-compose.caddy.yml` provides this variant:
+
+- **No host ports published** — apps only `expose` port 3000 on the internal
+  network shared with Caddy; existing sites are never disturbed.
+- **External network** — the compose file joins an existing network the Caddy
+  container is attached to (`RTBF_CADDY_NETWORK`, default `n8n_default`).
+- **DNS still required** — Caddy's automatic HTTPS only issues certificates
+  after the subdomains resolve to this server (A records from Prerequisites).
+- **Unused variables** — `VAULT_DOMAIN`, `SP_DOMAIN`, and `LETSENCRYPT_EMAIL`
+  are not used by this variant (no nginx-proxy/acme-companion services).
+- **Site blocks are added to the existing Caddyfile**, then Caddy is validated
+  and reloaded. TLS is handled by Caddy itself (automatic Let's Encrypt).
+
+Usage:
+
+```bash
+cd deploy/vps
+cp .env.example .env      # set RTBF_CADDY_NETWORK if Caddy is not on n8n_default
+docker compose -f docker-compose.caddy.yml up -d --build
+```
+
+Example Caddyfile site blocks (append to the existing Caddyfile):
+
+```caddyfile
+vault.example.com {
+    encode zstd gzip
+    reverse_proxy user-vault:3000 { transport http { versions 1.1 } }
+}
+sp.example.com {
+    encode zstd gzip
+    reverse_proxy service-provider:3000 { transport http { versions 1.1 } }
+}
+```
+
+Then validate and reload — on the host, or inside the container if Caddy is
+Dockerized (common for n8n stacks):
+
+```bash
+# host-level Caddy install
+caddy validate --config /etc/caddy/Caddyfile
+caddy reload --config /etc/caddy/Caddyfile
+```
+
+```bash
+# Dockerized Caddy (adjust the container name)
+docker exec <caddy-container> caddy validate --config /etc/caddy/Caddyfile
+docker exec <caddy-container> caddy reload --config /etc/caddy/Caddyfile
+```
+
+| Variable             | Description                               | Default       |
+| -------------------- | ----------------------------------------- | ------------- |
+| `RTBF_CADDY_NETWORK` | External Docker network shared with Caddy | `n8n_default` |
+
+> The main `docker-compose.yml` stack (nginx-proxy + acme-companion) remains
+> the default for servers with free ports 80/443.
 
 ---
 
