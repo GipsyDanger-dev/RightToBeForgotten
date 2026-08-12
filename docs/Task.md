@@ -1181,6 +1181,11 @@ Dependencies:
 
 DT-17, DT-18
 
+Verification Log:
+
+- 2026-08-12 (1st): vault/verify.righttobeforgotten.my.id resolve to 43.163.106.178 but :80 serves the Socrapper catch-all for every hostname and :443 fails TLS (ERR_SSL_PROTOCOL_ERROR / EPROTO). Site blocks absent in the running Caddy config.
+- 2026-08-12 (2nd, after user reported wiring the domains in Caddy): identical results - :80 still returns the Socrapper catch-all (same Etag, Content-Length 6217) for vault, verify, and bogus hostnames; :443 still EPROTO for both RTBF domains while socrapper on the same IP returns 200. Chrome shows ERR_SSL_PROTOCOL_ERROR on all three URLs. Conclusion: the site blocks are NOT active in the Caddy instance owning ports 80/443 - either Caddy was not reloaded (or reload failed validation), or the blocks were added to a different Caddyfile/instance than the one serving 43.163.106.178.
+
 ---
 
 # Completion Checklist
