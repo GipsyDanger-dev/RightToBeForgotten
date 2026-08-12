@@ -79,6 +79,19 @@ ul, ol { list-style: none; }
   background: var(--bg);
 }
 
+.nav-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.nav-logo svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
 .nav-id {
   font-family: var(--font-mono);
   font-size: 9px;
