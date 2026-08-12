@@ -1087,6 +1087,37 @@ DT-17 (deployment to VPS)
 
 ---
 
+## DT-19
+
+Task:
+
+Fix root `npm run typecheck` so it passes across all workspaces
+
+Reason:
+
+Root `npm run typecheck` (`tsc --noEmit` with the root tsconfig) produced 558 errors — every `.tsx` file failed with TS17004 (no `jsx` flag) and every `@/*` alias import failed with TS2307 (no `paths` in the root config). The two Next.js apps were never actually type-checked by this script (they were only checked via their builds); the script was effectively broken. Running `tsc -p contracts` separately also surfaced 7 errors because `contracts/tsconfig.json` did not include `typechain-types`, so the hardhat-ethers module augmentation (`hardhat.d.ts` typing `getContractFactory`) was never loaded.
+
+Tasks:
+
+- [x] Fix tuple typing in contracts/test/ConsentCircuit.test.ts (ProofInput interface using BigNumberish, matching typechain Groth16Verifier.verifyProof signature)
+- [x] Add ./typechain-types to contracts/tsconfig.json include (loads hardhat.d.ts augmentation)
+- [x] Rewrite root typecheck script to per-workspace: tsc --noEmit -p apps/user-vault && tsc --noEmit -p apps/service-provider && tsc --noEmit -p contracts
+- [x] Validate: npm run typecheck passes (exit 0), 44/44 contract tests still pass
+
+Priority:
+
+LOW (tooling / quality gate; no runtime impact)
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 12
+
+---
+
 # Completion Checklist
 
 The project is complete when:

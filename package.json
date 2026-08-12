@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p apps/user-vault && tsc --noEmit -p apps/service-provider && tsc --noEmit -p contracts",
     "clean": "rm -rf node_modules apps/*/node_modules contracts/node_modules circuits/node_modules"
   },
   "lint-staged": {
