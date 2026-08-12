@@ -1163,10 +1163,10 @@ Live verification (2026-08-12) shows vault.righttobeforgotten.my.id and verify.r
 
 Tasks:
 
-- [ ] Verify containers running on the VPS: docker compose -f docker-compose.caddy-host.yml ps (user-vault :3001, service-provider :3002)
-- [ ] Append site blocks for vault.righttobeforgotten.my.id and verify.righttobeforgotten.my.id to /etc/caddy/Caddyfile (reverse_proxy 127.0.0.1:3001 / 127.0.0.1:3002)
-- [ ] sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
-- [ ] Confirm certs issued and https://vault.righttobeforgotten.my.id + https://verify.righttobeforgotten.my.id return 200
+- [x] Verify containers running on the VPS: vps-user-vault-1 (:3001) + vps-service-provider-1 (:3002) Up, both return 200 locally
+- [x] Append site blocks for vault.righttobeforgotten.my.id and verify.righttobeforgotten.my.id to /etc/caddy/Caddyfile (reverse_proxy 127.0.0.1:3001 / 127.0.0.1:3002) - backup saved as Caddyfile.bak-20260812-\*; inserted before the :80 catch-all
+- [x] sudo caddy validate --config /etc/caddy/Caddyfile (Valid configuration) && sudo systemctl reload caddy (RELOADED)
+- [x] Confirm certs issued and both sites return 200 over HTTPS
 - [ ] Re-run browser E2E (identity -> register -> proof -> verify -> revoke -> denied -> re-consent)
 
 Priority:
@@ -1175,7 +1175,7 @@ CRITICAL (deployment-blocking)
 
 Status:
 
-PENDING - requires VPS access (user action)
+COMPLETED (fixed 2026-08-12 via SSH to gipsy)
 
 Dependencies:
 
@@ -1185,6 +1185,7 @@ Verification Log:
 
 - 2026-08-12 (1st): vault/verify.righttobeforgotten.my.id resolve to 43.163.106.178 but :80 serves the Socrapper catch-all for every hostname and :443 fails TLS (ERR_SSL_PROTOCOL_ERROR / EPROTO). Site blocks absent in the running Caddy config.
 - 2026-08-12 (2nd, after user reported wiring the domains in Caddy): identical results - :80 still returns the Socrapper catch-all (same Etag, Content-Length 6217) for vault, verify, and bogus hostnames; :443 still EPROTO for both RTBF domains while socrapper on the same IP returns 200. Chrome shows ERR_SSL_PROTOCOL_ERROR on all three URLs. Conclusion: the site blocks are NOT active in the Caddy instance owning ports 80/443 - either Caddy was not reloaded (or reload failed validation), or the blocks were added to a different Caddyfile/instance than the one serving 43.163.106.178.
+- 2026-08-12 (3rd, root cause + fix via SSH to gipsy/43.163.106.178, user ubuntu): containers vps-user-vault-1 (:3001) and vps-service-provider-1 (:3002) were Up and healthy (both 200 locally), but /etc/caddy/Caddyfile had NO site blocks for the RTBF domains - it ends with a `:80` catch-all (socrapper) that stole every hostname. Added both site blocks (reverse_proxy 127.0.0.1:3001 / 3002), caddy validate PASS, systemctl reload caddy PASS. Let's Encrypt certificates obtained for both domains (valid to 2026-11-10). External checks PASS: vault + verify return 200 with X-Nextjs-Cache HIT; consent.wasm 200 (application/wasm); Chrome loads both sites without cert errors (User Vault hero "Your data. Your rules.", Service Provider "WALLET REQUIRED").
 
 ---
 
