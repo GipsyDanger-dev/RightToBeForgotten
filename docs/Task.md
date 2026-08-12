@@ -1118,6 +1118,35 @@ Phase 12
 
 ---
 
+## DT-20
+
+Task:
+
+Create demo video recording guide for the live VPS deployment
+
+Reason:
+
+docs/DEMO_SCRIPT.md targets a local Hardhat demo (localhost, Chain ID 31337), but the project is now deployed to the VPS over HTTPS. The recording guide adapts the script to the live deployment with a scene-by-scene shot list, OBS settings, on-screen callouts, and a post-production checklist.
+
+Tasks:
+
+- [x] Create docs/VIDEO_RECORDING_GUIDE.md (shot list for all 8 scenes, callouts, troubleshooting, runtime cheat sheet)
+- [x] Update demo video item in the Completion Checklist to reference the new guide
+
+Priority:
+
+MEDIUM
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 12 (live VPS deployment)
+
+---
+
 # Completion Checklist
 
 The project is complete when:
@@ -1132,7 +1161,7 @@ The project is complete when:
 - [x] Documentation completed (16 docs, Mermaid diagrams, PROJECT_SUMMARY)
 - [x] Proof freshness validation (off-chain, application-layer, 5-minute window)
 - [x] Identity export/import tested (24/24 round-trip tests pass)
-- [ ] Demo video completed (DEMO_SCRIPT.md ready, video not recorded)
+- [ ] Demo video completed (DEMO_SCRIPT.md + VIDEO_RECORDING_GUIDE.md ready, video not recorded)
 - [x] User approval obtained (Phase 8-10 all approved and executed)
 - [x] VPS deployment stack prepared (Docker Compose, standalone builds verified)
 - [x] Caddy integration variant documented (deploy/vps/docker-compose.caddy.yml)
