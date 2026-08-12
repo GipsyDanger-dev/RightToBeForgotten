@@ -59,14 +59,20 @@ Details:
 | revokeConsent                | 0x13a54aa1bb83a20369b0a8c1989c816ed88162c1aa684c747b5fc95fdb87cf09 | 36,703 | PASS        |
 | getConsentState after revoke | —                                                                  | —      | 2 (REVOKED) |
 | isConsentActive after revoke | —                                                                  | —      | false       |
+| verifyAccess (denied)        | 0x3e650f5a369c264aea9d66ebfa7e122a7c514070e3fa3af9e3e195cc97f3531d | 30,393 | PASS        |
+| re-register same consentId   | —                                                                  | —      | REVERTED    |
 
-**Flow B Result: PASS**
+**Flow B Result: PASS** (completed 2026-08-12 — see note below)
 
-Note: Full verifyAccess denial after revocation could not be tested due to insufficient MATIC balance in deployer wallet (0.005 MATIC remaining after prior tests). However, contract logic verified:
+Re-validation on 2026-08-12 (deployer re-funded): full Flow B executed on live Amoy via `contracts/scripts/test-revoke-live.ts`:
 
-- Consent state transitions to REVOKED (state=2)
-- isConsentActive returns false
-- verifyAccess() checks `_consentState[consentId] != 1` and returns false before proof verification
+- registerConsent TX `0x2317cf319c20b86303f223add60e2cba7690df4c85af15641ce285e1b08c0857` (gas 74,661) → state 1 (ACTIVE)
+- revokeConsent TX `0x900719077040f657b836e07adcf0d0b416f21bafc86eb5b105bc058e41dabc77` (gas 36,703) → state 2 (REVOKED)
+- isConsentActive → false
+- re-register of the same consentId → REVERTED (revocation finality)
+- verifyAccess on the revoked consent → false (TX `0x3e650f5a...`, gas 30,393) — denied before proof verification
+
+Contract logic verified on-chain: consent state REVOKED, isConsentActive false, verifyAccess early-exit denial, and re-registration blocked.
 
 ---
 
@@ -141,18 +147,18 @@ Details:
 
 # Known Limitations
 
-## L-01: Revoke → Verify Denial (Not Fully Tested On-Chain)
+## L-01: Revoke → Verify Denial (RESOLVED 2026-08-12)
 
-**Description:** The full Flow B (register → revoke → generate proof → verifyAccess denied) could not be completed on-chain due to deployer wallet running out of MATIC after prior test transactions.
+**Status: RESOLVED** — the full Flow B (register → revoke → verifyAccess denied → re-register blocked) was executed on live Polygon Amoy on 2026-08-12 (see Flow B section for TX hashes). The on-chain early-exit denial cost 30,393 gas (vs ~33,870 estimated locally).
 
-**Mitigation:**
+Original description: The full Flow B could not be completed on-chain earlier due to deployer wallet running out of MATIC.
+
+Original mitigation (now superseded by the live test):
 
 - Contract state verified: revoked consent returns state=2, isConsentActive=false
 - Contract logic verified in local Hardhat tests (44/44 pass, 100% Solidity coverage)
 - verifyAccess() checks consent state BEFORE proof verification, guaranteeing denial for revoked consents
 - The early-exit path costs ~33,870 gas (measured locally)
-
-**Risk:** LOW — the denial path is simpler than the success path and has been validated locally.
 
 ---
 

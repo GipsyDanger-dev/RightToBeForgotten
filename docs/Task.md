@@ -1177,6 +1177,36 @@ Status:
 
 COMPLETED (fixed 2026-08-12 via SSH to gipsy)
 
+---
+
+## DT-22
+
+Task:
+
+Live on-chain validation of the revoke feature (resolves L-01)
+
+Reason:
+
+The revoke ("Forget Me") feature is the project's core deliverable, but full Flow B (register -> revoke -> verifyAccess denied) had never been executed on-chain because the deployer wallet ran out of MATIC (L-01). After the deployment went live, the deployer was re-funded and the flow was executed against the live Polygon Amoy deployment.
+
+Tasks:
+
+- [x] Create contracts/scripts/test-revoke-live.ts (register -> revoke -> re-register must revert -> verifyAccess on revoked consent must return false)
+- [x] Run on live Amoy: register TX 0x2317cf31... (74,661 gas) -> ACTIVE; revoke TX 0x90071907... (36,703 gas) -> REVOKED; isConsentActive false; re-register REVERTED; verifyAccess denied TX 0x3e650f5a... (30,393 gas)
+- [x] Update docs/VALIDATION_REPORT.md: Flow B completed on-chain, L-01 marked RESOLVED
+
+Priority:
+
+LOW (validation only; no code/contract changes)
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+Phase 9, DT-21
+
 Dependencies:
 
 DT-17, DT-18
