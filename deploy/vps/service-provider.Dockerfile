@@ -17,6 +17,9 @@ FROM node:20-alpine AS builder
 WORKDIR /repo
 COPY . .
 COPY --from=deps /repo/node_modules ./node_modules
+# Some packages (connectkit, @types/node) install nested under apps/*/node_modules
+# (not hoisted) — copy the whole apps tree from deps so the build can resolve them.
+COPY --from=deps /repo/apps ./apps
 
 ARG NEXT_PUBLIC_POLYGON_AMOY_RPC
 ARG NEXT_PUBLIC_CONSENT_REGISTRY_ADDRESS

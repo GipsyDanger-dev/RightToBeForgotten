@@ -1058,6 +1058,35 @@ DT-16
 
 ---
 
+## DT-18
+
+Task:
+
+Fix Docker build: copy nested app node_modules in builder stage
+
+Reason:
+
+connectkit and @types/node resolve nested under apps/\*/node_modules (not hoisted) in package-lock.json. The Dockerfile builder stages only copied the root node_modules, causing "Module not found: Can't resolve 'connectkit'" on the first real image build on the VPS. Phase 12 had only verified local builds and compose structure, never an actual image build.
+
+Tasks:
+
+- [x] Add COPY --from=deps /repo/apps ./apps to both Dockerfiles
+- [x] Rebuild user-vault + service-provider images successfully on VPS
+
+Priority:
+
+HIGH (deployment-blocking)
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+DT-17 (deployment to VPS)
+
+---
+
 # Completion Checklist
 
 The project is complete when:
