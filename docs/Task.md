@@ -1147,6 +1147,42 @@ Phase 12 (live VPS deployment)
 
 ---
 
+## DT-21
+
+Task:
+
+Wire the RTBF domains into the host Caddy on the VPS (site blocks missing)
+
+Reason:
+
+Live verification (2026-08-12) shows vault.righttobeforgotten.my.id and verify.righttobeforgotten.my.id resolve to 43.163.106.178 (A records, TTL 600) but are not served:
+
+- Port 80 returns the Socrapper catch-all page for every hostname (configured socrapper sites redirect, unknown hosts fall through to a catch-all file server)
+- Port 443 fails TLS (ERR_SSL_PROTOCOL_ERROR / EPROTO); the socrapper site on the same IP returns 200 over 443
+- Conclusion: Caddy has no site blocks for the RTBF domains (or the containers are not running on 127.0.0.1:3001/3002)
+
+Tasks:
+
+- [ ] Verify containers running on the VPS: docker compose -f docker-compose.caddy-host.yml ps (user-vault :3001, service-provider :3002)
+- [ ] Append site blocks for vault.righttobeforgotten.my.id and verify.righttobeforgotten.my.id to /etc/caddy/Caddyfile (reverse_proxy 127.0.0.1:3001 / 127.0.0.1:3002)
+- [ ] sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
+- [ ] Confirm certs issued and https://vault.righttobeforgotten.my.id + https://verify.righttobeforgotten.my.id return 200
+- [ ] Re-run browser E2E (identity -> register -> proof -> verify -> revoke -> denied -> re-consent)
+
+Priority:
+
+CRITICAL (deployment-blocking)
+
+Status:
+
+PENDING - requires VPS access (user action)
+
+Dependencies:
+
+DT-17, DT-18
+
+---
+
 # Completion Checklist
 
 The project is complete when:
