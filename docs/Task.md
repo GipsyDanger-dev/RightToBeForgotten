@@ -1219,6 +1219,45 @@ Verification Log:
 
 ---
 
+## DT-23
+
+Task:
+
+Deploy RTF shield-keyhole logo (favicon + navbar) to the live VPS safely (swapfile + sequential builds)
+
+Reason:
+
+Added app/icon.svg (shield + keyhole brand mark) to both Next.js apps and inlined it into both Navigation components (commit 733cee0). Initial VPS deploy attempt via `docker compose up -d --build` triggered OOM twice on gipsy (only ~3.7 GB RAM shared with many other services) because both Next.js builds ran in parallel, each ~1.2 GB. Required a reboot from the cloud console. Re-deploy must avoid parallel builds.
+
+Tasks:
+
+- [x] Create app/icon.svg in both apps + nav-logo brand mark in both Navigation components + nav-logo CSS (commit 733cee0)
+- [x] Verify local standalone builds pass for both apps (icon.svg route generated)
+- [x] scp changed files to gipsy repo (/home/ubuntu/righttobeforgotten)
+- [x] Confirm swapfile2 (4 GB) present on gipsy before building
+- [x] Rebuild images ONE AT A TIME: docker compose build user-vault (done) -> docker compose build service-provider (done) — no OOM
+- [x] docker compose up -d (recreated both containers), both apps 200 locally + over HTTPS
+- [x] Verify favicon served at /icon.svg (200, image/svg+xml) on both domains
+- [x] Browser E2E: shield favicon + shield navbar logo ("RTF · USER VAULT" / "RTF · SERVICE PROVIDER") visible on both sites, no console errors
+
+Priority:
+
+MEDIUM
+
+Status:
+
+COMPLETED
+
+Dependencies:
+
+DT-21 (live VPS deployment), commit 733cee0
+
+Note:
+
+- Root cause of the earlier OOM incidents: `docker compose build` builds ALL services in parallel by default; on gipsy each `next build` peaks ~1.2 GB. Safe procedure documented here: build each service explicitly (`docker compose build <service>`) and wait for completion before the next.
+
+---
+
 # Completion Checklist
 
 The project is complete when:
