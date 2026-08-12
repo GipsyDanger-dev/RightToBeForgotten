@@ -44,7 +44,7 @@ export default function Home() {
             identity.
           </p>
           <div>
-            <div className="hero-deco-num">04</div>
+            <div className="hero-deco-num">05</div>
             <div className="hero-deco-label">modules</div>
           </div>
         </div>
@@ -86,8 +86,19 @@ export default function Home() {
           </Link>
         </li>
         <li className="nav-list-item">
-          <Link href="/identity">
+          <Link href="/proof">
             <span className="nl-num">04</span>
+            <span className="nl-title">Generate Proof</span>
+            <div className="nl-meta">
+              <span className="nl-tag">zero-knowledge</span>
+              <span className="nl-desc">Create a ZK proof locally — your secret never leaves</span>
+            </div>
+            <span className="nl-arrow">↗</span>
+          </Link>
+        </li>
+        <li className="nav-list-item">
+          <Link href="/identity">
+            <span className="nl-num">05</span>
             <span className="nl-title">Identity</span>
             <div className="nl-meta">
               <span className="nl-tag">cryptographic identity</span>

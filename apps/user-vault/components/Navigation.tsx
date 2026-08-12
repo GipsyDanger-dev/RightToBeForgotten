@@ -8,6 +8,7 @@ const links = [
   { href: '/', label: 'Vault' },
   { href: '/identity', label: 'Identity' },
   { href: '/consent', label: 'Consent' },
+  { href: '/proof', label: 'Proof' },
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/revoke', label: 'Revoke' },
 ];
